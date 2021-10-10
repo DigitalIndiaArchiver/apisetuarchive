@@ -1,0 +1,117 @@
+400Error:
+  description: Bad request
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - missing_parameter
+              - invalid_parameter
+              - invalid_format
+              - invalid_txnid
+              - invalid_consentid
+          errorDescription:
+            type: string
+            enum:
+              - Please provide all mandatory parameters
+              - Bad request
+              - The format parameter is invalid
+              - The txnId parameter must be in UUID format
+              - The consentId parameter must be in UUID format
+401Error:
+  description: Unauthorized access
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - invalid_authentication
+              - invalid_authorization
+          errorDescription:
+            type: string
+            enum:
+              - Authentication failed
+              - You are not authorized to use this API
+404Error:
+  description: No record found
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - record_not_found
+              - url_not_found
+          errorDescription:
+            type: string
+            enum:
+              - No record found
+              - Your API url or path is incorrect
+500Error:
+  description: Internal server error
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - internal_server_error
+          errorDescription:
+            type: string
+            enum:
+              - Internal server error
+502Error:
+  description: Bad gateway
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - bad_gatewy
+          errorDescription:
+            type: string
+            enum:
+              - Publisher service returned an invalid response
+503Error:
+  description: Service unavailable
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - service_unavailable
+          errorDescription:
+            type: string
+            enum:
+              - Publisher service is temporarily unavailable
+504Error:
+  description: Gateway timeout
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            enum:
+              - gateway_timeout
+          errorDescription:
+            type: string
+            enum:
+              - Publisher service did not respond in time

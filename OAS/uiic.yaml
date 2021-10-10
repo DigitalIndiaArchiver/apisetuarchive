@@ -1,0 +1,568 @@
+openapi: 3.0.0
+info:  
+  title: United India Insurance Company Limited
+  description: United India Insurance Co. Ltd. is a Public Sector General Insurance Company incorporated in 1938, having its presence all over India providing risk cover to 1.74 Crore policyholders. General Insurance Policies such as Motor, Health, Personal Accident, Travel, e.t.c issued by United India Insurance Co. Ltd. (https://uiic.co.in/) are available to be downloaded by citizens of India to their DigiLocker account.
+  termsOfService: https://apisetu.gov.in/terms.php
+  version: 3.0.0
+servers:
+  - url: 'https://apisetu.gov.in/certificate/v3/uiic'
+paths:
+  /hlipc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance - Health
+      description: API to verify Insurance - Health.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: hlipc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /cripc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance Policy - Car
+      description: API to verify Insurance Policy - Car.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: cripc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /cvipc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance Policy - Commercial Vehicle
+      description: API to verify Insurance Policy - Commercial Vehicle.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: cvipc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /tripc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance Policy - Travel
+      description: API to verify Insurance Policy - Travel.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: tripc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /twipc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance Policy - Two Wheeler
+      description: API to verify Insurance Policy - Two Wheeler.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: twipc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /paipc:
+    post:
+      tags:
+        - APIs
+      summary: Insurance Policy- Personal Accident
+      description: API to verify Insurance Policy- Personal Accident.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: paipc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - UDF1
+                    - UDF2
+                    - UDF3
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    UDF1:
+                      type: string
+                      description: Policy Number
+                      example: "0317002620P100108515"
+                    UDF2:
+                      type: string
+                      description: Policy Effective Date
+                      example: "DD-MM-YYYY"
+                    UDF3:
+                      type: string
+                      description: Customer ID
+                      example: "1234234234"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+components:
+  schemas:
+    ConsentArtifactSchema:
+      $ref: './common/ConsentArtifactSchema.yaml#/ConsentArtifactSchema'
+    AcademicCertificateSchema:
+      $ref: './common/AcademicCertificateSchema.yaml#/AcademicCertificateSchema'
+      
+  responses:
+    400Error:
+      $ref: './common/ErrorResponse.yaml#/400Error'
+    401Error:
+      $ref: './common/ErrorResponse.yaml#/401Error'
+    404Error:
+      $ref: './common/ErrorResponse.yaml#/404Error'
+    500Error:
+      $ref: './common/ErrorResponse.yaml#/500Error'
+    502Error:
+      $ref: './common/ErrorResponse.yaml#/502Error'
+    503Error:
+      $ref: './common/ErrorResponse.yaml#/503Error'
+    504Error:
+      $ref: './common/ErrorResponse.yaml#/504Error'
+  securitySchemes:
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-APISETU-APIKEY

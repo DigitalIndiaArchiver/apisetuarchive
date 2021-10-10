@@ -1,0 +1,388 @@
+openapi: 3.0.0
+info:  
+  title: Maharashtra State Board of Secondary and Higher Secondary Education, Maharashtra
+  description: Class X and XII marksheets and passing certificates of Maharashtra State Board of Secondary and Higher Secondary Education (https://mahahsscboard.maharashtra.gov.in/) are available in DigiLocker for years 1990 to 2017.
+  termsOfService: https://apisetu.gov.in/terms.php
+  version: 3.0.0
+servers:
+  - url: 'https://apisetu.gov.in/certificate/v3/hsscboardmh'
+paths:
+  /sscer:
+    post:
+      tags:
+        - APIs
+      summary: Class X Marksheet
+      description: API to verify Class X Marksheet.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: sscer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - year
+                    - rollnumber
+                    - exsession
+                    - totalmarks
+                    - FullName
+  
+                  properties:
+                    year:
+                      type: string
+                      description: Year
+                      example: "2015"
+                    rollnumber:
+                      type: string
+                      description: Seat No
+                      example: "C183286"
+                    exsession:
+                      type: string
+                      description: Exam Session
+                      example: "MAR or OCT"
+                    totalmarks:
+                      type: string
+                      description: Total Marks
+                      example: "517"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/AcademicCertificateSchema'  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /spcer:
+    post:
+      tags:
+        - APIs
+      summary: Class X Passing Certificate
+      description: API to verify Class X Passing Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: spcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - year
+                    - rollnumber
+                    - exsession
+                    - totalmarks
+                    - FullName
+  
+                  properties:
+                    year:
+                      type: string
+                      description: Year
+                      example: "2015"
+                    rollnumber:
+                      type: string
+                      description: Seat No
+                      example: "C183286"
+                    exsession:
+                      type: string
+                      description: Exam Session
+                      example: "MAR or OCT"
+                    totalmarks:
+                      type: string
+                      description: Total Marks
+                      example: "517"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/AcademicCertificateSchema'  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /hscer:
+    post:
+      tags:
+        - APIs
+      summary: Class XII Marksheet
+      description: API to verify Class XII Marksheet.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: hscer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - year
+                    - rollnumber
+                    - exsession
+                    - totalmarks
+                    - FullName
+  
+                  properties:
+                    year:
+                      type: string
+                      description: Year
+                      example: "2015"
+                    rollnumber:
+                      type: string
+                      description: Seat No
+                      example: "P183286"
+                    exsession:
+                      type: string
+                      description: Exam Session
+                      example: "MAR or OCT"
+                    totalmarks:
+                      type: string
+                      description: Total Marks
+                      example: "389"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/AcademicCertificateSchema'  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /hpcer:
+    post:
+      tags:
+        - APIs
+      summary: Class XII Passing Certificate
+      description: API to verify Class XII Passing Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: hpcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - year
+                    - rollnumber
+                    - exsession
+                    - totalmarks
+                    - FullName
+  
+                  properties:
+                    year:
+                      type: string
+                      description: Year
+                      example: "2015"
+                    rollnumber:
+                      type: string
+                      description: Seat No
+                      example: "P183286"
+                    exsession:
+                      type: string
+                      description: Exam Session
+                      example: "MAR or OCT"
+                    totalmarks:
+                      type: string
+                      description: Total Marks
+                      example: "389"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/AcademicCertificateSchema'  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+components:
+  schemas:
+    ConsentArtifactSchema:
+      $ref: './common/ConsentArtifactSchema.yaml#/ConsentArtifactSchema'
+    AcademicCertificateSchema:
+      $ref: './common/AcademicCertificateSchema.yaml#/AcademicCertificateSchema'
+      
+  responses:
+    400Error:
+      $ref: './common/ErrorResponse.yaml#/400Error'
+    401Error:
+      $ref: './common/ErrorResponse.yaml#/401Error'
+    404Error:
+      $ref: './common/ErrorResponse.yaml#/404Error'
+    500Error:
+      $ref: './common/ErrorResponse.yaml#/500Error'
+    502Error:
+      $ref: './common/ErrorResponse.yaml#/502Error'
+    503Error:
+      $ref: './common/ErrorResponse.yaml#/503Error'
+    504Error:
+      $ref: './common/ErrorResponse.yaml#/504Error'
+  securitySchemes:
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-APISETU-APIKEY

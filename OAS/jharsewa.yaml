@@ -1,0 +1,517 @@
+openapi: 3.0.0
+info:  
+  title: Jharsewa (eDistrict), Jharkhand
+  description: Jharkhand e-District is a comprehensive and web enabled service portal that acts as an electronic gateway into the Government's portfolio of services. Jharsewa provides Certificates  like Birth, Death, Income, Caste and Residence Certificates in Digilocker.
+  termsOfService: https://apisetu.gov.in/terms.php
+  version: 3.0.0
+servers:
+  - url: 'https://apisetu.gov.in/certificate/v3/jharsewa'
+paths:
+  /btcer:
+    post:
+      tags:
+        - APIs
+      summary: Birth Certificate
+      description: API to verify Birth Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: btcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /ctcer:
+    post:
+      tags:
+        - APIs
+      summary: Caste Certificate
+      description: API to verify Caste Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: ctcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /dtcer:
+    post:
+      tags:
+        - APIs
+      summary: Death Certificate
+      description: API to verify Death Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: dtcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /ewcer:
+    post:
+      tags:
+        - APIs
+      summary: Economically Weaker Section Certificate
+      description: API to verify Economically Weaker Section Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: ewcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /incer:
+    post:
+      tags:
+        - APIs
+      summary: Income Certificate
+      description: API to verify Income Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: incer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /rmcer:
+    post:
+      tags:
+        - APIs
+      summary: Marriage Certificate
+      description: API to verify Marriage Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: rmcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /rscer:
+    post:
+      tags:
+        - APIs
+      summary: Residence Certificate
+      description: API to verify Residence Certificate.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: rscer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - RefNo
+                    - TokenNo
+  
+                  properties:
+                    RefNo:
+                      type: string
+                      description: Application Reference Number
+                      example: "Ex. JHRC/2018/236543"
+                    TokenNo:
+                      type: string
+                      description: Certificate Token Number
+                      example: "Ex. 2924637nNv839 or date of issue in dd/mm/yyyy. if tokan number is less than 8 chars"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+components:
+  schemas:
+    ConsentArtifactSchema:
+      $ref: './common/ConsentArtifactSchema.yaml#/ConsentArtifactSchema'
+    AcademicCertificateSchema:
+      $ref: './common/AcademicCertificateSchema.yaml#/AcademicCertificateSchema'
+    CasteCertificateSchema:
+      $ref: './common/CasteCertificateSchema.yaml#/CasteCertificateSchema'      
+  responses:
+    400Error:
+      $ref: './common/ErrorResponse.yaml#/400Error'
+    401Error:
+      $ref: './common/ErrorResponse.yaml#/401Error'
+    404Error:
+      $ref: './common/ErrorResponse.yaml#/404Error'
+    500Error:
+      $ref: './common/ErrorResponse.yaml#/500Error'
+    502Error:
+      $ref: './common/ErrorResponse.yaml#/502Error'
+    503Error:
+      $ref: './common/ErrorResponse.yaml#/503Error'
+    504Error:
+      $ref: './common/ErrorResponse.yaml#/504Error'
+  securitySchemes:
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-APISETU-APIKEY

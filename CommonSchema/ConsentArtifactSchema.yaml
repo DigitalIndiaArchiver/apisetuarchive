@@ -1,0 +1,127 @@
+ConsentArtifactSchema:
+  properties:
+    consent:
+      type: object
+      properties:
+        consentId:
+          type: string
+          format: uuid
+          description: A unique consent id in UUID format.
+          example: "ea9c43aa-7f5a-4bf3-a0be-e1caa24737ba"
+          minLength: 1
+        timestamp:
+          type: string
+          format: date-time
+          description: Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ
+          minLength: 1
+        dataConsumer:
+          type: object
+          properties:
+            id:
+              type: string
+              minLength: 1
+          required:
+            - id
+        dataProvider:
+          type: object
+          properties:
+            id:
+              type: string
+              minLength: 1
+          required:
+            - id
+        purpose:
+          type: object
+          properties:
+            description:
+              type: string
+              minLength: 1
+          required:
+            - description
+        user:
+          type: object
+          properties:
+            idType:
+              type: string
+              minLength: 1
+            idNumber:
+              type: string
+              minLength: 1
+            mobile:
+              type: string
+              minLength: 1
+            email:
+              type: string
+              minLength: 1
+          required:
+            - idType
+            - idNumber
+            - mobile
+            - email
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              minLength: 1
+          required:
+            - id
+        permission:
+          type: object
+          properties:
+            access:
+              type: string
+              minLength: 1
+            dateRange:
+              type: object
+              properties:
+                from:
+                  type: string
+                  format: date-time
+                  description: Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ
+                  minLength: 1
+                to:
+                  type: string
+                  format: date-time
+                  description: Date time format in UTC, includes miliseconds YYYY-MM-DDThh:mm:ss.vZ
+                  minLength: 1
+              required:
+                - from
+                - to
+            frequency:
+              type: object
+              properties:
+                unit:
+                  type: string
+                  minLength: 1
+                value:
+                  type: number
+                repeats:
+                  type: number
+              required:
+                - unit
+                - value
+                - repeats
+          required:
+            - access
+            - dateRange
+            - frequency
+      required:
+        - consentId
+        - timestamp
+        - dataConsumer
+        - dataProvider
+        - purpose
+        - user
+        - data
+        - permission
+    signature:
+      type: object
+      properties:
+        signature:
+          type: string
+      required:
+        - signature
+  required:
+    - consent
+    - signature

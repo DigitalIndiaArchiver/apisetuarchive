@@ -1,0 +1,534 @@
+openapi: 3.0.2
+info:
+  title: Co-WIN Vaccinator APIs
+  description: Co-WIN APIs to facilitate vaccinators. This specification includes APIs to register an individual for vaccination, to book a vaccination appointment from vaccinator applications, to marks an idividual as vaccinated and to download a vaccination certificate. <b>The access of these APIs is provided to State Governments only.</b> Please contact Ministry of Health and Family Welfare, Government of India to get access to these APIs. Please refer to <a href="https://apisetu.gov.in/document-central/cowin/Cowin%20API%20Guidelines.html" target="_blank">CoWIN API Guidelines</a> for more details. [<i>Updated on 4 July 2021</i>]
+  termsOfService: https://apisetu.gov.in/document-central/cowin/Terms%20of%20Service.html
+  contact:
+    name: Ministry of Health and Family Welfare
+    url: https://www.cowin.gov.in
+  version: 1.1.1
+servers:
+  - url: https://cdndemo-api.co-vin.in/api
+    description: Test Server
+  - url: https://cdn-api.co-vin.in/api
+    description: Production Server
+
+paths:
+  /v2/vaccinator/beneficiaries/new:
+    post:
+      tags:
+        - Beneficiary APIs
+      summary: Beneficiary Registration API
+      description: API for beneficiary registration from partner applications. This API returns a beneficiary reference id as a unique identifier of the registered user.
+      
+      operationId: Beneficiary Registration for Partner Applications
+      security:
+      - ApiKey: []
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  example: Apparao
+                birth_year:
+                  type: string
+                  minLength: 1
+                  description: Year of birth in YYYY format
+                  example: "1980"
+                gender_id:
+                  type: number
+                  minLength: 1
+                  example: 1
+                mobile_number:
+                  type: string
+                  example: "9876543210"
+                photo_id_type:
+                  type: number
+                  example: 1
+                photo_id_number:
+                  type: string
+                  example: "9999"
+                  minLength: 4
+                  description: Last 4 digits of photo id number
+                consent_version:
+                  type: string
+                  example: "1"
+              required:
+                - name
+                - birth_year
+                - gender
+                - mobile_number
+                - photo_id_type
+                - photo_id_number
+                - consent_version  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    maxLength: 14
+                    example: "1234567890123"
+                    description: A unique id for the beneficiary
+                  isNewAccount:
+                    type: string
+                    description: Indicates whether the beneficiary is already registered.
+                    enum:
+                      - "Y"
+                      - "N"                    
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: Already registered or cannot register more than 4 individuals with one mobile number.
+        '500':
+          description: Internal Server Error
+
+  /v2/vaccinator/beneficiaries/findByReferenceId:
+    get:
+      tags:
+        - Beneficiary APIs
+      summary: Get the list of benefiaries linked to a mobile number
+      description: API to get the list of benefiaries linked to a user’s mobile number. This list can be useful to schedule one appointment for an entire family. 
+      operationId: beneficiaryById
+      parameters:
+        - name: beneficiary_reference_id
+          in: query
+          required: true
+          schema:
+            type: string
+            maxLength: 14
+            example: "1234567890123"
+            description: A unique id for the beneficiary      
+      security:
+      - ApiKey: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenefeiciaryResponseSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                               
+
+  /v2/vaccinator/beneficiaries/findByMobile:
+    get:
+      tags:
+        - Beneficiary APIs
+      summary: Get the list of benefiaries linked to a mobile number
+      description: API to get the list of benefiaries linked to a user’s mobile number. This list can be useful to schedule one appointment for an entire family. 
+      operationId: findByMobile
+      parameters:
+        - name: mobile_number
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "9876543210"      
+      security:
+      - ApiKey: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  beneficiaries:
+                    $ref: '#/components/schemas/BeneficiariesSchema'
+                required:
+                  - beneficiaries
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                               
+
+  /v2/vaccinator/beneficiaries/vaccinate:
+    post:
+      tags:
+        - Vaccination APIs
+      summary: Update a beneficiary with vaccination details.
+      description: API to update a beneficiary record with vaccination details.
+      operationId: vaccinate
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    maxLength: 14
+                    example: "1234567890123"
+                    description: A unique id for the beneficiary
+                  center_id:
+                    type: number
+                    minLength: 1
+                    example: 1234
+                  vaccine:
+                    type: string
+                    example: "COVISHIELD"
+                  vaccine_batch:
+                    type: string
+                    example: "123456"
+                    description: The batch of the vaccine
+                  dose: 
+                    type: number
+                    minLength: 1
+                    example: 2
+                  dose1_date: 
+                    type: string
+                    example: "01-03-2021"
+                    description: The date of dose 1
+                  dose2_date: 
+                    type: string
+                    example: "29-03-2021"
+                    description: The date of dose 2
+                  vaccinator_name:
+                    type: string
+                    example: "Prabha Devi"
+                    description: The name of the person/nurse vaccinating the beneficiary
+                required:
+                  - beneficiary_reference_id
+                  - center_id
+                  - vaccine
+                  - vaccine_batch
+                  - dose
+                  - dose1_date
+                  - vaccinator_name
+      responses:
+        '204':
+          description: The beneficiary record updated successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+  /v2/vaccinator/certificate/download:
+    get:
+      tags:
+        - Certificate APIs
+      summary: Download vaccination certificate in PDF format by beneficiary reference id
+      description: API to download vaccination certificate in PDF format by beneficiary reference id.
+      operationId: download
+      parameters:
+        - name: beneficiary_reference_id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 1234567890123
+      security:
+      - ApiKey: [] 
+      
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                example: Binary content of PDF file
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    BeneficiariesSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/BenefeiciaryResponseSchema'
+    BenefeiciaryResponseSchema:
+      type: object
+      properties:
+        beneficiary_reference_id:
+          type: string
+          maxLength: 14
+          example: "1234567890123"
+        name:
+          type: string
+          minLength: 1
+          example: Rajesh Pawar
+        birth_year:
+          type: string
+          minLength: 1
+          example: "1995"
+        gender:
+          type: string
+          minLength: 1
+          example: Male
+        mobile_number:
+          type: string
+          example: "******1403"
+        photo_id_type:
+          type: string
+          example: "Driving License"
+        photo_id_number:
+          type: string
+          example: "********9999"
+          minLength: 1
+        comorbidity_ind:
+          description: Comorbidity indicator
+          type: string
+          example: Y
+          enum:
+            - Y
+            - N
+        vaccination_status:
+          type: string
+          enum:
+            - Not Vaccinated
+            - Partially Vaccinated
+            - Vaccinated        
+          example: "Not Vaccinated"
+        vaccine: 
+          type: string
+          enum:
+            - COVISHIELD
+            - COVAXIN
+          example: "COVISHIELD"
+        dose1_date: 
+          type: string
+          example: "01-03-2021"
+        dose2_date: 
+          type: string
+          example: "29-03-2021"
+        appointments:
+          $ref: '#/components/schemas/AppointmentsSchema'
+      required:
+        - beneficiary_reference_id 
+        - name
+        - birth_year
+        - gender
+        - mobile_number
+        - photo_id_type
+        - photo_id_number
+        - flw_hw_ind
+        - comorbidity_ind
+
+    CenterResponseSchema:
+        type: object
+        required:
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+        properties:
+          center_id:
+            type: number
+            minLength: 1
+            example: 1234
+          name:
+            type: string
+            minLength: 1
+            example: District General Hostpital
+          name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Name in preferred language as specified in Accept-Language header parameter.
+          address:
+            type: string
+            minLength: 1
+            example: 45 M G Road
+          address_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Address line in preferred language as specified in Accept-Language header parameter.
+          state_name:
+            type: string
+            example: Maharashtra
+          state_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: State name in preferred language as specified in Accept-Language header parameter.
+          district_name:
+            type: string
+            example: Satara
+          district_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: District name in preferred language as specified in Accept-Language header parameter.
+          block_name:
+            type: string
+            example: Jaoli
+          block_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Block name in preferred language as specified in Accept-Language header parameter.
+          pincode:
+            type: string
+            example: "413608"
+          lat:
+            type: number
+            format: float
+            minimum: 8.06
+            maximum: 37.10
+            example: 28.70
+          long:
+            type: number
+            format: float
+            minimum: 68.11
+            maximum: 97.41
+            example: 77.10
+          from:
+            type: string
+            format: partial-time
+            example: "09:00:00"
+          to:
+            type: string
+            format: partial-time
+            example: "18:00:00"
+          fee_type:
+            type: string
+            enum:
+              - Free
+              - Paid
+            example: Paid
+            description: Fee charged for vaccination
+
+
+    AppointmentsSchema:
+      type: array
+      uniqueItems: true
+      description: List of vaccines administered at a vaccine center along with their prices.
+      items:
+        $ref: '#/components/schemas/AppointmentResponseSchema'
+
+    AppointmentResponseSchema:
+      allOf:
+      - $ref: '#/components/schemas/CenterResponseSchema'
+      - type: object
+        properties:
+          dose: 
+            type: number
+            minLength: 1
+            example: 1
+          appointment_id:
+            type: string
+            format: uuid
+          session_id:
+            type: string
+            format: uuid
+            minLength: 1
+          date: 
+            type: string
+            minLength: 1
+            example: "01-03-2021"
+          slot:
+            type: string
+            example: 'FORENOON'
+        required:
+          - dose
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+          - appointment_id
+          - session_id
+          - date
+          - slot
+
+  securitySchemes: 
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: The API key.
+  

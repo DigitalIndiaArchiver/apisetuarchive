@@ -1,0 +1,293 @@
+openapi: 3.0.2
+info:
+  title: Importer-Exporter Details API
+  description: The Importer-Exporter Code (IEC), issued by Directorate General of Foreign Trade (DGFT), is a key business identification number which is mandatory for Exports or Imports. This API can be used to get details of a importer-exporter by importer-exporter code. <i>[Updated on 16 June 2021]</i>
+  termsOfService: https://apisetu.gov.in/terms.php
+  contact:
+    name: Directorate General of Foreign Trade (DGFT)
+    url: https://www.dgft.gov.in/
+  version: 3.0.0
+servers:
+  - url: https://apisetu.gov.in/dgft 
+paths:
+  /v1/iec/{iec}:
+    get:
+      tags:
+        - APIs
+      summary: Importer-Exporter Code (IEC) Verification API.
+      description: Description of Importer-Exporter Code (IEC) Verification API.
+      
+      operationId: Importer-Exporter Code Verification API
+      parameters:
+        - name: iec
+          in: path
+          description: >-
+            Importer-Exporter code
+          required: true
+          schema:
+            type: string
+      security:
+        - clientId: []
+          apiKey: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  iec:
+                    type: string
+                    minLength: 1
+                    example: CGRPK3746C
+                  entityName:
+                    type: string
+                    minLength: 1
+                    example: Mukund's IEC
+                  addressLine1:
+                    type: string
+                    minLength: 1
+                    example: Noida
+                  addressLine2:
+                    type: string
+                    example: ''
+                  city:
+                    type: string
+                    minLength: 1
+                    example: Bokaro
+                  state:
+                    type: string
+                    minLength: 1
+                    example: JHARKHAND
+                  pin:
+                    type: string
+                    minLength: 1
+                    example: 827012
+                  iecIssueDate:
+                    type: string
+                    minLength: 1
+                    example: 08062020
+                  exporterType:
+                    type: string
+                    minLength: 1
+                    example: 1
+                  pan:
+                    type: string
+                    minLength: 1
+                    example: CGRPK3746CFT001
+                  iecStatus:
+                    type: string
+                    minLength: 0
+                    example: 0
+                  iecModificationDate:
+                    type: string
+                    example: ''
+                  dataAsOn:
+                    type: string
+                    format: date-time
+                  
+                  natureOfConcern:
+                    type: string
+                    minLength: 1
+                    example: 1
+                  branch:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - branchCode
+                        - badd1
+                        - badd2
+                        - city
+                        - state
+                        - pin
+                      properties:
+                        branchCode:
+                          type: string
+                          minLength: 1
+                          example: 1
+                        badd1:
+                          type: string
+                          minLength: 1
+                          example: Bokaro
+                        badd2:
+                          type: string
+                          example: ''
+                        city:
+                          type: string
+                          minLength: 1
+                          example: Bokaro
+                        state:
+                          type: string
+                          minLength: 1
+                          example: JHARKHAND
+                        pin:
+                          type: string
+                          minLength: 1
+                          example: 827012
+                  directors:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - name
+                      properties:
+                        name:
+                          type: string
+                          minLength: 1
+                          example: Mukund's IEC
+                required:
+                  - iec
+                  - entityName
+                  - addressLine1
+                  - addressLine2
+                  - city
+                  - state
+                  - pin
+                  - iecIssueDate
+                  - exporterType
+                  - pan
+                  - iecStatus
+                  - iecModificationDate
+                  - dataAsOn
+                  - natureOfConcern
+                  - branch
+                  - directors
+          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - invalid parameter
+                      - missing parameter
+                      
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Bad request
+                      - Please provide all mandatory parameters.
+                      
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - invalid_authentication
+                      - invalid_authorization
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Authentication failed
+                      - You are not authorized to use this API 
+                
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - record_not_found
+                      - Url not found
+                  errorDescription:
+                    type: string
+                    enum:
+                      - No record found
+                      - Your API url or path is incorrect.
+                    
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - internal_server_error
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Internal server error
+                
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - bad gateway
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service returned an invalid response.
+                
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - service_unavailable
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service is temporarily unavailable 
+                         
+        '504':
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - gateway_timeout
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service did not respond in time
+                      
+                       
+components:
+  
+  securitySchemes: 
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      name: X-APISETU-APIKEY
+      in: header
+    
+    
+ 

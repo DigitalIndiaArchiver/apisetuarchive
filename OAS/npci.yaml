@@ -1,0 +1,1337 @@
+openapi: 3.0.0
+info:
+  title: Unified Payments Interface - UPI
+  version: ' 1.0  '
+  description: "UPI is an instant real-time payment system developed by NPCI facilitating inter-bank transactions. The interface is regulated by the RBI and works by instantly transferring funds between two bank accounts on a mobile platform. This UPI simulated API specs is provided by Nfinite (https://nfinite.in). Nfinite is an API sandbox to enable the Fin-Techs and Financial Institutions to build together. This platform will enable different types of participants such as  corporates (Banks, FIs, etc.), start-ups, Large Technology Players, Individual Developers, and Academia to conceptualize and build solutions.
+
+"
+  termsOfService: https://nfinite.in/terms-of-service
+  contact:
+    name: National Payments Corporation of India - NPCI
+    url:  https://www.npci.org.in  
+servers:
+  - url: 'https://nfinite.in/api/upi-npci'
+security:
+  - ApiKeyAuth: []
+paths:
+  '/ReqChkTxn/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqChkTxn
+      operationId: ReqChkTxn
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqChkTxn xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c5"/>
+                    <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl="http://www.icicibank.com" refCategory="00"ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6"subType="DEBIT"orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
+                </upi:ReqChkTxn>
+            example: |-
+              <upi:ReqChkTxn xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c5"/>
+                  <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl="http://www.icicibank.com" refCategory="00"ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6"subType="DEBIT"orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
+              </upi:ReqChkTxn>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqHbt/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqHbt
+      operationId: ReqHbt
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: Please Enter Some Dummy Data
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqHbt xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349f227"/>
+                    <Txn id="NPC8dfee547ebb44d18942a02d56e893696" note="reqhbt" refId="NPC7215eda0afca42a1aa410a2d0349f228" refUrl="http://www.bank.in/" ts="2018-09-15T20:19:41.038+05:30" type="Hbt" />
+                    <HbtMsg type="EOD" value="DATE"/>
+                </upi:ReqHbt>
+            example: |-
+              <upi:ReqHbt xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349f227"/>
+                  <Txn id="NPC8dfee547ebb44d18942a02d56e893696" note="reqhbt" refId="NPC7215eda0afca42a1aa410a2d0349f228" refUrl="http://www.bank.in/" ts="2018-09-15T20:19:41.038+05:30" type="Hbt" />
+                  <HbtMsg type="EOD" value="DATE"/>
+              </upi:ReqHbt>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqBalEnq/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqBalEnq
+      operationId: ReqBalEnq
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqBalEnq xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349fss4"/>
+                    <Txn id="NPC2f38ef0cd4b74bdeaeb6c8cb449c4109" note="ReqBalEnq" refId="NPC7215eda0afca42a1aa410a2d0349fss4" refUrl="http://npci.org/upi/schema" ts="2018-02-17T13:39:56.040+05:30" type="BalEnq">
+                        <RiskScores>
+                            <Score provider="sp" type="TXNRISK" value="111"/>
+                            <Score provider="NPCI" type="TXNRISK" value="11"/>
+                        </RiskScores>
+                    </Txn>
+                    <Payer addr="919819971213@upi" code="0000" name="ABC" seqNum="1" type="PERSON">
+                        <Info>
+                            <Identity id="abcdefsga" type="ACCOUNT" verifiedName="Ram"/>
+                            <Rating VerifiedAddress="TRUE"/>
+                        </Info>
+                        <Device>
+                            <Tag name="MOBILE" value="918143308193"/>
+                            <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                            <Tag name="LOCATION" value="INDIA"/>
+                            <Tag name="ID" value="868210034695367"/>
+                            <Tag name="OS" value="Android7.1.2"/>
+                            <Tag name="IP" value="10.186.153.241"/>
+                            <Tag name="APP" value="com.upi.axispay"/>
+                            <Tag name="TYPE" value="USDC"/>
+                            <Tag name="CAPABILITY" value="011001"/>
+                            <Tag name="TELECOM" value="AIRTEL"/>
+                        </Device>
+                        <Ac addrType ="MOBILE">
+                            <Detail name="MMID" value="7654321"/>
+                            <Detail name="MOBNUM" value="912378983423"/>
+                        </Ac>
+                        <Creds>
+                            <Cred type="AADHAAR" subType="AADHAAR-BIO-FP">
+                                <Meta lk="43442343423423423" ac="1234dfg56h" sa="2312356789" uid="123455432167" ver="2.0"/>
+                                <Data code="NPCI" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                            <Cred type="OTP" subType="SMS">
+                                <Data  code="NPCI" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data code="NPCI" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                            <Cred type="CARD" subType="CVV1">
+                                <Data code="NPCI" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                        </Creds>
+                        <Amount value="20.00" curr="INR">
+                            <Split name="PURCHASE" value="1"/>
+                        </Amount>
+                    </Payer>
+                </upi:ReqBalEnq>
+            example: |-
+              <upi:ReqBalEnq xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349fss4"/>
+                  <Txn id="NPC2f38ef0cd4b74bdeaeb6c8cb449c4109" note="ReqBalEnq" refId="NPC7215eda0afca42a1aa410a2d0349fss4" refUrl="http://npci.org/upi/schema" ts="2018-02-17T13:39:56.040+05:30" type="BalEnq">
+                      <RiskScores>
+                          <Score provider="sp" type="TXNRISK" value="111"/>
+                          <Score provider="NPCI" type="TXNRISK" value="11"/>
+                      </RiskScores>
+                  </Txn>
+                  <Payer addr="919819971213@upi" code="0000" name="ABC" seqNum="1" type="PERSON">
+                      <Info>
+                          <Identity id="abcdefsga" type="ACCOUNT" verifiedName="Ram"/>
+                          <Rating VerifiedAddress="TRUE"/>
+                      </Info>
+                      <Device>
+                          <Tag name="MOBILE" value="918143308193"/>
+                          <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                          <Tag name="LOCATION" value="INDIA"/>
+                          <Tag name="ID" value="868210034695367"/>
+                          <Tag name="OS" value="Android7.1.2"/>
+                          <Tag name="IP" value="10.186.153.241"/>
+                          <Tag name="APP" value="com.upi.axispay"/>
+                          <Tag name="TYPE" value="USDC"/>
+                          <Tag name="CAPABILITY" value="011001"/>
+                          <Tag name="TELECOM" value="AIRTEL"/>
+                      </Device>
+                      <Ac addrType ="MOBILE">
+                          <Detail name="MMID" value="7654321"/>
+                          <Detail name="MOBNUM" value="912378983423"/>
+                      </Ac>
+                      <Creds>
+                          <Cred type="AADHAAR" subType="AADHAAR-BIO-FP">
+                              <Meta lk="43442343423423423" ac="1234dfg56h" sa="2312356789" uid="123455432167" ver="2.0"/>
+                              <Data code="NPCI" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                          <Cred type="OTP" subType="SMS">
+                              <Data  code="NPCI" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data code="NPCI" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                          <Cred type="CARD" subType="CVV1">
+                              <Data code="NPCI" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                      </Creds>
+                      <Amount value="20.00" curr="INR">
+                          <Split name="PURCHASE" value="1"/>
+                      </Amount>
+                  </Payer>
+              </upi:ReqBalEnq>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqListAccount/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqListAccount
+      operationId: ReqListAccount
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqListAccount xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c4"/>
+                    <Txn id="NPCaba528f981fd4d758811cb57c1317ccc" note="sachin123" refId="NPC7215eda0afca42a1aa410a2d0349f260" refUrl="http://www.icicibank.com" ts="2018-09-15T20:19:41.038+05:30" type="ListAccount"/>
+                    <Link type="MOBILE" value="918149033167"/>
+                    <Payer addr="sri@mypsp" name="sachin" seqNum="1" type="PERSON" code="0000" aadhaarConsent="N">
+                        <Device>
+                            <Tag name="MOBILE" value="918149033167"/>
+                            <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                            <Tag name="LOCATION" value="pune"/>
+                            <Tag name="IP" value="192.68.0.12"/>
+                            <Tag name="TYPE" value="MOB"/>
+                            <Tag name="ID" value="3356"/>
+                            <Tag name="OS" value="ios"/>
+                            <Tag name="APP" value="10000629091"/>
+                            <Tag name="CAPABILITY" value="1234556789"/>
+                            <Tag name="TELECOM" value="Airtel"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="IFSC" value="IFSC0000122"/>
+                        </Ac>
+                    </Payer>
+                </upi:ReqListAccount>
+            example: |-
+              <upi:ReqListAccount xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c4"/>
+                  <Txn id="NPCaba528f981fd4d758811cb57c1317ccc" note="sachin123" refId="NPC7215eda0afca42a1aa410a2d0349f260" refUrl="http://www.icicibank.com" ts="2018-09-15T20:19:41.038+05:30" type="ListAccount"/>
+                  <Link type="MOBILE" value="918149033167"/>
+                  <Payer addr="sri@mypsp" name="sachin" seqNum="1" type="PERSON" code="0000" aadhaarConsent="N">
+                      <Device>
+                          <Tag name="MOBILE" value="918149033167"/>
+                          <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                          <Tag name="LOCATION" value="pune"/>
+                          <Tag name="IP" value="192.68.0.12"/>
+                          <Tag name="TYPE" value="MOB"/>
+                          <Tag name="ID" value="3356"/>
+                          <Tag name="OS" value="ios"/>
+                          <Tag name="APP" value="10000629091"/>
+                          <Tag name="CAPABILITY" value="1234556789"/>
+                          <Tag name="TELECOM" value="Airtel"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="IFSC" value="IFSC0000122"/>
+                      </Ac>
+                  </Payer>
+              </upi:ReqListAccount>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqListAccPvd/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqListAccPvd
+      operationId: ReqListAccPvd
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqListAccPvd xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-17T14:48:10.719+05:30" orgId="112233" msgId="NPC000016c3a3b30ba12421cb5d2ffef1f5"/>
+                    <Txn id="NPC361e998fd4ea4419a6c287197f60698f" note="Account provider Listing" refId="ICId1f1b7de026e406f91ceaa8585157338" refUrl="http://www.icicibank.com" ts="2018-09-17T14:48:10.719+05:30" type="ListAccPvd"/>
+                </upi:ReqListAccPvd>
+            example: |-
+              <upi:ReqListAccPvd xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-17T14:48:10.719+05:30" orgId="112233" msgId="NPC000016c3a3b30ba12421cb5d2ffef1f5"/>
+                  <Txn id="NPC361e998fd4ea4419a6c287197f60698f" note="Account provider Listing" refId="ICId1f1b7de026e406f91ceaa8585157338" refUrl="http://www.icicibank.com" ts="2018-09-17T14:48:10.719+05:30" type="ListAccPvd"/>
+              </upi:ReqListAccPvd>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqListKeys/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqListKeys
+      operationId: ReqListKeys
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqListKeys xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-17T14:48:10.719+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573839"/>
+                    <Txn id="NPC4c3807a466814dbaa1c3fa15c573ecfb" note="ListKeys" refId="NPC1f1b7de026e406f91ceaa85851573840" refUrl="http://www.bank.in/" ts="2018-09-17T14:48:10.719+05:30" type="ListPspKeys" pspOrgId="4011"/>
+                    <Creds>
+                        <Cred type="challenge" subType="initial">
+                            <Data code="NPCI" ki="20150822">
+                            </Data>
+                        </Cred>
+                    </Creds>
+                </upi:ReqListKeys>
+            example: |-
+              <upi:ReqListKeys xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-17T14:48:10.719+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573839"/>
+                  <Txn id="NPC4c3807a466814dbaa1c3fa15c573ecfb" note="ListKeys" refId="NPC1f1b7de026e406f91ceaa85851573840" refUrl="http://www.bank.in/" ts="2018-09-17T14:48:10.719+05:30" type="ListPspKeys" pspOrgId="4011"/>
+                  <Creds>
+                      <Cred type="challenge" subType="initial">
+                          <Data code="NPCI" ki="20150822">
+                          </Data>
+                      </Cred>
+                  </Creds>
+              </upi:ReqListKeys>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqListPsp/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqListPsp
+      operationId: ReqListPsp
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqListPsp xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c4"/>
+                    <Txn id="NPC2fc5f6c69c5647d1a3b5638acb95964f" note="Listing Psp" refId="NPC7215eda0afca42a1aa410a2d0349f235" refUrl="http://www.icicibank.com" ts="2018-09-15T20:19:41.038+05:30" type="ListPsp"/>
+                </upi:ReqListPsp>
+            example: |-
+              <upi:ReqListPsp xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c4"/>
+                  <Txn id="NPC2fc5f6c69c5647d1a3b5638acb95964f" note="Listing Psp" refId="NPC7215eda0afca42a1aa410a2d0349f235" refUrl="http://www.icicibank.com" ts="2018-09-15T20:19:41.038+05:30" type="ListPsp"/>
+              </upi:ReqListPsp>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqListVae/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqListVae
+      operationId: ReqListVae
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqListVae xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCde75fd9c4c4c45738dda1e38cceeb832"/>
+                    <Txn id="NPC708f6224774245c1a6cfabf09fa67988" note="ListVae" refId="YBLde75fd9c4c4c45738dda1e38cceeb832" refUrl="http://www.bank.in/" ts="2018-02-17T13:39:54.944+05:30" type="ListVae"/>
+                </upi:ReqListVae>
+            example: |-
+              <upi:ReqListVae xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCde75fd9c4c4c45738dda1e38cceeb832"/>
+                  <Txn id="NPC708f6224774245c1a6cfabf09fa67988" note="ListVae" refId="YBLde75fd9c4c4c45738dda1e38cceeb832" refUrl="http://www.bank.in/" ts="2018-02-17T13:39:54.944+05:30" type="ListVae"/>
+              </upi:ReqListVae>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqManageVae/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqManageVae
+      operationId: ReqManageVae
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqManageVae xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349s562"/>
+                    <Txn id="NPC73e8a34e4a504ae18740ff24e5337a29" note="ReqManageVae" refId="NPC7215eda0afca42a1aa410a2d0349s564" refUrl="http://www.icicibank.com" ts="2018-02-17T13:39:56.040+05:30" type="ManageVae"/>
+                    <VaeList>
+                        <Vae name="LIC" addr="lic@hdfc" logo="image" url="http://www.icicibank.com" op="ADD" seqNum="1">
+                            <key code="NPCI" type="PKI" ki="20190208"/>
+                            <keyValue>
+                                base64 encoded certificate
+                            </keyValue>
+                        </Vae>
+                        <Vae name="IRCTC" addr="irctc@icici" logo="image" url="http://www.icicibank.com" op="UPDATE" seqNum="2">
+                            <key code="NPCI" type="PKI" ki="20190204"/>
+                            <keyValue>
+                                base64 encoded certificate
+                            </keyValue>
+                        </Vae>
+                    </VaeList>
+                </upi:ReqManageVae>
+            example: |-
+              <upi:ReqManageVae xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349s562"/>
+                  <Txn id="NPC73e8a34e4a504ae18740ff24e5337a29" note="ReqManageVae" refId="NPC7215eda0afca42a1aa410a2d0349s564" refUrl="http://www.icicibank.com" ts="2018-02-17T13:39:56.040+05:30" type="ManageVae"/>
+                  <VaeList>
+                      <Vae name="LIC" addr="lic@hdfc" logo="image" url="http://www.icicibank.com" op="ADD" seqNum="1">
+                          <key code="NPCI" type="PKI" ki="20190208"/>
+                          <keyValue>
+                              base64 encoded certificate
+                          </keyValue>
+                      </Vae>
+                      <Vae name="IRCTC" addr="irctc@icici" logo="image" url="http://www.icicibank.com" op="UPDATE" seqNum="2">
+                          <key code="NPCI" type="PKI" ki="20190204"/>
+                          <keyValue>
+                              base64 encoded certificate
+                          </keyValue>
+                      </Vae>
+                  </VaeList>
+              </upi:ReqManageVae>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqOtp/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqOtp
+      operationId: ReqOtp
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqOtp xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573878"/>
+                    <Txn id="NPC3554a0717c5a4ada8f79c82054c37a86" note="Otp" refId="NPC1f1b7de026e406f91ceaa85851573878" refUrl="https://www.sbi.co.in/" ts="2018-02-17T13:39:56.040+05:30" type="Otp"/>
+                    <Payer addr="sri@mypsp" name="Shyam" seqNum="1" type="PERSON" code="0000">
+                        <Device>
+                            <Tag name="MOBILE" value="918143308193"/>
+                            <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                            <Tag name="LOCATION" value="INDIA"/>
+                            <Tag name="ID" value="868210034695367"/>
+                            <Tag name="OS" value="Android7.1.2"/>
+                            <Tag name="IP" value="10.186.153.241"/>
+                            <Tag name="APP" value="com.upi.axispay"/>
+                            <Tag name="TYPE" value="USDC"/>
+                            <Tag name="CAPABILITY" value="011001"/>
+                            <Tag name="TELECOM" value="AIRTEL"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="IFSC" value="HDFC0000234"/>
+                            <Detail name="ACTYPE" value="BANKWALLET"/>
+                            <Detail name="ACNUM" value="124567907432"/>
+                        </Ac>
+                    </Payer>
+                    <RegDetails type="ATM_REDIRECT">
+                        <Detail name="MOBILE" value="912342675543"/>
+                        <Detail name="CARDDIGITS" value="234512"/>
+                        <Detail name="EXPDATE" value="0122"/>
+                    </RegDetails>
+                    <RegDetails type="ATM_REDIRECT">
+                        <Creds>
+                            <Cred type="CARD" subType="CARDDETAILS">
+                                <Data code="OTP" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                        </Creds>
+                    </RegDetails>
+                </upi:ReqOtp>
+            example: |-
+              <upi:ReqOtp xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573878"/>
+                  <Txn id="NPC3554a0717c5a4ada8f79c82054c37a86" note="Otp" refId="NPC1f1b7de026e406f91ceaa85851573878" refUrl="https://www.sbi.co.in/" ts="2018-02-17T13:39:56.040+05:30" type="Otp"/>
+                  <Payer addr="sri@mypsp" name="Shyam" seqNum="1" type="PERSON" code="0000">
+                      <Device>
+                          <Tag name="MOBILE" value="918143308193"/>
+                          <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                          <Tag name="LOCATION" value="INDIA"/>
+                          <Tag name="ID" value="868210034695367"/>
+                          <Tag name="OS" value="Android7.1.2"/>
+                          <Tag name="IP" value="10.186.153.241"/>
+                          <Tag name="APP" value="com.upi.axispay"/>
+                          <Tag name="TYPE" value="USDC"/>
+                          <Tag name="CAPABILITY" value="011001"/>
+                          <Tag name="TELECOM" value="AIRTEL"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="IFSC" value="HDFC0000234"/>
+                          <Detail name="ACTYPE" value="BANKWALLET"/>
+                          <Detail name="ACNUM" value="124567907432"/>
+                      </Ac>
+                  </Payer>
+                  <RegDetails type="ATM_REDIRECT">
+                      <Detail name="MOBILE" value="912342675543"/>
+                      <Detail name="CARDDIGITS" value="234512"/>
+                      <Detail name="EXPDATE" value="0122"/>
+                  </RegDetails>
+                  <RegDetails type="ATM_REDIRECT">
+                      <Creds>
+                          <Cred type="CARD" subType="CARDDETAILS">
+                              <Data code="OTP" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                      </Creds>
+                  </RegDetails>
+              </upi:ReqOtp>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqPendingMsg/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqPendingMsg
+      operationId: ReqPendingMsg
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqPendingMsg xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349s564"/>
+                    <Txn id="NPC63a66d0f591641cbbbc50a8b41483cf9" note="ReqPendingMsg" refId="NPC7215eda0afca42a1aa410a2d0349s564" refUrl="http://www.icicibank.com" ts="2018-02-17T13:39:56.040+05:30" type="PendingMsg"/>
+                    <ReqMsg type="MOBILE" value="912345786933" addr="919819971213@upi"/>
+                </upi:ReqPendingMsg>
+            example: |-
+              <upi:ReqPendingMsg xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349s564"/>
+                  <Txn id="NPC63a66d0f591641cbbbc50a8b41483cf9" note="ReqPendingMsg" refId="NPC7215eda0afca42a1aa410a2d0349s564" refUrl="http://www.icicibank.com" ts="2018-02-17T13:39:56.040+05:30" type="PendingMsg"/>
+                  <ReqMsg type="MOBILE" value="912345786933" addr="919819971213@upi"/>
+              </upi:ReqPendingMsg>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqRegMob/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqRegMob
+      operationId: ReqRegMob
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqRegMob xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857340"/>
+                    <Txn id="NPC92d1f8b0daea4b7886dc1fcf2a941b8c" note="Mobile Registration" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-02-17T13:39:54.944+05:30" type="ReqRegMob"/>
+                    <Payer addr="919819971213@upi" name="ABC" seqNum="1" type="PERSON" code="0000">
+                        <Device>
+                            <Tag name="MOBILE" value="918143308193"/>
+                            <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                            <Tag name="LOCATION" value="INDIA"/>
+                            <Tag name="ID" value="868210034695367"/>
+                            <Tag name="OS" value="Android7.1.2"/>
+                            <Tag name="IP" value="10.186.153.241"/>
+                            <Tag name="APP" value="com.upi.axispay"/>
+                            <Tag name="TYPE" value="USDC"/>
+                            <Tag name="CAPABILITY" value="011001"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="IFSC" value="AABF0000101"/>
+                            <Detail name="ACTYPE" value="SAVINGS"/>
+                            <Detail name="ACNUM" value="0101307583747"/>
+                        </Ac>
+                    </Payer>
+                    <RegDetails type="FORMAT2">
+                        <Detail name="MOBILE" value="911234564321"/>
+                        <Detail name="CARDDIGITS" value="043532"/>
+                        <Detail name="EXPDATE" value="11/22"/>
+                        <Creds>
+                            <Cred type="OTP" subType="SMS">
+                                <Data code="NPCI" ki="20150822">
+                                </Data>
+                            </Cred>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data code="NPCI" ki="20150822">
+                                </Data>
+                            </Cred>
+                        </Creds>
+                    </RegDetails>
+                </upi:ReqRegMob>
+            example: |-
+              <upi:ReqRegMob xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857340"/>
+                  <Txn id="NPC92d1f8b0daea4b7886dc1fcf2a941b8c" note="Mobile Registration" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-02-17T13:39:54.944+05:30" type="ReqRegMob"/>
+                  <Payer addr="919819971213@upi" name="ABC" seqNum="1" type="PERSON" code="0000">
+                      <Device>
+                          <Tag name="MOBILE" value="918143308193"/>
+                          <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                          <Tag name="LOCATION" value="INDIA"/>
+                          <Tag name="ID" value="868210034695367"/>
+                          <Tag name="OS" value="Android7.1.2"/>
+                          <Tag name="IP" value="10.186.153.241"/>
+                          <Tag name="APP" value="com.upi.axispay"/>
+                          <Tag name="TYPE" value="USDC"/>
+                          <Tag name="CAPABILITY" value="011001"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="IFSC" value="AABF0000101"/>
+                          <Detail name="ACTYPE" value="SAVINGS"/>
+                          <Detail name="ACNUM" value="0101307583747"/>
+                      </Ac>
+                  </Payer>
+                  <RegDetails type="FORMAT2">
+                      <Detail name="MOBILE" value="911234564321"/>
+                      <Detail name="CARDDIGITS" value="043532"/>
+                      <Detail name="EXPDATE" value="11/22"/>
+                      <Creds>
+                          <Cred type="OTP" subType="SMS">
+                              <Data code="NPCI" ki="20150822">
+                              </Data>
+                          </Cred>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data code="NPCI" ki="20150822">
+                              </Data>
+                          </Cred>
+                      </Creds>
+                  </RegDetails>
+              </upi:ReqRegMob>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqSetCre/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqSetCre
+      operationId: ReqSetCre
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqSetCre xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-09-26T15:26:31.876+05:30" orgId="112233" msgId="NPCaeff4166fedc4071bb15665b5785701b"/>
+                    <Txn id="NPC61bfd6e3483a46b68ac2a92b6c9e63b8" note="Set Credentials" refId="NPCfd4a5000fdd411e8b2cf0bb946601113" refUrl="http://npci.org/upi/schema/" ts="2018-09-26T15:26:31.768+05:30" type="SetCre"/>
+                    <Payer addr="9856454674@ghduyh" name="Ramnathan" seqNum="1" type="PERSON" code="0000">
+                        <Device>
+                            <Tag name="MOBILE" value="918883141089"/>
+                            <Tag name="GEOCODE" value="20.1384,75.4101"/>
+                            <Tag name="LOCATION" value="Mumbai"/>
+                            <Tag name="IP" value="124.170.23.22"/>
+                            <Tag name="TYPE" value="mob"/>
+                            <Tag name="ID" value="750c6be243f1c4b5c991"/>
+                            <Tag name="OS" value="Android 5.1.1"/>
+                            <Tag name="APP" value="NPCIAPP"/>
+                            <Tag name="CAPABILITY" value="52000002000100040006"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="IFSC" value="AABW0000000"/>
+                            <Detail name="ACTYPE" value="NRE"/>
+                            <Detail name="ACNUM" value="2678892001828"/>
+                        </Ac>
+                        <Creds>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data code="NPCI" ki="20150822">
+                                    input.encryptedCredBlock+
+                                </Data>
+                            </Cred>
+                        </Creds>
+                        <NewCred>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data>
+                                    input.encryptedCredBlock+
+                                </Data>
+                            </Cred>
+                        </NewCred>
+                    </Payer>
+                </upi:ReqSetCre>
+            example: |-
+              <upi:ReqSetCre xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-09-26T15:26:31.876+05:30" orgId="112233" msgId="NPCaeff4166fedc4071bb15665b5785701b"/>
+                  <Txn id="NPC61bfd6e3483a46b68ac2a92b6c9e63b8" note="Set Credentials" refId="NPCfd4a5000fdd411e8b2cf0bb946601113" refUrl="http://npci.org/upi/schema/" ts="2018-09-26T15:26:31.768+05:30" type="SetCre"/>
+                  <Payer addr="9856454674@ghduyh" name="Ramnathan" seqNum="1" type="PERSON" code="0000">
+                      <Device>
+                          <Tag name="MOBILE" value="918883141089"/>
+                          <Tag name="GEOCODE" value="20.1384,75.4101"/>
+                          <Tag name="LOCATION" value="Mumbai"/>
+                          <Tag name="IP" value="124.170.23.22"/>
+                          <Tag name="TYPE" value="mob"/>
+                          <Tag name="ID" value="750c6be243f1c4b5c991"/>
+                          <Tag name="OS" value="Android 5.1.1"/>
+                          <Tag name="APP" value="NPCIAPP"/>
+                          <Tag name="CAPABILITY" value="52000002000100040006"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="IFSC" value="AABW0000000"/>
+                          <Detail name="ACTYPE" value="NRE"/>
+                          <Detail name="ACNUM" value="2678892001828"/>
+                      </Ac>
+                      <Creds>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data code="NPCI" ki="20150822">
+                                  input.encryptedCredBlock+
+                              </Data>
+                          </Cred>
+                      </Creds>
+                      <NewCred>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data>
+                                  input.encryptedCredBlock+
+                              </Data>
+                          </Cred>
+                      </NewCred>
+                  </Payer>
+              </upi:ReqSetCre>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqTxnConfirmation/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqTxnConfirmation
+      operationId: ReqTxnConfirmation
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqTxnConfirmation xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857311"/>
+                    <Txn id="NPC4aa5adfa5d504ac091dc61b438482b10" note="Sending money" custRef="822217098761" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-02-17T13:39:54.944+05:30" type="TxnConfirmation" initiationMode="12" purpose="00" orgTxnId="NPC7215eda0afca42a1aa410a2d0349s566"/>
+                    <TxnConfirmation note="UPI" orgStatus="SUCCESS" orgErrCode="00" type="PAY" actn="1234567890">
+                        <Ref type="PAYEE" seqNum="1234" addr="sri@mypsp2" regName="RamKumar" settAmount="20.00" orgAmount="20.00" settCurrency="INR" acNum="005010000000" approvalNum="123456" respCode="0000" IFSC="IFSC1234567" code="0000" accType="SAVINGS" reversalRespCode="1234"/>
+                    </TxnConfirmation>
+                </upi:ReqTxnConfirmation>
+            example: |-
+              <upi:ReqTxnConfirmation xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857311"/>
+                  <Txn id="NPC4aa5adfa5d504ac091dc61b438482b10" note="Sending money" custRef="822217098761" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-02-17T13:39:54.944+05:30" type="TxnConfirmation" initiationMode="12" purpose="00" orgTxnId="NPC7215eda0afca42a1aa410a2d0349s566"/>
+                  <TxnConfirmation note="UPI" orgStatus="SUCCESS" orgErrCode="00" type="PAY" actn="1234567890">
+                      <Ref type="PAYEE" seqNum="1234" addr="sri@mypsp2" regName="RamKumar" settAmount="20.00" orgAmount="20.00" settCurrency="INR" acNum="005010000000" approvalNum="123456" respCode="0000" IFSC="IFSC1234567" code="0000" accType="SAVINGS" reversalRespCode="1234"/>
+                  </TxnConfirmation>
+              </upi:ReqTxnConfirmation>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqValAdd/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqValAdd
+      operationId: ReqValAdd
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqValAdd xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857311"/>
+                    <Txn id="NPCf6879e55695f4c13bdf7532e65d20eb9" note="ReqValAdd" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-09-17T14:48:10.719+05:30" type="ValAdd"/>
+                    <Payer addr="918143308193@axis" name="durga" seqNum="1" type="PERSON" code="0000">
+                        <Info>
+                            <Identity id="asdasdass" type="PAN" verifiedName="Shyam"/>
+                            <Rating VerifiedAddress="TRUE"/>
+                        </Info>
+                        <Device>
+                            <Tag name="MOBILE" value="918143308193"/>
+                            <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                            <Tag name="LOCATION" value="INDIA"/>
+                            <Tag name="ID" value="868210034695367"/>
+                            <Tag name="OS" value="Android7.1.2"/>
+                            <Tag name="IP" value="10.186.153.241"/>
+                            <Tag name="APP" value="com.upi.axispay"/>
+                            <Tag name="TYPE" value="USDC"/>
+                            <Tag name="CAPABILITY" value="011001"/>
+                            <Tag name="TELECOM" value="AIRTEL"/>
+                        </Device>
+                    </Payer>
+                    <Payee addr="shiva@mypsp2" seqNum="1"/>
+                </upi:ReqValAdd>
+            example: |-
+              <upi:ReqValAdd xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:54.944+05:30" orgId="112233" msgId="NPCd1f1b7de026e406f91cea11a85857311"/>
+                  <Txn id="NPCf6879e55695f4c13bdf7532e65d20eb9" note="ReqValAdd" refId="NPC1f1b7de026e406f91ceaa85851573340" refUrl="https://axisbank.com/" ts="2018-09-17T14:48:10.719+05:30" type="ValAdd"/>
+                  <Payer addr="918143308193@axis" name="durga" seqNum="1" type="PERSON" code="0000">
+                      <Info>
+                          <Identity id="asdasdass" type="PAN" verifiedName="Shyam"/>
+                          <Rating VerifiedAddress="TRUE"/>
+                      </Info>
+                      <Device>
+                          <Tag name="MOBILE" value="918143308193"/>
+                          <Tag name="GEOCODE" value="19.0911,72.9208"/>
+                          <Tag name="LOCATION" value="INDIA"/>
+                          <Tag name="ID" value="868210034695367"/>
+                          <Tag name="OS" value="Android7.1.2"/>
+                          <Tag name="IP" value="10.186.153.241"/>
+                          <Tag name="APP" value="com.upi.axispay"/>
+                          <Tag name="TYPE" value="USDC"/>
+                          <Tag name="CAPABILITY" value="011001"/>
+                          <Tag name="TELECOM" value="AIRTEL"/>
+                      </Device>
+                  </Payer>
+                  <Payee addr="shiva@mypsp2" seqNum="1"/>
+              </upi:ReqValAdd>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqMandate/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqMandate
+      operationId: ReqMandate
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqMandate xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573878"/>
+                    <Meta>
+                        <Tag name="PAYREQSTART" value="2018-02-17T13:39:56.040+05:30"/>
+                        <Tag name="PAYREQEND" value="2018-02-17T13:39:56.040+05:30"/>
+                    </Meta>
+                    <Txn id="NPC1f1b7de026e406f9123aa85df1579985" note="Mandate" custRef="722217098761" refId="XYA5447D86914C14AC1B0A4C4A036B387B3" purpose="00" refUrl="http://axis.com/upi" ts="2018-02-17T13:39:56.040+05:30" initiationMode="00" type="CREATE" refCategory="00" initiatedBy="PAYER">
+                        <Rules>
+                            <Rule name="EXPIREAFTER" value="10"/>
+                        </Rules>
+                    </Txn>
+                    <Mandate name="Mandate" txnId="NPC1f1b7de026e406f9123aa85df1579985" ts="2018-02-17T13:39:56.040+05:30" type="CREATE" umn="75979u79hyihighi8479579567967967@mypsp" shareToPayee="Y" revokeable="Y" blockFund="Y">
+                        <Amount value="1000.00" rule="EXACT"/>
+                        <Recurrence pattern="ONETIME">
+                        </Recurrence>
+                    </Mandate>
+                    <Payer addr="sri@axis" name="sri" seqNum="1" type="ENTITY" code="0000">
+                        <Info>
+                            <Identity id="058010100083492" type="ACCOUNT" verifiedName="Ram"/>
+                            <Rating VerifiedAddress="TRUE"/>
+                        </Info>
+                        <Device>
+                            <Tag name="MOBILE" value="918149033167"/>
+                            <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                            <Tag name="LOCATION" value="pune"/>
+                            <Tag name="IP" value="192.68.0.12"/>
+                            <Tag name="TYPE" value="MOB"/>
+                            <Tag name="ID" value="3356"/>
+                            <Tag name="OS" value="ios"/>
+                            <Tag name="APP" value="10000629091"/>
+                            <Tag name="CAPABILITY" value="1234556789"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="IFSC" value="AABF0001122"/>
+                            <Detail name="ACTYPE" value="CURRENT"/>
+                            <Detail name="ACNUM" value="0101222101223"/>
+                        </Ac>
+                        <Creds>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data code="NPCI" ki="20150822">
+                                    2.0|OmTUd6Fb1zEHRjQJ0QD60ZxdwKHH0WrwUu+x5KrE2RhdF2u6Bzzt5Lx7tHMcsB+TMn9s3UOWxWulnduruRWGG5ihhgOjfCKOdAH42Ro5YnGo36yv3xvauIXpG0ZnrnjDoYWx7HcsHfxvsmlMDUEQ1UiTKlsb+Ze66IIr3AttZKfRTPuSUKqNjrCuSeEcv8X9xO5Wk2jUKO0SxD9/BMUv4QRw8uu9lZujMtc8oV/h1woCoc1F/x26pwZSsXEC+lUnAEnOzZF3ttUpT/JsiNTKs+G9Ta1mULQJcbZCQUWdx1xazaN2XuRpc8zeio51AsB4SQXBzRVa0tZgVfA3flajFQ==
+                                </Data>
+                            </Cred>
+                        </Creds>
+                    </Payer>
+                    <Payees>
+                        <Payee addr="MAMTRE18.failed@testvpa" name="NEERAJSHARMA" seqNum="1" type="PERSON" code="0000">
+                        </Payee>
+                    </Payees>
+                </upi:ReqMandate>
+            example: |-
+              <upi:ReqMandate xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:56.040+05:30" orgId="112233" msgId="NPC1f1b7de026e406f91ceaa85851573878"/>
+                  <Meta>
+                      <Tag name="PAYREQSTART" value="2018-02-17T13:39:56.040+05:30"/>
+                      <Tag name="PAYREQEND" value="2018-02-17T13:39:56.040+05:30"/>
+                  </Meta>
+                  <Txn id="NPC1f1b7de026e406f9123aa85df1579985" note="Mandate" custRef="722217098761" refId="XYA5447D86914C14AC1B0A4C4A036B387B3" purpose="00" refUrl="http://axis.com/upi" ts="2018-02-17T13:39:56.040+05:30" initiationMode="00" type="CREATE" refCategory="00" initiatedBy="PAYER">
+                      <Rules>
+                          <Rule name="EXPIREAFTER" value="10"/>
+                      </Rules>
+                  </Txn>
+                  <Mandate name="Mandate" txnId="NPC1f1b7de026e406f9123aa85df1579985" ts="2018-02-17T13:39:56.040+05:30" type="CREATE" umn="75979u79hyihighi8479579567967967@mypsp" shareToPayee="Y" revokeable="Y" blockFund="Y">
+                      <Amount value="1000.00" rule="EXACT"/>
+                      <Recurrence pattern="ONETIME">
+                      </Recurrence>
+                  </Mandate>
+                  <Payer addr="sri@axis" name="sri" seqNum="1" type="ENTITY" code="0000">
+                      <Info>
+                          <Identity id="058010100083492" type="ACCOUNT" verifiedName="Ram"/>
+                          <Rating VerifiedAddress="TRUE"/>
+                      </Info>
+                      <Device>
+                          <Tag name="MOBILE" value="919999999993"/>
+                          <Tag name="TYPE" value="MOB"/>
+                          <Tag name="ID" value="61e402e8fa3e3450ca6e"/>
+                          <Tag name="OS" value="ios 2.0"/>
+                          <Tag name="APP" value="in.org.npci.bhim"/>
+                          <Tag name="LOCATION" value="3.993U49234902"/>
+                          <Tag name="GEOCODE" value="37.7934,12.4134"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="IFSC" value="AABF0001122"/>
+                          <Detail name="ACTYPE" value="CURRENT"/>
+                          <Detail name="ACNUM" value="0101222101223"/>
+                      </Ac>
+                      <Creds>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data code="NPCI" ki="20150822">
+                                  2.0|OmTUd6Fb1zEHRjQJ0QD60ZxdwKHH0WrwUu+x5KrE2RhdF2u6Bzzt5Lx7tHMcsB+TMn9s3UOWxWulnduruRWGG5ihhgOjfCKOdAH42Ro5YnGo36yv3xvauIXpG0ZnrnjDoYWx7HcsHfxvsmlMDUEQ1UiTKlsb+Ze66IIr3AttZKfRTPuSUKqNjrCuSeEcv8X9xO5Wk2jUKO0SxD9/BMUv4QRw8uu9lZujMtc8oV/h1woCoc1F/x26pwZSsXEC+lUnAEnOzZF3ttUpT/JsiNTKs+G9Ta1mULQJcbZCQUWdx1xazaN2XuRpc8zeio51AsB4SQXBzRVa0tZgVfA3flajFQ==
+                              </Data>
+                          </Cred>
+                      </Creds>
+                  </Payer>
+                  <Payees>
+                      <Payee addr="MAMTRE18.failed@testvpa" name="NEERAJSHARMA" seqNum="1" type="PERSON" code="0000">
+                      </Payee>
+                  </Payees>
+              </upi:ReqMandate>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+  '/ReqPay/{version}/urn:txnid:{transaction}':
+    post:
+      tags:
+        - APIs
+      summary: ReqPay
+      operationId: ReqPay
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+          example: '2.0'
+          description: Version
+        - in: path
+          name: transaction
+          required: true
+          schema:
+            type: string
+          description: Transaction Id
+      requestBody:
+        description: ''
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |-
+                <upi:ReqPay xmlns:upi="http://npci.org/upi/schema/">
+                    <Head ver="2.0" ts="2018-02-17T13:39:54.939+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349f263"/>
+                    <Txn id="NPC26a34180ade64ef09327837823086eda" note="testpay" custRef="804813039157" refId="804813039157" refUrl="http://axis.com/upi" ts="2018-02-17T13:39:54.944+05:30" type="PAY" initiationMode="12" purpose="00"/>
+                    <Payer addr="ram@axis" name="ram" seqNum="1" type="ENTITY" code="0000">
+                        <Info>
+                            <Identity id="058010100083492" type="ACCOUNT" verifiedName="Ram"/>
+                            <Rating VerifiedAddress="TRUE"/>
+                        </Info>
+                        <Device>
+                            <Tag name="MOBILE" value="918149033167"/>
+                            <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                            <Tag name="LOCATION" value="pune"/>
+                            <Tag name="IP" value="192.68.0.12"/>
+                            <Tag name="TYPE" value="MOB"/>
+                            <Tag name="ID" value="3356"/>
+                            <Tag name="OS" value="ios"/>
+                            <Tag name="APP" value="10000629091"/>
+                            <Tag name="CAPABILITY" value="1234556789"/>
+                        </Device>
+                        <Ac addrType="ACCOUNT">
+                            <Detail name="ACTYPE" value="SAVINGS"/>
+                            <Detail name="ACNUM" value="050000"/>
+                            <Detail name="IFSC" value="IFSC3567655"/>
+                        </Ac>
+                        <Creds>
+                            <Cred type="PIN" subType="MPIN">
+                                <Data code="NPCI" ki="20150822">
+                                    base-64 encoded/encrypted authentication data
+                                </Data>
+                            </Cred>
+                        </Creds>
+                        <Amount value="05.00" curr="INR">
+                            <Split name="PURCHASE" value="1"/>
+                        </Amount>
+                    </Payer>
+                    <Payees>
+                        <Payee addr="laxmi@boi" name="AS" seqNum="1" type="PERSON" code="4000">
+                            <Device>
+                                <Tag name="MOBILE" value="918149033167"/>
+                                <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                                <Tag name="LOCATION" value="pune"/>
+                                <Tag name="IP" value="192.68.0.12"/>
+                                <Tag name="TYPE" value="MOB"/>
+                                <Tag name="ID" value="3356"/>
+                                <Tag name="OS" value="ios"/>
+                                <Tag name="APP" value="10000629091"/>
+                                <Tag name="CAPABILITY" value="1234556789"/>
+                            </Device>
+                            <Amount value="05.00" curr="INR">
+                                <Split name="PURCHASE" value="1"/>
+                            </Amount>
+                        </Payee>
+                    </Payees>
+                </upi:ReqPay>
+            example: |-
+              <upi:ReqPay xmlns:upi="http://npci.org/upi/schema/">
+                  <Head ver="2.0" ts="2018-02-17T13:39:54.939+05:30" orgId="112233" msgId="NPC7215eda0afca42a1aa410a2d0349f263"/>
+                  <Txn id="NPC26a34180ade64ef09327837823086eda" note="testpay" custRef="804813039157" refId="804813039157" refUrl="http://axis.com/upi" ts="2018-02-17T13:39:54.944+05:30" type="PAY" initiationMode="12" purpose="00"/>
+                  <Payer addr="ram@axis" name="ram" seqNum="1" type="ENTITY" code="0000">
+                      <Info>
+                          <Identity id="058010100083492" type="ACCOUNT" verifiedName="Ram"/>
+                          <Rating VerifiedAddress="TRUE"/>
+                      </Info>
+                      <Device>
+                          <Tag name="MOBILE" value="918149033167"/>
+                          <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                          <Tag name="LOCATION" value="pune"/>
+                          <Tag name="IP" value="192.68.0.12"/>
+                          <Tag name="TYPE" value="MOB"/>
+                          <Tag name="ID" value="3356"/>
+                          <Tag name="OS" value="ios"/>
+                          <Tag name="APP" value="10000629091"/>
+                          <Tag name="CAPABILITY" value="1234556789"/>
+                      </Device>
+                      <Ac addrType="ACCOUNT">
+                          <Detail name="ACTYPE" value="SAVINGS"/>
+                          <Detail name="ACNUM" value="050000"/>
+                          <Detail name="IFSC" value="IFSC3567655"/>
+                      </Ac>
+                      <Creds>
+                          <Cred type="PIN" subType="MPIN">
+                              <Data code="NPCI" ki="20150822">
+                                  base-64 encoded/encrypted authentication data
+                              </Data>
+                          </Cred>
+                      </Creds>
+                      <Amount value="05.00" curr="INR">
+                          <Split name="PURCHASE" value="1"/>
+                      </Amount>
+                  </Payer>
+                  <Payees>
+                      <Payee addr="laxmi@boi" name="AS" seqNum="1" type="PERSON" code="4000">
+                          <Device>
+                              <Tag name="MOBILE" value="918149033167"/>
+                              <Tag name="GEOCODE" value="34.7273,74.8278"/>
+                              <Tag name="LOCATION" value="pune"/>
+                              <Tag name="IP" value="192.68.0.12"/>
+                              <Tag name="TYPE" value="MOB"/>
+                              <Tag name="ID" value="3356"/>
+                              <Tag name="OS" value="ios"/>
+                              <Tag name="APP" value="10000629091"/>
+                              <Tag name="CAPABILITY" value="1234556789"/>
+                          </Device>
+                          <Amount value="05.00" curr="INR">
+                              <Split name="PURCHASE" value="1"/>
+                          </Amount>
+                      </Payee>
+                  </Payees>
+              </upi:ReqPay>
+        required: true
+      responses:
+        '200':
+          description: ''
+      deprecated: false
+tags:
+  - name: APIs
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: nfinite-auth

@@ -1,0 +1,553 @@
+AcademicCertificateSchema:
+  type: object
+  properties:
+    language:
+      type: string
+      minLength: 1
+      example: 99
+      xml:
+        attribute: true
+    name:
+      type: string
+      minLength: 1
+      example: Secondary School Certificate
+      xml:
+        attribute: true
+    type:
+      type: string
+      example: SSCER
+      xml:
+        attribute: true
+    number:
+      type: integer
+      minLength: 1
+      example: 1100044
+      xml:
+        attribute: true
+    issuedAt:
+      type: string
+      example: ''
+      xml:
+        attribute: true
+    issueDate:
+      type: string
+      example: ' '
+      xml:
+        attribute: true
+    validFromDate:
+      type: string
+      example: ' '
+      xml:
+        attribute: true
+    status:
+      type: string
+      minLength: 1
+      example: A
+      xml:
+        attribute: true
+    IssuedBy:
+      type: object
+      properties:
+        Organization:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              example: Central Board of Secondary Education
+              xml:
+                attribute: true
+            code:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            tin:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            uid:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            type:
+              type: string
+              minLength: 1
+              example: CG
+              xml:
+                attribute: true
+            Address:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                line1:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                line2:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                house:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                landmark:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                locality:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                vtc:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                district:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                pin:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                state:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                country:
+                  type: string
+                  minLength: 1
+                  example: IN
+                  xml:
+                    attribute: true
+              required:
+                - type
+                - line1
+                - line2
+                - house
+                - landmark
+                - locality
+                - vtc
+                - district
+                - pin
+                - state
+                - country
+          required:
+            - name
+            - code
+            - tin
+            - uid
+            - type
+            - Address
+      required:
+        - Organization
+    IssuedTo:
+      type: object
+      properties:
+        Person:
+          type: object
+          properties:
+            uid:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            title:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            name:
+              type: string
+              minLength: 1
+              example: ANAND KUMAR
+              xml:
+                attribute: true
+            dob:
+              type: string
+              minLength: 1
+              example: 01-10-1988
+              xml:
+                attribute: true
+            swd:
+              type: string
+              minLength: 1
+              example: PRAMOD KUMAR
+              xml:
+                attribute: true
+            swdIndicator:
+              type: string
+              minLength: 1
+              example: S
+              xml:
+                attribute: true
+            motherName:
+              type: string
+              minLength: 1
+              example: SUNITA DEVI
+              xml:
+                attribute: true
+            gender:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            maritalStatus:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            disabilityStatus:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            category:
+              type: string
+              minLength: 1
+              example: SC
+              xml:
+                attribute: true
+            religion:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            phone:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            email:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            Address:
+              type: object
+              properties:
+                type:
+                  type: string
+                  minLength: 1
+                  example: permanent
+                line1:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                line2:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                house:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                landmark:
+                  type: string
+                  example: null
+                  xml:
+                    attribute: true
+                locality:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                vtc:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                district:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                pin:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                state:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                country:
+                  type: string
+                  minLength: 1
+                  example: IN
+                  xml:
+                    attribute: true
+              required:
+                - type
+                - line1
+                - line2
+                - house
+                - landmark
+                - locality
+                - vtc
+                - district
+                - pin
+                - state
+                - country
+            Photo:
+              type: object
+              properties:
+                format:
+                  type: string
+                  xml:
+                    attribute: true
+              required:
+                - format
+          required:
+            - uid
+            - title
+            - name
+            - dob
+            - swd
+            - swdIndicator
+            - motherName
+            - gender
+            - maritalStatus
+            - disabilityStatus
+            - category
+            - religion
+            - phone
+            - email
+            - Address
+            - Photo
+      required:
+        - Person
+    CertificateData:
+      type: object
+      properties:
+        School:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              example: DELHI PUBLIC SCHOOL GURGAON
+              xml:
+                attribute: true
+            code:
+              type: string
+              minLength: 1
+              example: 20020
+              xml:
+                attribute: true
+          required:
+            - name
+            - code
+        Examination:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              example: SENION SCHOOL CERTIFICATE EXAMINATION
+              xml:
+                attribute: true
+            month:
+              type: string
+              minLength: 1
+              example: MARCH
+              xml:
+                attribute: true
+            year:
+              type: string
+              minLength: 1
+              example: 2019
+              xml:
+                attribute: true
+          required:
+            - name
+            - month
+            - year
+        Performance:
+          type: object
+          properties:
+            result:
+              type: string
+              minLength: 1
+              example: PASS
+              xml:
+                attribute: true
+            marksTotal:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            marksMax:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            percentage:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            cgpa:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            cgpaMax:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            grade:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            resultDate:
+              type: string
+              minLength: 1
+              example: 02-05-2019
+              xml:
+                attribute: true
+            updateDate:
+              type: string
+              example: ''
+              xml:
+                attribute: true
+            Subjects:
+              $ref: '#SubjectsSchema'
+              
+          required:
+            - result
+            - marksTotal
+            - marksMax
+            - percentage
+            - cgpa
+            - cgpaMax
+            - grade
+            - resultDate
+            - updateDate
+            - Subjects
+      required:
+        - School
+        - Examination
+        - Performance
+  required:
+    - language
+    - name
+    - type
+    - number
+    - issuedAt
+    - issueDate
+    - validFromDate
+    - status
+    - IssuedBy
+    - IssuedTo
+    - CertificateData
+  xml:
+    name: Certificate
+SubjectSchema:
+  type: object
+  xml: 
+    name: Subject
+  required:
+    - name
+    - code
+    - marksTheory
+    - marksMaxTheory
+    - marksPractical
+    - marksMaxPractical
+    - marksTotal
+    - marksMax
+    - gp
+    - gpMax
+    - grade
+  properties:
+    name:
+      type: string
+      minLength: 1
+      example: ECONOMICS
+      xml:
+        attribute: true
+    code:
+      type: string
+      minLength: 1
+      example: 030
+      xml:
+        attribute: true
+    marksTheory:
+      type: integer
+      minLength: 1
+      example: 70
+      xml:
+        attribute: true
+    marksMaxTheory:
+      type: integer
+      example: ''
+      xml:
+        attribute: true
+    marksPractical:
+      type: integer
+      example: 17
+      xml:
+        attribute: true
+    marksMaxPractical:
+      type: integer
+      example: ''
+      xml:
+        attribute: true
+    marksTotal:
+      type: integer
+      minLength: 1
+      example: 87
+      xml:
+        attribute: true
+    marksMax:
+      type: integer
+      example: ''
+      xml:
+        attribute: true
+    gp:
+      type: string
+      example: ''
+      xml:
+        attribute: true
+    gpMax:
+      type: string
+      example: ''
+      xml:
+        attribute: true
+    grade:
+      type: string
+      minLength: 1
+      example: A2
+      xml:
+        attribute: true
+        
+SubjectsSchema:
+  type: array
+  items:
+    $ref: '#SubjectSchema'
+  xml:
+    name: Subjects
+    wrapped: true

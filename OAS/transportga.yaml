@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:  
+  title: Transport Department, Goa
+  description: Driving License (DL) and Vehicle Registration Certificate (RC) of the State, as available on Parivahan Sewa (http://parivahan.co.in/) of Ministry of Road Transport and Highways, are available on DigiLocker. Citizens can pull these documents into their DigiLocker accounts.
+  termsOfService: https://apisetu.gov.in/terms.php
+  version: 3.0.0
+servers:
+  - url: 'https://apisetu.gov.in/certificate/v3/transportga'
+paths:
+  /drvlc:
+    post:
+      tags:
+        - APIs
+      summary: Driving License
+      description: API to verify Driving License.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: drvlc
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - dlno
+                    - UID
+                    - FullName
+                    - DOB
+  
+                  properties:
+                    dlno:
+                      type: string
+                      description: DL No
+                      example: "Ex. JH02/2009/236543"
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+                    DOB:
+                      type: string
+                      description: Date of birth in DD-MM-YYYY format
+                      example: "31-12-1980"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/DrivingLicenseSchema'
+  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+  /rvcer:
+    post:
+      tags:
+        - APIs
+      summary: Registration of Vehicles
+      description: API to verify Registration of Vehicles.
+      security:
+        - clientId: []
+          apiKey: []
+      operationId: rvcer
+      requestBody:
+        description: Request format
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txnId
+                - format
+              properties:
+                txnId:
+                  type: string
+                  format: uuid
+                  description: A unique transaction id for this request in UUID format. It is used for tracking the request.
+                  example: "f7f1469c-29b0-4325-9dfc-c567200a70f7"
+                format:
+                  type: string
+                  description: The format of the certificate in response.
+                  enum:
+                    - xml
+                    - pdf
+                certificateParameters:
+                  type: object
+                  required:
+                    - reg_no
+                    - chasis_no
+                    - UID
+                    - FullName
+  
+                  properties:
+                    reg_no:
+                      type: string
+                      description: Registration No
+                      example: "DL01AA0101. As per your Vehicle Registration Certificate."
+                    chasis_no:
+                      type: string
+                      description: Chassis No
+                      example: "MBLKC12EFBGJ08420. As per your Vehicle Registration Certificate."
+                    UID:
+                      type: string
+                      description: Aadhaar number
+                      example: "123412341234"
+                    FullName:
+                      type: string
+                      description: Full name
+                      example: "Sunil Kumar"
+  
+                consentArtifact:
+                  $ref: '#/components/schemas/ConsentArtifactSchema'
+      responses:
+        '200':
+          description: The certificate data in response body in PDF, XML or JSON format as requested in format parameter.
+          content:
+            application/xml:
+              schema:  
+                $ref: '#/components/schemas/VehicleRegistrationSchema'
+  
+            application/pdf:
+              example: Response body contains contents of the certificate in PDF format.
+        '400':
+          $ref: '#/components/responses/400Error'
+        '401':
+          $ref: '#/components/responses/401Error'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+        '502':
+          $ref: '#/components/responses/502Error'
+        '503':
+          $ref: '#/components/responses/503Error'
+        '504':
+          $ref: '#/components/responses/504Error'
+components:
+  schemas:
+    ConsentArtifactSchema:
+      $ref: './common/ConsentArtifactSchema.yaml#/ConsentArtifactSchema'
+    AcademicCertificateSchema:
+      $ref: './common/AcademicCertificateSchema.yaml#/AcademicCertificateSchema'
+  
+    DrivingLicenseSchema:
+      $ref: './common/DrivingLicenseSchema.yaml#/DrivingLicenseSchema'  
+    VehicleRegistrationSchema:
+      $ref: './common/VehicleRegistrationSchema.yaml#/VehicleRegistrationSchema'      
+  responses:
+    400Error:
+      $ref: './common/ErrorResponse.yaml#/400Error'
+    401Error:
+      $ref: './common/ErrorResponse.yaml#/401Error'
+    404Error:
+      $ref: './common/ErrorResponse.yaml#/404Error'
+    500Error:
+      $ref: './common/ErrorResponse.yaml#/500Error'
+    502Error:
+      $ref: './common/ErrorResponse.yaml#/502Error'
+    503Error:
+      $ref: './common/ErrorResponse.yaml#/503Error'
+    504Error:
+      $ref: './common/ErrorResponse.yaml#/504Error'
+  securitySchemes:
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-APISETU-APIKEY

@@ -1,0 +1,2485 @@
+openapi: 3.0.2
+info:
+  title: Co-WIN Protected APIs
+  description: Co-WIN Protected APIs allow any third-party application to access certain restricted information, in order to access, the service providers must agree to the extant “Terms of Service”. All third-party applications that wish to integrate with Co-WIN using Protected APIs should undertake a prescribed integration and testing process with the Co-WIN APIs. For this purpose, the authenticated ASP system administrators will be provided with access to a sandbox environment with staging-level API keys to test integration with the Co-WIN APIs, that the ASP wishes to use in their operations. Only after a successful testing cycle is completed and demonstrated to a competent authority, the ASP will be provided with production-level API keys for their Application. You can test these APIs on the Sandbox Server using API Key -  <code>3sjOr2rmM52GzhpMHjDEE1kpQeRxwFDr4YcBEimi</code> For production access, please register at <a href="https://sandbox.ndhm.gov.in/cowin/" target="_blank">ASP Registration</a>. Please refer to <a href="https://apisetu.gov.in/document-central/cowin/Cowin%20API%20Guidelines.html" target="_blank">CoWIN API Guidelines</a> for more details.[<i>Updated on 30th September  2021</i>]
+
+  termsOfService: https://apisetu.gov.in/document-central/cowin/Terms%20of%20Service.html
+  contact:
+    name: Ministry of Health and Family Welfare
+    url: https://www.cowin.gov.in
+  version: 2.3.1
+servers:
+  - url: https://cdndemo-api.co-vin.in/api
+    description: Sandbox Server
+  - url: https://cdn-api.co-vin.in/api
+    description: Production Server
+
+paths:
+  /v2/auth/generateOTP:
+    post:
+      tags:
+        - Authentication APIs
+      summary: Authenticate a beneficiary by Mobile/OTP
+      description: Initiate beneficiary authentication using mobile and OTP
+      operationId: generateOTP
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile:
+                  type: string
+                  minItems: 1  
+                  example: "9876543210"
+            
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txnId:
+                    type: string
+                    format: uuid
+                    minItems: 1
+                    example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated access!
+        '500':
+          description: Internal Server Error
+
+  /v2/auth/confirmOTP:
+    post:
+      tags:
+        - Authentication APIs
+      summary: Confirm mobile OTP for authentication         
+      description: API to confirm the OTP for authentication.
+      operationId: confirmOTP
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp:
+                  type: string
+                  minLength: 64
+                  example: "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+                  description: SHA256 of the OTP
+                txnId:
+                  type: string
+                  format: uuid
+                  example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  isNewAccount:
+                    type: string
+                    description: Indicates whether the mobile number is already registered.
+                    enum:
+                      - "Y"
+                      - "N"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+  /v2/registration/beneficiary/idTypes:
+    get:
+      tags:
+        - Metadata APIs
+      summary: Get list of beneficiary Id types 
+      description: API to get list of beneficiary Ids that can be used as proof of identity for registration.
+      operationId: idTypes
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          schema:
+            type: string
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  types:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: object
+                      required:
+                        - type
+                        - id
+                      properties:
+                        type:
+                          type: string
+                          minLength: 1
+                          example: Driving License
+                        type_l:
+                          type: string
+                          minLength: 1
+                          example: ""
+                          description: Type in preferred language as specified in Accept-Language header parameter.
+                        id:
+                          type: number
+                          example: 2
+                  ttl:
+                    type: number
+                    description: Time in hours to cache the data. Client applications can use this data for this many number of hours before calling this API again.
+            examples: {}
+        '401':
+          description: Unauthenticated access!
+        '500':
+          description: Internal Server Error       
+        
+  /v2/registration/beneficiary/genders:
+    get:
+      tags:
+        - Metadata APIs
+      summary: Get gender 
+      description: API to get all gender details. 
+      
+      operationId: genders
+      parameters:
+        - in: header
+          name: Accept-Language
+          example: hi_IN
+          required: false
+          schema:
+            type: string
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  genders:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: object
+                      properties:
+                        gender:
+                          type: string
+                          minLength: 1
+                          example: Male
+                        gender_l:
+                          type: string
+                          minLength: 1
+                          example: ""
+                          description: Gender in preferred language as specified in Accept-Language header parameter. 
+                        id:
+                          type: number
+                          example: 1
+                      required:
+                        - gender
+                        - id
+                  ttl:
+                    type: number
+                    description: Time in hours to cache the data. Client applications can use this data for this many number of hours before calling this API again.                        
+            examples: {} 
+            
+        '401':
+          description: Unauthenticated access!
+        '500':
+          description: Internal Server Error     
+            
+  /v2/admin/location/states:
+    get:
+      tags:
+        - Metadata APIs
+      summary: Get states
+      description: API to get all the states in India.
+      
+      operationId: states
+      parameters:
+        - in: header
+          name: Accept-Language
+          example: hi_IN
+          required: false
+          schema:
+            type: string
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  states:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: object
+                      properties:
+                        state_id:
+                          type: number
+                          example: 58
+                        state_name:
+                          type: string
+                          minLength: 1
+                          example: Andaman and Nicobar Islands  
+                        state_name_l:
+                          type: string
+                          minLength: 1
+                          example: ""
+                          description: State name in preferred language as specified in Accept-Language header parameter. 
+                      required:
+                        - state_id
+                        - state_name
+                  ttl:
+                    type: number
+                    description: Time in hours to cache the data. Client applications can use this data for this many number of hours before calling this API again.                  
+            examples: {}    
+            
+        '401':
+          description: Unauthenticated access!
+        '500':
+          description: Internal Server Error     
+            
+  /v2/admin/location/districts/{state_id}:
+    get:
+      tags:
+        - Metadata APIs
+      summary: Get list of districts
+      description: API to get all the districts.
+      operationId: districts
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          schema:
+            type: string
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+        - name: state_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 16
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  districts:
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: object
+                      properties:
+                        state_id:
+                          type: number
+                          example: 16
+                        district_id:
+                          type: number
+                          example: 391
+                        district_name:
+                          type: string
+                          minLength: 1
+                          example: Ahmednagar  
+                        district_name_l:
+                          type: string
+                          minLength: 1
+                          example: ""
+                          description: District name in preferred language as specified in Accept-Language header parameter. 
+                      required:
+                        - district_id
+                        - district_name
+                  ttl:
+                    type: number
+                    description: Time in hours to cache the data. Client applications can use this data for this many number of hours before calling this API again.
+            examples: {}           
+            
+        '401':
+          description: Unauthenticated access!
+        '500':
+          description: Internal Server Error  
+
+  /v2/registration/beneficiary/new:
+    post:
+      tags:
+        - Beneficiary Registration APIs
+      summary: Beneficiary Registration API
+      description: API for beneficiary registration from partner applications. This API returns a beneficiary reference id as a unique identifier of the registered user.
+      
+      operationId: Beneficiary Registration for Partner Applications
+      security:
+      - BearerAuth: []
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  example: Apparao
+                birth_year:
+                  type: string
+                  minLength: 1
+                  description: Year of birth in YYYY format
+                  example: "1980"
+                gender_id:
+                  type: number
+                  minLength: 1
+                  example: 1
+                photo_id_type:
+                  type: number
+                  example: 1
+                photo_id_number:
+                  type: string
+                  example: "9999"
+                  minLength: 4
+                  description: Last 4 digits of photo id number
+                comorbidity_ind:
+                  description: Comorbidity indicator. Default value is N.
+                  type: string
+                  example: Y
+                  enum:
+                    - Y
+                    - N
+                consent_version:
+                  type: string
+                  example: "1"
+              required:
+                - name
+                - birth_year
+                - gender
+                - mobile_number
+                - photo_id_type
+                - photo_id_number
+                - consent_version  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    maxLength: 14
+                    example: "1234567890123"
+                    description: A unique id for the beneficiary
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: Already registered or cannot register more than 4 individuals with one mobile number.
+        '500':
+          description: Internal Server Error
+
+  /v2/registration/beneficiary/delete:
+    post:
+      tags:
+        - Beneficiary Registration APIs
+      summary: Delete a beneficiary
+      description: API to delete a beneficiary by benefiary reference id.
+      operationId: deleteBeneficiary
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                beneficiary_reference_id:
+                  type: string
+                  example: "1234567890123"
+      responses:
+        '204':
+          description: The beneficiary was deleted successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: Individual cannot be deleted if he/she has an active appointment or is already vaccinated.
+        '500':
+          description: Internal Server Error  
+                    
+  /v2/appointment/centers/findByLatLong:
+    get:
+      tags:
+        - Metadata APIs
+      summary: Get vaccination centers by latitude and longitude
+      description: API to get vaccination centers by latitude and longitude.
+      operationId: findByLatLong
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          schema:
+            type: string
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+            minimum: 8.06
+            maximum: 37.10
+            example: 28.70
+        - name: long
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+            minimum: 68.11
+            maximum: 97.41
+            example: 77.10
+      security:
+      - BearerAuth: [] 
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  centers:
+                    $ref: '#/components/schemas/CentersSchema'
+                  ttl:
+                    type: number
+                    description: Time in hours to cache the data. Client applications can use this data for this many number of hours before calling this API again.
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+  /v2/appointment/sessions/findByPin:
+    get:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Get vaccination sessions by PIN         
+      description: API to get planned vaccination sessions on a specific date in a given pin. An optional parameter <i>vaccine</i> can also used to get the sessions for a specific vaccine. This paramters is used to to get the sessions for dose 2 appointment.
+      operationId: findByPin
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+          schema:
+            type: string
+        - name: pincode
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            example: "110001"
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "31-03-2021"
+        - name: vaccine
+          in: query
+          description: This is an optional parameter to get the sessions for a specific vaccine.
+          schema:
+            type: string
+            enum:
+              - COVISHIELD
+              - COVAXIN
+            example: "COVISHIELD"
+      security:
+      - BearerAuth: []      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  sessions:
+                    $ref: '#/components/schemas/SessionsSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                     
+
+  /v2/appointment/sessions/findByDistrict:
+    get:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Get vaccination sessions by district         
+      description: API to get planned vaccination sessions on a specific date in a given district. An optional parameter <i>vaccine</i> can also used to get the sessions for a specific vaccine. This paramters is used to to get the sessions for dose 2 appointment.
+      operationId: findByDistrict
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+          schema:
+            type: string
+        - name: district_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            example: "512"
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "31-03-2021"
+        - name: vaccine
+          in: query
+          description: This is an optional parameter to get the sessions for a specific vaccine.
+          schema:
+            type: string
+            enum:
+              - COVISHIELD
+              - COVAXIN
+            example: "COVISHIELD"
+      security:
+      - BearerAuth: []      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  sessions:
+                    $ref: '#/components/schemas/SessionsSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                     
+
+  /v2/appointment/sessions/calendarByPin:
+    get:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Get vaccination sessions by PIN for 7 days
+      description: API to get planned vaccination sessions for 7 days from a specific date in a given pin. An optional parameter <i>vaccine</i> can also used to get the sessions for a specific vaccine. This paramters is used to to get the sessions for dose 2 appointment.
+      operationId: calendarByPin
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+          schema:
+            type: string
+        - name: pincode
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            example: "110001"
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "31-03-2021"
+        - name: vaccine
+          in: query
+          description: This is an optional parameter to get the sessions for a specific vaccine.
+          schema:
+            type: string
+            enum:
+              - COVISHIELD
+              - COVAXIN
+            example: "COVISHIELD"
+      security:
+      - BearerAuth: []      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  centers:
+                    $ref: '#/components/schemas/SessionCalendarEntriesSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                     
+
+  /v2/appointment/sessions/calendarByDistrict:
+    get:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Get vaccination sessions by district for 7 days
+      description: API to get planned vaccination sessions for 7 days from a specific date in a given district. An optional parameter <i>vaccine</i> can also used to get the sessions for a specific vaccine. This paramters is used to to get the sessions for dose 2 appointment.
+      operationId: calendarByDistrict
+      parameters:
+        - in: header
+          name: Accept-Language
+          required: false
+          example: hi_IN
+          description: The locate code of the preferred language such as en_US. The text data will be returned in the preferred language along with default English text.
+          schema:
+            type: string
+        - name: district_id
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+            example: "512"
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            example: "31-03-2021"
+        - name: vaccine
+          in: query
+          description: This is an optional parameter to get the sessions for a specific vaccine.
+          schema:
+            type: string
+            enum:
+              - COVISHIELD
+              - COVAXIN
+            example: "COVISHIELD"
+      security:
+      - BearerAuth: []      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  centers:
+                    $ref: '#/components/schemas/SessionCalendarEntriesSchema'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+  /v2/appointment/beneficiaries:
+    get:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Get the list of benefiaries linked to the logged in/authenticated user’s mobile number
+      description: API to get the list of benefiaries linked to the logged in/authenticated user’s mobile number. This list can be useful to schedule one appointment for an entire family. 
+      operationId: beneficiaries
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  beneficiaries:
+                    $ref: '#/components/schemas/BeneficiariesSchema'
+                required:
+                  - beneficiaries
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error                               
+
+  /v2/appointment/schedule:
+    post:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Create an appointment for vaccination         
+      description: API to schedule an appointment for vaccination. An appointment can be scheduled for a selected center, on a selected date and for a selected session. An appointment can be scheduled for multiple beneficiaries provided their registered mobile number is same as the registered mobile number of the logged in or authenticated beneficiary. 
+      operationId: schedule
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dose: 
+                    type: number
+                    minLength: 1
+                    example: 1 
+                  session_id: 
+                    type: string
+                    format: uuid
+                  slot: 
+                    type: string
+                    example: 'FORENOON'
+                  beneficiaries:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    description: Array of beneficiary reference ids
+                    example: ["1234567890123", "9876543210987"]
+                    items:
+                      type: string
+                      maxLength: 14
+                      description: Beneficiary reference ids
+                required:
+                  - session_id
+                  - slot
+                  - beneficiaries
+      responses:
+        '200':
+          description: Appointment scheduled successfully.
+          content:
+            application/json:
+              schema:
+                properties:
+                  appointment_id:
+                    type: string
+                    format: uuid
+                required:
+                  - appointment_id
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: This vaccination center is completely booked for the selected date.
+        '500':
+          description: Internal Server Error
+
+  /v2/appointment/reschedule:
+    post:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Reschedule vaccination appointment
+      description: API to reschedule an appointment for vaccination. 
+      operationId: rescheduleAppointment
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appointment_id:
+                    type: string
+                    format: uuid
+                  session_id: 
+                    type: string
+                    format: uuid
+                  slot: 
+                    type: string
+                    example: 'FORENOON'
+                required:
+                  - appointment_id
+                  - session_id
+                  - slot
+      responses:
+        '204':
+          description: Appointment scheduled successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: This vaccination center is completely booked for the selected date.
+        '500':
+          description: Internal Server Error                            
+
+  /v2/appointment/cancel:
+    post:
+      tags:
+        - Vaccination Appointment APIs
+      summary: Cancel vaccination appointment for individuals
+      description: API to remove an individual from an appointment. 
+      operationId: cancelAppointment
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appointment_id:
+                    type: string
+                    format: uuid
+                  beneficiariesToCancel:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    description: Array of beneficiary reference ids whose appointment needs to be canceled. If an empty array is passed, the appointment will be canceled for all individuals.
+                    example: ["1234567890123", "9876543210987"]
+                    items:
+                      type: string
+                      minLength: 1
+                      description: Beneficiary reference ids
+                required:
+                  - appointment_id
+                  - beneficiaries
+      responses:
+        '204':
+          description: Appointment cancelled successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '409':
+          description: This appointment cannot be cancelled.
+        '500':
+          description: Internal Server Error
+
+  /v2/registration/certificate/download:
+    get:
+      tags:
+        - Certificate APIs
+      summary: Download vaccination certificate in PDF format by beneficiary reference id
+      description: API to download vaccination certificate in PDF format by beneficiary reference id.
+      operationId: download
+      parameters:
+        - name: beneficiary_reference_id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 1234567890123
+      security:
+      - BearerAuth: [] 
+      
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                example: Binary content of PDF file
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+
+  /v2/appointment/appointmentslip/download:
+    get:
+      tags:
+        - Certificate APIs
+      summary: Download vaccination appointment slip in PDF format by  appointment id.
+      description: API to download vaccination appointment slip in PDF format by appointment id.
+      operationId: downloadAppointmentSlip
+      parameters:
+        - name: appointment_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "5yq85f64-5717-5426-a7be-3j963f34awr4"
+      security:
+      - BearerAuth: [] 
+      
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+                example: Binary content of PDF file
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    example: USRRES0001
+                  error:
+                    type: string
+                    example: Input parameter missing
+        '401':
+          description: Unauthenticated Access
+        '500':
+          description: Internal Server Error
+  
+  /v2/grievance/beneficiary/demographicCorrection:
+    post:
+      tags:
+        - Grievance APIs
+      summary: Demographic Correction in certificate  
+      description: API to Demographic Correction in certificate [name, gender, year of birth, photo id number]. at a time accept only 2 fields from name, gender, year of birth, photo id number 
+      operationId: Demographic Correction
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 57923357200570
+                  name: 
+                    type: string
+                    example: Chandaan Ghosh
+                  birth_year: 
+                    type: number
+                    example: 1990
+                  gender_id: 
+                    type: number
+                    example: 1
+                  photo_id_number: 
+                    type: string
+                    example: VOTR112233
+                required:
+                  - beneficiary_reference_id
+                  - name
+                  - birth_year
+                  - gender_id
+                  - photo_id_number
+                  
+      responses:
+        '200':
+          description: Your grievance has been received and is being processed.
+          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Name validation:
+                  $ref: '#/components/examples/nameValidation'
+                String or not:
+                  $ref: '#/components/examples/string_or_not' 
+                Name length is less than 50 characters:
+                  $ref: '#/components/examples/name_length' 
+                Required filed birth year format:
+                  $ref: '#/components/examples/birth_year_format'
+                Birth year is less than from define max age. If not then give error message:
+                  $ref: '#/components/examples/birth_year' 
+                Birth year is greater than from define age limit. If not then give error message.:
+                  $ref: '#/components/examples/birth_year_is_greater_than_from_define_age' 
+                Required filed gender validation:
+                  $ref: '#/components/examples/genderValidation'
+                Gender id is match or not with define gender id array [1, 2, 3]:
+                  $ref: '#/components/examples/gender_id_is_match_or_not' 
+                Required filed photo id number validation:
+                  $ref: '#/components/examples/photo_id_number_validation' 
+                Duplicate photo id number, if photo id type is not Ration Card.:
+                  $ref: '#/components/examples/photo_id_type_is_not_Ration_Card'
+                Duplicate photo id number, if photo id type is Ration Card:
+                  $ref: '#/components/examples/duplicate_photo_id_number' 
+                Grievance request has been already raised with same issue type. If yes then give error message.:
+                  $ref: '#/components/examples/grievance_request'   
+                  
+                
+        '401':
+          description: Unauthenticated Access
+          
+        
+        '500':
+          description: Internal Server Error
+          
+              
+  /v2/grievance/beneficiary/mergeMultipleAccounts:
+    post:
+      tags:
+        - Grievance APIs
+      summary: Merge beneficiary multiple dose 1 certificates to get final vaccination certificate
+      description: >-
+        API to Merge beneficiary multiple dose 1 certificates to get final vaccination certificate
+      operationId: Merge Multiple Accounts
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 21371460229582
+                  merge_beneficiary_reference_id: 
+                    type: string
+                    example: 68648225073870
+                  merge_mobile_number: 
+                    type: string
+                    example: 7652027586  
+                  
+                required:
+                  - beneficiary_reference_id
+                  - merge_beneficiary_reference_id
+                  - merge_mobile_number
+                  
+      responses:
+        '200':
+          description: Your grievance has been received and is being processed.   
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - service_unavailable
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service is temporarily unavailable
+        
+        
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Required filed like (beneficiary reference id, merge beneficiary reference id, merge mobile number)validation.:
+                  $ref: '#/components/examples/required_filed'
+                Beneficiary reference id linked with login mobile number. If not then give error message:      
+                  $ref: '#/components/examples/ref_id_linked_with_login_mobile_number'
+                Merge beneficiary reference id linked with merge mobile number. If not then give error message:      
+                  $ref: '#/components/examples/ref_id_linked_with_merge_mobile_number' 
+                Grievance request has been already raised with same issue type. If yes then give error message:      
+                  $ref: '#/components/examples/Grievance_request_already_raised'   
+                Material is same. If not matched then give error message:      
+                  $ref: '#/components/examples/material_is_same'    
+                Min day’s difference between 2 doses with respect to materials. If not then give error message:
+                  $ref: '#/components/examples/difference_between_2_doses'  
+                20% Match name, gender and year of birth is same. If not then give error message.:
+                  $ref: '#/components/examples/twenty_percent_match'  
+                  
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error         
+                      
+  /v2/grievance/beneficiary/removeBeneficiary:
+    post:
+      tags:
+        - Grievance APIs
+      summary: Report unknown member registered with my CoWIN account
+      description: >-
+        API to Report unknown member registered with my CoWIN account
+      operationId: Remove Beneficiary
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 65155761671040
+                  
+                  
+                required:
+                  - beneficiary_reference_id
+                  
+      responses:
+        '200':
+          description: Beneficiary reference id removed from the account successfully.  
+          
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Required filed beneficiary reference idvalidation.:
+                  $ref: '#/components/examples/beneficiary_reference_idvalidation'
+                Login mobile number and registered mobile number of this beneficiary reference id is same. :      
+                  $ref: '#/components/examples/beneficiary_reference_id_is_same'
+                Beneficiary reference id is vaccinated or not. :      
+                  $ref: '#/components/examples/beneficiary_reference_id_vaccinated'
+                Grievance request has been already raised with same issue type. If yes then give error message :      
+                  $ref: '#/components/examples/beneficiary_reference_id_vaccinated'
+                  
+                  
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error
+          
+  /v2/grievance/beneficiary/transferBeneficiaryOTP:
+    post:
+      tags:
+        - Grievance APIs
+      summary: Transfer a member to new mobile number [get OTP]
+      description: >-
+        API to Transfer a member to new mobile number [get OTP]
+      operationId: Transfer Beneficiary OTP
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 41606054078160
+                  mobile_number:
+                    type: string
+                    example: 9932801819
+                  
+                required:
+                  - beneficiary_reference_id
+                  - mobile_number
+               
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txnId:
+                    type: string
+                    example: c714bcd4-2318-40b0-9ecd-e789d7e65cf4
+                  
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                
+              examples:
+                Required filed like (beneficiary_reference_id, mobile_number) coming or not:
+                  $ref: '#/components/examples/required_filed1'
+                Required filed like (beneficiary_reference_id, mobile_number) coming or not. If not then give error message. :      
+                  $ref: '#/components/examples/required_filed2' 
+                Login mobile number and registered mobile number login mobile number and account transfer mobile number is not same of this beneficiary reference id is same :      
+                  $ref: '#/components/examples/mobile_number_not_same'  
+                Check transfer mobile number account have less than 4 beneficiar:  
+                  $ref: '#/components/examples/less_than_4_beneficiary'
+                OTP already sent:  
+                  $ref: '#/components/examples/OTP_already_sent'
+                OTP is not generate:  
+                  $ref: '#/components/examples/OTP_not_generate'
+                  
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error
+          
+  /v2/grievance/beneficiary/transferBeneficiary:
+    post:
+      tags:
+        - Grievance APIs
+      summary: Transfer a member to new mobile number [validate OTP and transfer account]
+      description: >-
+        Transfer a member to new mobile number [validate OTP and transfer account]
+      operationId: Transfer Beneficiary
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 41606054078160
+                  mobile_number:
+                    type: string
+                    example: 9932801819
+                  otp:
+                    type: string
+                    example: 693147
+                  txnId:
+                    type: string
+                    example: f2fd263b-93eb-48c5-bdd9-0e7a8ed68beb
+                  
+                required:
+                  - beneficiary_reference_id
+                  - mobile_number
+                  - otp
+                  
+      responses:
+        '200':
+          description: Beneficiary transferred to 9932801819 successfully
+      
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                
+              examples:
+                Required filed like (beneficiary_reference_id, mobile_number, otp, txnId) coming or not:
+                  $ref: '#/components/examples/required_filed3'
+                Required filed like (beneficiary_reference_id, mobile_number, otp, txnId) coming or not(otp):     
+                  $ref: '#/components/examples/required_filed4' 
+                Required filed like (beneficiary_reference_id, mobile_number, otp, txnId) coming or not(txnId ):     
+                  $ref: '#/components/examples/required_filed5'   
+                Mobile number and account transfer mobile number is not same:
+                  $ref: '#/components/examples/mobile_number_not_same1' 
+                Login mobile number and registered mobile number of this beneficiary reference id is same.:
+                  $ref: '#/components/examples/beneficiary_reference_id_same'   
+                OTP expired.:
+                  $ref: '#/components/examples/OTP_already_sent1'
+                OTP is not verified:
+                  $ref: '#/components/examples/OTP_not_generate1'
+                Grievance request has been already raised with same issue type.:
+                  $ref: '#/components/examples/Grievance_request'
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error   
+                  
+  /v2/grievance/beneficiary/grievanceStatus:
+    get:
+      tags:
+        - Grievance APIs
+      summary: Track status of all grievance using mobile no 
+      description: >-
+        API to track status of all grievance usingmobile no 
+      operationId: Grievance Status
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Operation successfully   
+          content:
+           application/json:
+              schema:
+                $ref: '#/components/schemas/grievanceStatus'
+        
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                
+              examples:
+                All grievance using login mobile no:
+                  $ref: '#/components/examples/using_login_mobile_no'
+                      
+                
+        '401':
+          description: Unauthenticated Acces
+          
+        '500':
+          description: Internal Server Error   
+          
+  /v3/vaccination/generateOTP:
+    post:
+      tags:
+      - Vaccination Verification APIs
+      summary: Add Vaccination Generate OTP
+      description: API to Vaccination Generate OTP
+      operationId: generateOTPvaccination
+      security:
+      - BearerAuth: [] 
+      - ApiKey: []
+
+            
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile_number:
+                  type: integer
+                  minItems: 1  
+                  example: "9898989999"
+                full_name:
+                  type: string
+                  minItems: 1  
+                  example: "Kritika Pani"
+                
+              required:
+                - mobile_number
+                - full_name
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txnId:
+                    type: string
+                    minItems: 1
+                    example: "029818e7-ae44-4c05-9a11-e949d3ed1fa4"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Invalid Input data:
+                  $ref: '#/components/examples/invalidInputData'
+                Invalid Phone number:
+                  $ref: '#/components/examples/invalidPhoneNumber'
+                Invalid beneficiary name:
+                  $ref: '#/components/examples/invalidBeneficiaryName' 
+                Invalid key full_name:
+                  $ref: '#/components/examples/invalidkeyFullName'
+                Invalid key mobile_number:
+                  $ref: '#/components/examples/InvalidkeyMobileNumber'
+  
+  /v3/vaccination/confirmOTP:
+    post:
+      tags:
+        - Vaccination Verification APIs
+      summary: Confirm OTP Vaccination 
+      description: API to Confirm OTP Vaccination (OTP should be SHA256) 
+      operationId: confirmOTPVaccination
+      security:
+      - BearerAuth: [] 
+      - ApiKey: []
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp :
+                  type: string
+                  minItems: 1  
+                  example: "c2bd5e76de0570ad6247acd82893b4cacc4f2449b8a999097829fc1d13c241af"
+                txnId :
+                  type: string
+                  minItems: 1  
+                  example: "029818e7-ae44-4c05-9a11-e949d3ed1fa4"
+                
+                
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    minItems: 1
+                    example: "<JWT token>"
+        
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Invalid key otp:
+                  $ref: '#/components/examples/InvalidKeyotp'
+                Invalid key txnIds:
+                  $ref: '#/components/examples/InvalidKeytxnIds'
+                Invalid beneficiary name: 
+                  $ref: '#/components/examples/invalidBeneficiaryName' 
+                Invalid otp value:
+                  $ref: '#/components/examples/InvalidOtpValue'
+               
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Invalid Input data:
+                  $ref: '#/components/examples/InvalidOtpValue'
+                Multiple request after successful response:
+                  $ref: '#/components/examples/MultipleRequestAfterSuccessfulResponse'  
+  
+  /v3/vaccination/status:
+    get:
+      tags:
+        - Vaccination Verification APIs
+      summary:     Add Vaccination Status
+      description: API to Vaccination Status
+      operationId: StatusVaccination
+      security:
+      - BearerAuth: [] 
+      
+                
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vaccination_status:
+                    type: string
+                    minItems: 1
+                    example: "0/1/2"
+          
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                Wrong or without Bearer Token:
+                  $ref: '#/components/examples/Wrong_or_Without_Bearer_Token'
+                  
+  /v2/grievance/beneficiary/updateToPassportId:
+    post:
+      tags:
+        - International Certificate To Travel Abroad
+      summary: Add Passport Details to beneficiary certificate for traveling abroad
+      description: >-
+        API to Add Passport Details to beneficiary certificate for traveling abroad
+      operationId: Update Passport ID
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beneficiary_reference_id:
+                    type: string
+                    example: 65155761671040
+                  dob: 
+                    type: string
+                    example: "2003-12-31"
+                  passport_id: 
+                    type: string
+                    example: PASS1234567
+                  
+                required:
+                  - beneficiary_reference_id
+                  - dob
+                  - passport_id
+                  
+      responses:
+        '200':
+          description: Your grievance has been received and is being processed.  
+          
+        '400':
+          description: Bad Request
+           
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error                  
+        
+  /v2/registration/certificate/downloadInternational/{beneficiary_reference_id}:
+    get:
+      tags:
+        - International Certificate To Travel Abroad
+      summary: Download International travel certificate
+      description: >-
+          Download International travel certificate
+          
+      operationId: beneficiary_reference_id=123456
+      security:
+      - BearerAuth: []
+      
+      parameters:
+        - name: beneficiary_reference_id
+          in: path
+          example: 123456
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        '200':
+          description: Binary content of PDF file.  
+          
+        '400':
+          description: Bad Request
+           
+        '401':
+          description: Unauthenticated Access
+          
+        '500':
+          description: Internal Server Error                        
+  
+components:
+  schemas:
+    BeneficiariesSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/BenefeiciaryResponseSchema'
+    BenefeiciaryResponseSchema:
+      type: object
+      properties:
+        beneficiary_reference_id:
+          type: string
+          maxLength: 14
+          example: "1234567890123"
+        name:
+          type: string
+          minLength: 1
+          example: Rajesh Pawar
+        birth_year:
+          type: string
+          minLength: 1
+          example: "1995"
+        gender:
+          type: string
+          minLength: 1
+          example: Male
+        mobile_number:
+          type: string
+          example: "******1403"
+        photo_id_type:
+          type: string
+          example: "Driving License"
+        photo_id_number:
+          type: string
+          example: "********9999"
+          minLength: 1
+        comorbidity_ind:
+          description: Comorbidity indicator
+          type: string
+          example: Y
+          enum:
+            - Y
+            - N
+        vaccination_status:
+          type: string
+          enum:
+            - Not Vaccinated
+            - Partially Vaccinated
+            - Vaccinated        
+          example: "Not Vaccinated"
+        vaccine: 
+          type: string
+          enum:
+            - COVISHIELD
+            - COVAXIN
+          example: "COVISHIELD"
+        dose1_date: 
+          type: string
+          example: "01-03-2021"
+        dose2_date: 
+          type: string
+          example: "29-03-2021"
+        appointments:
+          $ref: '#/components/schemas/AppointmentsSchema'
+      required:
+        - beneficiary_reference_id 
+        - name
+        - birth_year
+        - gender
+        - mobile_number
+        - photo_id_type
+        - photo_id_number
+        - flw_hw_ind
+        - comorbidity_ind
+
+    CentersSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/CenterResponseSchema'
+
+    CenterResponseSchema:
+        type: object
+        required:
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+        properties:
+          center_id:
+            type: number
+            minLength: 1
+            example: 1234
+          name:
+            type: string
+            minLength: 1
+            example: District General Hostpital
+          name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Name in preferred language as specified in Accept-Language header parameter.
+          address:
+            type: string
+            minLength: 1
+            example: 45 M G Road
+          address_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Address line in preferred language as specified in Accept-Language header parameter.
+          state_name:
+            type: string
+            example: Maharashtra
+          state_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: State name in preferred language as specified in Accept-Language header parameter.
+          district_name:
+            type: string
+            example: Satara
+          district_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: District name in preferred language as specified in Accept-Language header parameter.
+          block_name:
+            type: string
+            example: Jaoli
+          block_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Block name in preferred language as specified in Accept-Language header parameter.
+          pincode:
+            type: string
+            example: "413608"
+          lat:
+            type: number
+            format: float
+            minimum: 8.06
+            maximum: 37.10
+            example: 28.70
+          long:
+            type: number
+            format: float
+            minimum: 68.11
+            maximum: 97.41
+            example: 77.10
+          from:
+            type: string
+            format: partial-time
+            example: "09:00:00"
+          to:
+            type: string
+            format: partial-time
+            example: "18:00:00"
+          fee_type:
+            type: string
+            enum:
+              - Free
+              - Paid
+            example: Paid
+            description: Fee charged for vaccination
+
+    SessionsSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/SessionResponseSchema'
+
+    SessionResponseSchema:
+      allOf:
+      - $ref: '#/components/schemas/CenterResponseSchema'
+      - type: object
+        properties:
+          fee:
+            type: string
+            example: "250"
+          session_id:
+            type: string
+            format: uuid
+            minLength: 1
+          date: 
+            type: string
+            minLength: 1
+            example: "31-05-2021"
+          available_capacity:
+            type: number
+            description: Total available capacity of the session.
+            example: 50
+          available_capacity_dose1:
+            type: number
+            description: Available capacity for dose 1.
+            example: 25
+          available_capacity_dose2:
+            type: number
+            description: Available capacity for dose 2.
+            example: 25
+          walkin_ind:
+            description: Indicates whether walk-in vaccination is allowed in this session.
+            type: string
+            example: Y
+            enum:
+              - Y
+              - N
+          min_age_limit:
+            type: number
+            example: 18
+          vaccine:
+            type: string
+            example: "COVISHIELD"
+          slots:
+            type: array
+            uniqueItems: true
+            minItems: 1
+            description: Array of slot names
+            example: [FORENOON, AFTERNOON]
+            items:
+              type: string
+        required:
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+          - fee
+          - session_id
+          - date
+          - available_capacity
+          - min_age_limit
+          - vaccine
+          - slots
+
+    SessionCalendarEntriesSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/SessionCalendarEntrySchema'
+
+    SessionCalendarEntrySchema:
+        type: object
+        required:
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+          - sessions
+        properties:
+          center_id:
+            type: number
+            minLength: 1
+            example: 1234
+          name:
+            type: string
+            minLength: 1
+            example: District General Hostpital
+          name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Name in preferred language as specified in Accept-Language header parameter.
+          address:
+            type: string
+            minLength: 1
+            example: 45 M G Road
+          address_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Address line in preferred language as specified in Accept-Language header parameter.
+          state_name:
+            type: string
+            example: Maharashtra
+          state_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: State name in preferred language as specified in Accept-Language header parameter.
+          district_name:
+            type: string
+            example: Satara
+          district_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: District name in preferred language as specified in Accept-Language header parameter.
+          block_name:
+            type: string
+            example: Jaoli
+          block_name_l:
+            type: string
+            minLength: 1
+            example: ""
+            description: Block name in preferred language as specified in Accept-Language header parameter.
+          pincode:
+            type: string
+            example: "413608"
+          lat:
+            type: number
+            format: float
+            minimum: 8.06
+            maximum: 37.10
+            example: 28.70
+          long:
+            type: number
+            format: float
+            minimum: 68.11
+            maximum: 97.41
+            example: 77.10
+          from:
+            type: string
+            format: partial-time
+            example: "09:00:00"
+          to:
+            type: string
+            format: partial-time
+            example: "18:00:00"
+          fee_type:
+            type: string
+            enum:
+              - Free
+              - Paid
+            example: Free
+            description: Fee charged for vaccination
+          vaccine_fees:
+            $ref: '#/components/schemas/VaccineFeeListSchema'
+          sessions:
+            type: array
+            items:
+              type: object
+              properties:
+                session_id:
+                  type: string
+                  format: uuid
+                  minLength: 1
+                date: 
+                  type: string
+                  minLength: 1
+                  example: "31-05-2021"
+                available_capacity:
+                  type: number
+                  description: Total available capacity of the session.
+                  example: 50
+                available_capacity_dose1:
+                  type: number
+                  description: Available capacity for dose 1.
+                  example: 25
+                available_capacity_dose2:
+                  type: number
+                  description: Available capacity for dose 2.
+                  example: 25
+                walkin_ind:
+                  description: Indicates whether walk-in vaccination is allowed in this session.
+                  type: string
+                  example: Y
+                  enum:
+                    - Y
+                    - N
+                min_age_limit:
+                  type: number
+                  example: 18
+                vaccine:
+                  type: string
+                  example: "COVISHIELD"
+                slots:
+                  type: array
+                  uniqueItems: true
+                  minItems: 1
+                  description: Array of slot names
+                  example: [FORENOON, AFTERNOON]
+                  items:
+                    type: string
+              required:
+                - from
+                - to
+                - fee_type
+                - session_id
+                - date
+                - available_capacity
+                - fee
+                - min_age_limit
+                - vaccine
+                - slots
+
+    AppointmentsSchema:
+      type: array
+      uniqueItems: true
+      description: List of vaccines administered at a vaccine center along with their prices.
+      items:
+        $ref: '#/components/schemas/AppointmentResponseSchema'
+
+    AppointmentResponseSchema:
+      allOf:
+      - $ref: '#/components/schemas/CenterResponseSchema'
+      - type: object
+        properties:
+          dose: 
+            type: number
+            minLength: 1
+            example: 1
+          appointment_id:
+            type: string
+            format: uuid
+          session_id:
+            type: string
+            format: uuid
+            minLength: 1
+          date: 
+            type: string
+            minLength: 1
+            example: "01-03-2021"
+          slot:
+            type: string
+            example: 'FORENOON'
+        required:
+          - dose
+          - center_id
+          - name
+          - state_name
+          - district_name
+          - block_name
+          - pincode
+          - from
+          - to
+          - fee_type
+          - appointment_id
+          - session_id
+          - date
+          - slot
+
+    VaccineFeeListSchema:
+      type: array
+      uniqueItems: true
+      items:
+        $ref: '#/components/schemas/VaccineFeeSchema'
+
+    VaccineFeeSchema:
+      type: object
+      required:
+        - vaccine
+        - fee
+      properties:
+        vaccine:
+          type: string
+          example: "COVISHIELD"
+        fee:
+          type: string
+          example: "250"
+    
+    grievanceStatus:
+      type: object
+      properties:
+        87689430451760:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: object
+            properties:
+              date_created:
+                type: string
+                example: "2021-07-19T11:39:32.810Z"
+              beneficiary_reference_id:
+                type: integer
+                example: 87689430451760    
+              issue_type :
+                type: integer
+                example: 1
+              grievance_id:
+                type: string
+                example: 01de1819-6c89-4649-b32e-81b1bacd45cd
+              status:
+                type: integer
+                example: 3
+        41606054078160:
+          type: array
+          items:
+            type: object
+            properties:
+              date_created:
+                type: string
+              beneficiary_reference_id:
+                type: integer
+              issue_type :
+                type: integer
+              grievance_id:
+                type: string
+              status:
+                type: integer
+          example:            
+            - date_created: "2021-07-19T11:14:09.874Z"
+              beneficiary_reference_id: 41606054078160
+              issue_type: 1
+              grievance_id: "8ca12e38-bedc-467e-acc1-34c11141a4be"
+              status: 3
+            - date_created: "2021-07-19T11:15:19.566Z"
+              beneficiary_reference_id: 41606054078160
+              issue_type: 1
+              grievance_id: "02fa6388-310c-4a63-92ed-24fb1421ea0f"
+              status: 3
+  examples:
+    nameValidation:
+      value:
+        errorCode: APPOIN0047
+        error: Name of individual is required!
+    string_or_not:
+      value:
+        errorCode: APPOIN0060
+        error: Individual Name is invalid
+    name_length:
+      value:
+        errorCode: APPOIN0048
+        error: Name of individual is too long
+    birth_year_format:
+      value:
+        errorCode: APPOIN0049
+        error: Please provide birth year in YYYY format
+    birth_year:
+      value:
+        errorCode: APPOIN0050
+        error: Invalid Birth Year  
+    birth_year_is_greater_than_from_define_age :
+      value:
+        errorCode: APPOIN0051
+        error: Registration is open only for individuals with age 18 years or older (birth year 2003 or earlier)   
+    genderValidation:
+      value:
+        errorCode: APPOIN0052
+        error: Gender of individual is required! 
+    gender_id_is_match_or_not:
+      value:
+        errorCode: APPOIN0058
+        error: Invalid gender id   
+    photo_id_number_validation:
+      value:
+        errorCode: APPOIN0054
+        error: Photo ID number is required! 
+    photo_id_type_is_not_Ration_Card:
+      value:
+        errorCode: APPOIN0093
+        error: This Photo ID Number is already in use    
+    duplicate_photo_id_number:
+      value:
+        errorCode: BENDOC0047
+        error: This Ration Card with photo XXXX1234 has already been registered with four beneficiaries, please try registering yourself with another photo ID
+    grievance_request :
+      value:
+        errorCode: APPOIN0055
+        error: Grievance request has been already raised for this individual  
+    beneficiary_reference_id  :
+      value:
+        errorCode: APPOIN0062
+        error: Invalid Input  
+    passport_idvalidation  :
+      value:
+        errorCode: APPOIN0054
+        error: Photo ID number is required!
+    id_regular_expression  :
+      value:
+        errorCode: APPOIN0059
+        error: Invalid photo id number 
+    duplicate_passport_id  :
+      value:
+        errorCode: APPOIN0094
+        error: This Passport ID Number is already in use
+    maximum_two_grievance_grievance_request :
+      value:
+        errorCode: APPOIN0055
+        error: Grievance request has been already raised for this individual
+    required_filed :
+      value:
+        errorCode: APPOIN0062
+        error: Invalid Input
+    ref_id_linked_with_login_mobile_number :
+      value:
+        errorCode: APPOIN0019
+        error: No beneficiary found for provided beneficiary mobile number 8823121244 
+    ref_id_linked_with_merge_mobile_number :
+      value:
+        errorCode: APPOIN0019
+        error: No beneficiary found for provided beneficiary mobile number 9823121233
+    Grievance_request_already_raised  :
+      value:
+        errorCode: APPOIN0055
+        error: Grievance request has been already raised for this individual   
+    material_is_same  :
+      value:
+        error: This grievance request cannot be processed due to incorrect details
+    difference_between_2_doses:
+      value:
+        error: This grievance request cannot be processed due to incorrect details
+    twenty_percent_match:
+      value:
+        error: This grievance request cannot be processed due to incorrect details
+    beneficiary_reference_idvalidation  :
+      value:
+        errorCode: APPOIN0062
+        error: Invalid Input
+    beneficiary_reference_id_is_same  :
+      value:
+        errorCode: APPOIN0056
+        error: Mobile number does not match with registered mobile number
+    beneficiary_reference_id_vaccinated :
+      value:
+        errorCode: APPOIN0082
+        error: Only vaccinated beneficiary can be deleted
+    request_already_raised :    
+      value:
+        errorCode: APPOIN0055
+        error: Grievance request has been already raised for this individual
+    required_filed1  :    
+      value:
+        errorCode: APPOIN0062,
+        error: Invalid Input
+    required_filed2  :    
+      value:
+        errorCode: APPOIN0063,
+        error: Mobile number is required   
+    mobile_number_not_same: 
+      value:
+        errorCode: APPOIN0091,
+        error: You can't move account to login mobile number
+    less_than_4_beneficiary : 
+      value:
+        errorCode: APPOIN0084,
+        error: This Mobile number have already 4 beneficiaries in account  
+    OTP_already_sent : 
+      value:
+        errorCode: APPOIN0090,
+        error: OTP Already Sent  
+    OTP_not_generate : 
+      value:
+        errorCode: APPOIN0085,
+        error: Generate OTP failed
+    required_filed3  :    
+      value:
+        errorCode: APPOIN0062,
+        error: Invalid Input    
+    required_filed4  :    
+      value:
+        errorCode: APPOIN0086,
+        error: OTP is Required
+    required_filed5  :    
+      value:
+        errorCode: APPOIN0087,
+        error: txnId is Required
+    mobile_number_not_same1  :    
+      value:
+        errorCode: APPOIN0091,
+        error: You can't move account to login mobile number 
+    beneficiary_reference_id_same: 
+      value:
+        errorCode: APPOIN0056,
+        error: Mobile number does not match with registered mobile number
+    OTP_already_sent1 : 
+      value:
+        errorCode: APPOIN0088,
+        error: OTP expired  
+    OTP_not_generate1 : 
+      value:
+        errorCode: APPOIN0089,
+        error: Please enter valid OTP
+    Grievance_request:
+      value:
+        errorCode: APPOIN0055,
+        error: Grievance request has been already raised for this individual
+    using_login_mobile_no:
+      value:
+        errorCode: APPOIN0081,
+        error: Invalid beneficiary id provided 
+    invalidInputData:
+      value:
+        Bad Request
+    invalidPhoneNumber:
+      value:
+        errorCode: USRAUT0015
+        error: Your account does not exist
+    invalidBeneficiaryName:
+      value:
+        errorCode: USRAUT0031
+        error: Name does not match in beneficiary list
+    invalidkeyFullName:
+      value:
+        errorCode: BENDOC0025
+        error: Name of individual is required!
+    InvalidkeyMobileNumber:
+      value:
+        errorCode: USRAUT0010
+        error: Mobile is Required
+    InvalidKeyotp:
+      value:
+        errorCode: USRAUT0012
+        error: OTP is Required
+    InvalidKeytxnIds:
+      value:
+        errorCode: USRAUT0013
+        error: txnId is Required   
+    InvalidOtpValue:
+      value:
+        errorCode: USRAUT0014
+        error: Invalid OTP 
+    invalidInputData1:
+      value:
+        Bad Request
+    MultipleRequestAfterSuccessfulResponse:
+      value:
+        Unauthenticated access!
+    Wrong_or_Without_Bearer_Token:
+      value:
+        Unauthenticated access!
+        
+  securitySchemes: 
+    BearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKey:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: You can use <b>3sjOr2rmM52GzhpMHjDEE1kpQeRxwFDr4YcBEimi</b> as the API Key for testing the APIs on the Test Server.

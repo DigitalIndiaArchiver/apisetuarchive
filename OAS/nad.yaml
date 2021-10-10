@@ -1,0 +1,1482 @@
+openapi: 3.0.3
+info:
+  title: DigiLocker National Academic Depository (NAD) APIs
+  description: APIs to upload, maintain and publish academic records in NAD. Academic institutions can use these APIs to closely integrate NAD with their own applications. <i>[Updated on 26 july 2021]</i>
+  termsOfService: https://nadapi.digilocker.gov.in
+  contact:
+    name: DigiLocker National Academic Depository 
+    url:  https://nad.digitallocker.gov.in/customer_support
+  version: 1.0.0
+servers:
+  - url: https://nadapi.digilocker.gov.in/v1
+
+paths:
+  /oauth:
+    post:
+      tags:
+        - Transactional
+      summary: Authentication API 
+      description: Authentication API to get/ generate Authorized Token. This token is required to call all NAD APIs. The Client ID and Client Secret Key to be passed as parameter in this API is generated from NAD Portal. On successful authentication, an authorized token is generated which is valid for 10 minutes. Only approved universities has access to NAD APIs.
+
+      
+      operationId: Authentication API
+          
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  minLength: 1
+                  example: UNIAADAEH12
+                customer_secret_key:
+                  type: string
+                  minLength: 1
+                  example: KHJ458255KKKKKKK
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    minLength: 1
+                    example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJucbgWA
+                  token_type:
+                    type: string
+                    example: bearer
+                  expires_in:
+                    type: string
+                    example: 216000
+        '400':
+          description: Bad Request
+          
+  /processRecords/institute_type/{institute_type}:
+    post:
+      tags:
+        - Transactional
+      summary: Data processing API for all the Institute type.
+      description: Data processing API.
+
+      operationId: Data processing API
+      security:
+        - bearerAuth: []
+        
+      parameters:
+      - in: path
+        name: institute_type
+        required: true
+        description: The type of the Institute.
+        example: Disability
+        schema:
+          type: string
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Parameters to be passed for record insertion. This JSON payload can contain all parameters listed in sample input CSV.
+              type: object
+              properties:
+                ORG_NAME:
+                  type: string
+                  minLength: 1
+                  example: TEST org name
+                ORG_ADDRESS:
+                  type: string
+                  minLength: 1
+                  example: TEST org Address
+                ORG_SUB_DISTRICT:
+                  type: string
+                  minLength: 1
+                  example: TEST District
+                ORG_DISTRICT:
+                  type: string
+                  minLength: 1
+                  example: TEST org dis
+                ORG_CITY:
+                  type: string
+                  minLength: 1
+                  example: TEST city
+                ORG_STATE:
+                  type: string
+                  minLength: 1
+                  example: TEST state
+                ORG_STATE_ID:
+                  type: string
+                  minLength: 1
+                  example: N/A
+                REGN_NO:
+                  type: string
+                  minLength: 1
+                  example: 1112/00000/2009/0676831
+                AADHAAR_NO:
+                  type: number
+                  example: 123000000000
+                AADHAAR_NO_PART:
+                  type: number
+                  example: 9212
+                SALUTATION:
+                  type: string
+                  minLength: 1
+                  example: Shri
+                CNAME:
+                  type: string
+                  minLength: 1
+                  example: TEST BY DEV
+                GENDER:
+                  type: string
+                  minLength: 1
+                  example: F
+                DOB:
+                  type: string
+                  minLength: 1
+                  example: 24/03/1991
+                AGE:
+                  type: number
+                  example: 30
+                MOBILE:
+                  type: number
+                  example: 1235121454
+                EMAIL:
+                  type: string
+                  minLength: 1
+                  example: abc@gmail.com
+                GNAME_SALUTATION:
+                  type: string
+                  minLength: 1
+                  example: Shri
+                GNAME:
+                  type: string
+                  minLength: 1
+                  example: JAI
+                G_RELATION:
+                  type: string
+                  minLength: 1
+                  example: Son of
+                FNAME:
+                  type: string
+                  example: ''
+                MNAME:
+                  type: string
+                  example: ''
+                SNAME:
+                  type: string
+                  example: ''
+                BENEFICIARY_ADDRESS:
+                  type: string
+                  minLength: 1
+                  example: TEST BEN Add
+                PHOTO:
+                  type: string
+                  minLength: 1
+                  example: abc.jpg
+                DISABILITY_TYPE:
+                  type: string
+                  minLength: 1
+                  example: Blindness
+                DISABILITY_PERCENT:
+                  type: string
+                  minLength: 1
+                  example: 100%
+                DIAGNOSIS:
+                  type: string
+                  minLength: 1
+                  example: BLINDNESS
+                DOI:
+                  type: string
+                  minLength: 1
+                  example: 31/01/2012
+                DOV:
+                  type: string
+                  example: ''
+                STATE:
+                  type: string
+                  example: "MADHYA PRADESH"  
+                DISTRICT:
+                  type: string
+                  example: "SAGAR"
+                DISTRICT_CODE:
+                  type: string
+                  example: 10 
+                SUB_DISTRICT:
+                  type: string
+                  example: "SAGAR"  
+                CERT_NO:
+                  type: string
+                  minLength: 1
+                  example: TN0004567800036354
+                DOC_TYPE:
+                  type: string
+                  minLength: 1
+                  example: GOVID
+              required:
+                - ORG_NAME
+                - ORG_ADDRESS
+                - ORG_SUB_DISTRICT
+                - ORG_DISTRICT
+                - ORG_CITY
+                - ORG_STATE
+                - ORG_STATE_ID
+                - REGN_NO
+                - AADHAAR_NO
+                - AADHAAR_NO_PART
+                - SALUTATION
+                - CNAME
+                - GENDER
+                - DOB
+                - AGE
+                - MOBILE
+                - EMAIL
+                - GNAME_SALUTATION
+                - GNAME
+                - G_RELATION
+                - FNAME
+                - MNAME
+                - SNAME
+                - BENEFICIARY_ADDRESS
+                - PHOTO
+                - DISABILITY_TYPE
+                - DISABILITY_PERCENT
+                - DIAGNOSIS
+                - DOI
+                - DOV
+                - STATE
+                - DISTRICT
+                - DISTRICT_CODE
+                - SUB_DISTRICT
+                - CERT_NO
+                - DOC_TYPE
+              
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+                  
+               
+        '400':
+          description: Bad Request        
+          
+  /processRecords/institute_type/Disability/doctype/{doctype}/cert_no/{cert_no}:
+    put:
+      tags:
+        - Transactional
+      summary: Data processing API for UDID Card and Disability Certificate.
+
+      description: Data processing API 
+
+      operationId: Authentication Token for institute type
+      security:
+        - bearerAuth: []
+     
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: GOVID
+        schema:
+          type: string 
+      - in: path
+        name: cert_no
+        required: true
+        example: TN0004567890036354
+        schema:
+          type: string 
+           
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Parameters to be passed for record updation. This JSON payload should contain the records to be updated. The entire old record will be replaced by the new one. So, all parameters has to be sent even if there is no change in all parameters.
+              properties:
+                ORG_NAME:
+                  type: string
+                  minLength: 1
+                  example: TEST org name
+                ORG_ADDRESS:
+                  type: string
+                  minLength: 1
+                  example: TEST org Address
+                ORG_SUB_DISTRICT:
+                  type: string
+                  minLength: 1
+                  example: TEST District
+                ORG_DISTRICT:
+                  type: string
+                  minLength: 1
+                  example: TEST org dis
+                ORG_CITY:
+                  type: string
+                  minLength: 1
+                  example: TEST city
+                ORG_STATE:
+                  type: string
+                  minLength: 1
+                  example: TEST state
+                ORG_STATE_ID:
+                  type: string
+                  minLength: 1
+                  example: N/A
+                REGN_NO:
+                  type: string
+                  minLength: 1
+                  example: 1112/00000/2009/0676831
+                AADHAAR_NO:
+                  type: number
+                  example: 123000000000
+                AADHAAR_NO_PART:
+                  type: number
+                  example: 9212
+                SALUTATION:
+                  type: string
+                  minLength: 1
+                  example: Shri
+                CNAME:
+                  type: string
+                  minLength: 1
+                  example: ANAbba TEST BY DEV
+                GENDER:
+                  type: string
+                  minLength: 1
+                  example: F
+                DOB:
+                  type: string
+                  minLength: 1
+                  example: 24/03/1991
+                AGE:
+                  type: number
+                  example: 30
+                MOBILE:
+                  type: number
+                  example: 1235121454
+                EMAIL:
+                  type: string
+                  minLength: 1
+                  example: abc123@gmail.com
+                GNAME_SALUTATION:
+                  type: string
+                  minLength: 1
+                  example: Shri
+                GNAME:
+                  type: string
+                  minLength: 1
+                  example: JAI
+                G_RELATION:
+                  type: string
+                  minLength: 1
+                  example: Son of
+                FNAME:
+                  type: string
+                  example: ''
+                MNAME:
+                  type: string
+                  example: ''
+                SNAME:
+                  type: string
+                  example: ''
+                BENEFICIARY_ADDRESS:
+                  type: string
+                  minLength: 1
+                  example: TEST BEN Add
+                PHOTO:
+                  type: string
+                  minLength: 1
+                  example: abc.jpg
+                DISABILITY_TYPE:
+                  type: string
+                  minLength: 1
+                  example: Blindness
+                DISABILITY_PERCENT:
+                  type: string
+                  minLength: 1
+                  example: 100%
+                DIAGNOSIS:
+                  type: string
+                  minLength: 1
+                  example: BLINDNESS
+                DOI:
+                  type: string
+                  minLength: 1
+                  example: 31/01/2012
+                DOV:
+                  type: string
+                  example: ''
+                CERT_NO:
+                  type: string
+                  minLength: 1
+                  example: TN0004567890036354
+                DOC_TYPE:
+                  type: string
+                  minLength: 1
+                  example: GOVI11D
+              required:
+                - ORG_NAME
+                - ORG_ADDRESS
+                - ORG_SUB_DISTRICT
+                - ORG_DISTRICT
+                - ORG_CITY
+                - ORG_STATE
+                - ORG_STATE_ID
+                - REGN_NO
+                - AADHAAR_NO
+                - AADHAAR_NO_PART
+                - SALUTATION
+                - CNAME
+                - GENDER
+                - DOB
+                - AGE
+                - MOBILE
+                - EMAIL
+                - GNAME_SALUTATION
+                - GNAME
+                - G_RELATION
+                - FNAME
+                - MNAME
+                - SNAME
+                - BENEFICIARY_ADDRESS
+                - PHOTO
+                - DISABILITY_TYPE
+                - DISABILITY_PERCENT
+                - DIAGNOSIS
+                - DOI
+                - DOV
+                - CERT_NO
+                - DOC_TYPE
+                    
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      tracking_id:
+                        type: string
+                        minLength: 1
+                        example: yTqyFYTPWE1611917114
+                      transaction_id:
+                        type: string
+                        minLength: 1
+                        example: '0499911623682870'
+                      status:
+                        type: string
+                        minLength: 1
+                        example: completed
+                      response_payload:
+                        type: object
+                        properties:
+                          DOC_TYPE:
+                            type: string
+                            minLength: 1
+                            example: GOVID
+                          CERT_NO:
+                            type: string
+                            minLength: 1
+                            example:  TN0004567800036354
+                        required:
+                          - DOC_TYPE
+                          - CERT_NO
+                    required:
+                      - tracking_id
+                      - transaction_id
+                      - status
+                      - response_payload
+                required:
+                  - status
+                  - data
+               
+               
+        '400':
+          description: Bad Request 
+          
+    delete:
+      tags:
+        - Transactional
+      summary: Data processing API for UDID Card and Disability Certificate.
+      description: Data processing API 
+
+      operationId: Delete Authentication Token for institute type
+      security:
+        - bearerAuth: []
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: GOVID
+        schema:
+          type: string 
+      - in: path
+        name: cert_no
+        required: true
+        example: TN0004567890036354
+        schema:
+          type: string 
+          
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      tracking_id:
+                        type: string
+                        minLength: 1
+                        example: yTqyFYTPWE1611917114
+                      transaction_id:
+                        type: string
+                        minLength: 1
+                        example: '0499911623682870'
+                      status:
+                        type: string
+                        minLength: 1
+                        example: completed
+                      response_payload:
+                        type: object
+                        properties:
+                          DOC_TYPE:
+                            type: string
+                            minLength: 1
+                            example: GOVID
+                          CERT_NO:
+                            type: string
+                            minLength: 1
+                            example:  TN0004567800036354
+                        required:
+                          - DOC_TYPE
+                          - CERT_NO
+                    required:
+                      - tracking_id
+                      - transaction_id
+                      - status
+                      - response_payload
+                required:
+                  - status
+                  - data
+                  
+        '400':
+          description: Bad Request            
+          
+  /processRecords/institute_type/University/doctype/{doctype}/regn_no/{regn_no}/rroll/{rroll}/year/{year}/sem/{sem}:
+    put:
+      tags:
+        - Transactional
+      summary:  Data processing API for Marksheet and Degree/Diploma Certificate for University.
+      description: Data processing API for Marksheet and Degree/Diploma Certificate for University.
+
+      operationId: Authentication Token
+      security:
+        - bearerAuth: []
+     
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: DGCER
+        schema:
+          type: string 
+      - in: path
+        name: regn_no
+        required: true
+        example: 62548372
+        schema:
+          type: string 
+      - in: path
+        name: rroll
+        required: true
+        example: 101
+        schema:
+          type: string  
+      - in: path
+        name: year
+        required: true
+        example: 2021
+        schema:
+          type: string  
+      - in: path
+        name: sem
+        required: true
+        example: IV
+        schema:
+          type: string     
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Parameters to be passed for record updation. This JSON payload should contain the records to be updated. The entire old record will be replaced by the new one. So, all parameters has to be sent even if there is no change in all parameters.
+              properties:
+                CNAME:
+                  type: string
+                  minLength: 1
+                  example: Anupriya Singh Pundir
+                GENDER:
+                  type: string
+                  minLength: 1
+                  example: F
+                DOB:
+                  type: string
+                  minLength: 1
+                  example: 01/01/1900
+                PHOTO:
+                  type: string
+                  minLength: 1
+                  example: abc.jpg
+                ACADEMIC_COURSE_ID:
+                  type: string
+                  minLength: 1
+                  example: 123
+                COURSE_NAME:
+                  type: string
+                  minLength: 1
+                  example: B. TECH
+                STREAM:
+                  type: string
+                  minLength: 1
+                  example: COMPUTER ENGG
+                SEM:
+                  type: string
+                  minLength: 1
+                  example: IV
+                YEAR:
+                  type: string
+                  minLength: 1
+                  example: 2020
+                DIVISION:
+                  type: string
+                  minLength: 1
+                  example: FIRST
+                RESULT:
+                  type: string
+                  minLength: 1
+                  example: PASS
+                CERT_NO:
+                  type: string
+                  minLength: 1
+                  example: 76762
+                ORG_NAME:
+                  type: string
+                  minLength: 1
+                  example: INDIRA GANDHI UNIVERSITY
+                DOC_TYPE:
+                  type: string
+                  minLength: 1
+                  example: DGCER
+              required:
+                - REGN_NO
+                - RROLL
+                - CNAME
+                - GENDER
+                - DOB
+                - PHOTO
+                - ACADEMIC_COURSE_ID
+                - COURSE_NAME
+                - STREAM
+                - SEM
+                - YEAR
+                - DIVISION
+                - RESULT
+                - CERT_NO
+                - ORG_NAME
+                - DOC_TYPE
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: success
+                  tracking_id:
+                    type: string
+                    example: CTm2kRENiH1611917114
+                  transaction_id:
+                    type: string
+                    example: 0499911613623618
+               
+        '400':
+          description: Bad Request 
+          
+    delete:
+      tags:
+        - Transactional
+      summary: Data processing API for Marksheet and Degree/Diploma Certificate for University.
+      description: Data processing API for Marksheet and Degree/Diploma Certificate for University.
+
+      operationId: Delete Authentication token 
+      security:
+        - bearerAuth: []
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: DGCER
+        schema:
+          type: string 
+      - in: path
+        name: regn_no
+        required: true
+        example: 62548372
+        schema:
+          type: string 
+      - in: path
+        name: rroll
+        required: true
+        example: 101
+        schema:
+          type: string  
+      - in: path
+        name: year
+        required: true
+        example: 2021
+        schema:
+          type: string  
+      - in: path
+        name: sem
+        required: true
+        example: IV
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: success
+                  tracking_id:
+                    type: string
+                    example: CTm2kRENiH1611917114
+                  transaction_id:
+                    type: string
+                    example: 0499911613623618
+        '400':
+          description: Bad Request    
+  
+  /processRecords/institute_type/Board/doctype/{doctype}/rroll/{rroll}/year/{year}: 
+    put:
+      tags:
+        - Transactional
+      summary:  Data processing API for Marksheet and Degree/Diploma Certificate for Boards.
+      description: Data processing API for Marksheet and Degree/Diploma Certificate for Boards.
+
+      operationId: Board
+      security:
+        - bearerAuth: []
+     
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: DGCER
+        schema:
+          type: string 
+       
+      - in: path
+        name: rroll
+        required: true
+        example: 101
+        schema:
+          type: integer 
+      - in: path
+        name: year
+        required: true
+        example: 2021
+        schema:
+          type: integer  
+           
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Parameters to be passed for record updation. This JSON payload should contain the records to be updated. The entire old record will be replaced by the new one. So, all parameters has to be sent even if there is no change in all parameters.
+              properties:
+                CNAME:
+                  type: string
+                  minLength: 1
+                  example: Anupriya Singh Pundir
+                GENDER:
+                  type: string
+                  minLength: 1
+                  example: F
+                DOB:
+                  type: string
+                  minLength: 1
+                  example: 01/01/1900
+                PHOTO:
+                  type: string
+                  minLength: 1
+                  example: abc.jpg
+                ACADEMIC_COURSE_ID:
+                  type: string
+                  minLength: 1
+                  example: 123
+                COURSE_NAME:
+                  type: string
+                  minLength: 1
+                  example: B. TECH
+                STREAM:
+                  type: string
+                  minLength: 1
+                  example: COMPUTER ENGG
+                SEM:
+                  type: string
+                  minLength: 1
+                  example: IV
+                YEAR:
+                  type: string
+                  minLength: 1
+                  example: 2020
+                DIVISION:
+                  type: string
+                  minLength: 1
+                  example: FIRST
+                RESULT:
+                  type: string
+                  minLength: 1
+                  example: PASS
+                CERT_NO:
+                  type: string
+                  minLength: 1
+                  example: 76762
+                ORG_NAME:
+                  type: string
+                  minLength: 1
+                  example: INDIRA GANDHI UNIVERSITY
+                DOC_TYPE:
+                  type: string
+                  minLength: 1
+                  example: DGCER
+              required:
+                - REGN_NO
+                - RROLL
+                - CNAME
+                - GENDER
+                - DOB
+                - PHOTO
+                - ACADEMIC_COURSE_ID
+                - COURSE_NAME
+                - STREAM
+                - SEM
+                - YEAR
+                - DIVISION
+                - RESULT
+                - CERT_NO
+                - ORG_NAME
+                - DOC_TYPE
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: success
+                  tracking_id:
+                    type: string
+                    example: CTm2kRENiH1611917114
+                  transaction_id:
+                    type: string
+                    example: 0499911613623618
+               
+        '400':
+          description: Bad Request 
+          
+    delete:
+      tags:
+        - Transactional
+      summary: Data processing API for Marksheet and Degree/Diploma Certificate for Boards.
+      description: Data processing API for Marksheet and Degree/Diploma Certificate for Boards.
+
+      operationId: Delete Board
+      security:
+        - bearerAuth: []
+      parameters:
+      - in: path
+        name: doctype
+        required: true
+        example: DGCER
+        schema:
+          type: string 
+       
+      - in: path
+        name: rroll
+        required: true
+        example: 101
+        schema:
+          type: integer  
+      - in: path
+        name: year
+        required: true
+        example: 2021
+        schema:
+          type: integer  
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: success
+                  tracking_id:
+                    type: string
+                    example: CTm2kRENiH1611917114
+                  transaction_id:
+                    type: string
+                    example: 0499911613623618
+        '400':
+          description: Bad Request 
+          
+  /status/tracking_id/{tracking id}:
+    get:
+      tags:
+        - Informational
+      summary: Tracking ID API 
+      description: API to check status of the transaction using tracking ID. For every request a Tracking ID numbers is generated
+      
+      security:
+        - bearerAuth: []
+      operationId: Tracking ID API
+      parameters:
+      - in: path
+        name: tracking id
+        required: true
+        schema:
+          type: string
+        
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      tracking_id:
+                        type: string
+                        minLength: 1
+                        example: an4SSG4Wbi1611917114
+                      transaction_id:
+                        type: string
+                        minLength: 1
+                        example: 1299911619426186
+                      status:
+                        type: string
+                        minLength: 1
+                        example: completed
+                      response_payload:
+                        type: object
+                        properties:
+                          year: {}
+                          minio_path:
+                            type: string
+                            minLength: 1
+                            example: 9991/photos/
+                          file_name:
+                            type: string
+                            minLength: 1
+                            example: bird6.jpeg
+                        required:
+                          - minio_path
+                          - file_name
+                    required:
+                      - tracking_id
+                      - transaction_id
+                      - status
+                      - response_payload
+                required:
+                  - status
+                  - data
+          
+  
+        '400':
+          description: Bad Request             
+          
+  /photos:
+    post:
+      tags:
+        - Transactional
+      description: API to insert/update/delete photos of students
+
+      operationId: Photo API
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: string
+                  minLength: 1
+                  description: The year for which photo has to be uploaded
+                  example: 2020
+                photo:
+                  type: string
+                  minLength: 1
+                  description: The photo to be uploaded in .jpg, .jpeg and .png format
+                  example: photo.jpg
+                  format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+        '400':
+          description: Bad Request        
+    
+  /photos/year/{year}/photo_name/{photo_name}:
+    post:
+      tags:
+        - Transactional
+      description: API to insert/update/delete photos of students
+
+      operationId: Photo Update
+      security:
+        - bearerAuth: []
+      parameters:
+      - in: path
+        name: photo_name
+        required: true
+        description: The new name of the photograph. Pass this parameter if photo name has to be updated
+        example: abc.jpg
+        schema:
+          type: string 
+      - in: path
+        name: year
+        required: true
+        example: 2020
+        schema:
+          type: string     
+          
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                new_filename:
+                      type: string
+                      minLength: 1
+                      description: The year for which records has to be published.
+                      example: 2021
+          
+                photo:
+                  type: string
+                  minLength: 1
+                  description: The photo to be replaced in .jpg, .jpeg and .png format. Pass this parameter if photo has to be replaced with the same name.
+                  example: photo.jpg
+                  format: binary
+                  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+        '400':
+          description: Bad Request              
+    delete:
+      tags:
+        - Transactional
+      description: API to insert/update/delete photos of students
+      security:
+        - bearerAuth: []
+      operationId: Photo delete
+      parameters:
+      - in: path
+        name: photo_name
+        required: true
+        description: The new name of the photograph. Pass this parameter if photo name has to be updated
+        example: abc.jpg
+        schema:
+          type: string 
+      - in: path
+        name: year
+        required: true
+        example: 2020
+        schema:
+          type: string
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+          
+        '400':
+          description: Bad Request              
+          
+  /publish:
+    post:
+      tags:
+        - Transactional
+      summary: Publish API 
+      description: API to publish/unpublish records on DigiLocker
+
+      operationId: Publish API
+      security:
+        - bearerAuth: []
+        
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  minLength: 1
+                  description: The year for which records has to be published.
+                  example: 2021
+                  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  message:
+                    type: string
+                    minLength: 1
+                    example: Successfully published.
+                  
+        '400':
+          description: Bad Request            
+          
+  /unpublish:
+    post:
+      tags:
+        - Transactional
+      summary: unpublish API 
+      description: API to publish/unpublish records on DigiLocker
+
+      operationId: Unpublish API
+      security:
+        - bearerAuth: []
+        
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  minLength: 1
+                  description: The year for which records has to be unpublished.
+                  example: 2021   
+      
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  message:
+                    type: string
+                    minLength: 1
+                    example: Successfully unpublished.
+        '400':
+          description: Bad Request            
+  
+  /audittrail:
+    post:
+      tags:
+        - Informational
+      summary: Audit trail API 
+      description: API to get the audit trail for a particular record.
+      operationId: Audit trail API
+      security:
+        - bearerAuth: []
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DOC_TYPE:
+                  type: string
+                  minLength: 1
+                  example: DGCER
+                RROLL:
+                  type: string
+                  minLength: 1
+                  example: 12222
+                REGN_NO:
+                  type: string
+                  minLength: 1
+                  example: 646464  
+                SEM:
+                  type: string
+                  minLength: 1
+                  example: IV  
+                YEAR:
+                  type: string
+                  minLength: 1
+                  example: 2020
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+                  
+        '400':
+          description: Bad Request                
+  
+  /uploadFileRecords:
+    post:
+      tags:
+        - Transactional
+      summary: CSV file upload API for student records.
+      description: API for uploading student's records in csv file in bulk mode. Once these CSV files are uploaded successfully, processFileRecords API may be called to process the csv file.
+      operationId: Uploading API
+      security:
+        - bearerAuth: []
+       
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                year_of_exam:
+                  type: string
+                  minLength: 1
+                  description: Year of exam for which file has to be uploaded.
+                  example: 2021
+                doc_type:
+                  type: string
+                  minLength: 1
+                  description: Doctype for which file has to be uploaded.
+                  example: DGCER   
+                userfile:
+                  type: string
+                  minLength: 1
+                  description: The csv file to be uploaded.
+                  format: binary
+                institution_type:
+                  type: string
+                  minLength: 1
+                  description: Type of institution for which data has to be uploaded.
+                  example:  University  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'  
+                  
+        '400':
+          description: Bad Request                
+          
+  /processFileRecords:
+    post:
+      tags:
+        - Transactional
+      summary: API for processing uploaded CSV file for student records. 
+      description: API for processing student's records uploaded in csv file either through API or from NAD GUI.
+      operationId: process File Records
+      security:
+        - bearerAuth: []
+       
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                year_of_exam:
+                  type: string
+                  minLength: 1
+                  description: Year of exam for which file has to be uploaded.
+                  example: 2020
+                doc_type:
+                  type: string
+                  minLength: 1
+                  description: Doctype for which file has to be uploaded.
+                  example: DGCER   
+                userfile:
+                  type: string
+                  minLength: 1
+                  description: The csv file to be uploaded.
+                  example: valid_file_2.zip
+                institution_type:
+                  type: string
+                  minLength: 1
+                  description: Type of institution for which data has to be uploaded.
+                  example:  University  
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Success
+                  message:
+                    type: string
+                    minLength: 1
+                    example: File Data Verified Successfully
+                  
+        '400':
+          description: Bad Request                        
+  
+  /errorfile:
+    get:
+      tags:
+        - Informational
+      summary: Download error API 
+      description: API for downloading error file
+      operationId: Download error API
+      security:
+        - bearerAuth: []
+      parameters:
+      
+      - in: query
+        name: year_of_exam
+        description: Year of exam for which file has to be uploaded.
+        required: true
+        example: 2021
+        schema:
+          type: string   
+      - in: query
+        name: doc_type
+        description: Doctype for which file has to be uploaded.
+        required: true
+        example: DGCER
+        schema:
+          type: string
+      - in: query
+        name: upload_date
+        description: The name of the csv file for which error file is requested.
+        required: true
+        example: ResultData_Sample_University_v5.zip
+        schema:
+          type: string   
+          format: binary
+      - in: query
+        name: institution_type
+        description: Type of institution for which data has to be uploaded
+        required: true
+        example: University
+        schema:
+          type: string 
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessfulOperation'
+                  
+                  
+        '400':
+          description: Bad Request                
+          
+          
+components: 
+  securitySchemes: 
+    bearerAuth: 
+      type: http
+      scheme: bearer
+      bearerFormat: text            
+          
+  schemas:
+    SuccessfulOperation:
+      type: object
+      properties:
+        status:
+          type: string
+          minLength: 1
+          example: Success
+        trcking_id:
+          type: string
+          minLength: 1
+          example: CjZMcbn2DZ1611917859
+        transaction_id:
+          type: string
+          minLength: 1
+          example: 010024251613641667
+    
+
+ 

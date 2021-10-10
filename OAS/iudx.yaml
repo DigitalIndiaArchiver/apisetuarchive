@@ -1,0 +1,324 @@
+openapi: 3.0.2
+info:
+    title: Pune Air Quality Monitoring APIs
+    version: 1.0.0
+    description: >-
+        Describes the APIs to access meta information and realtime information from the Air Quality
+        Monitoring(AQM) Sensors in Pune City. The information on the availability/ installation of Air Quality
+        Monitors can be found from the IUDX catalogue - https://catalogue.iudx.org.in/. The IUDX Catalogue
+        contains all meta information viz location, device ID etc of the AQM sensors. Realtime information of
+        the AQM sensors discovered from the IUDX Catalogue can be accessed from the IUDX Resource Server.
+    contact: 
+      name: India Urban Data Exchange (IUDX)
+      url: https://iudx.org.in/    
+servers:
+    -
+        url: 'https://api.catalogue.iudx.org.in'
+        description: IUDX Catalogue Server
+    -
+        url: 'https://rs.iudx.org.in'
+        description: IUDX Resource Server
+paths:
+    /iudx/cat/v1/search:
+        get:
+            tags:
+                - List
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardResponseWithObjects'
+                    description: Successful query
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardErrorResponse'
+                    description: Bad query
+            summary: List all device IDs/sensor IDs.
+        parameters:
+            -
+                examples:
+                    property-eg:
+                        value: '[resourceGroup]'
+                name: property
+                description: >-
+                    Property is a string on which the query is performed, have an one to one mapping with
+                    value.
+                schema:
+                    type: string
+                in: query
+                required: true
+            -
+                examples:
+                    value-eg:
+                        value: >-
+                            [[datakaveri.org/04a15c9960ffda227e9546f3f46e629e1fe4132b/rs.iudx.org.in/pune-env-aqm]]
+                name: value
+                description: Values of the one to one mapped strings in property.
+                schema:
+                    type: string
+                in: query
+            -
+                examples:
+                    filter-eg:
+                        value: '[id]'
+                name: filter
+                description: Filter properties to display. This is an array of strings.
+                schema:
+                    type: string
+                in: query
+    /iudx/cat/v1/item:
+        get:
+            tags:
+                - Entity
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardResponseWithObjects'
+                    description: Successful query
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardErrorResponse'
+                    description: Bad query
+            summary: Get IUDX Entity given the ID.
+        parameters:
+            -
+                examples:
+                    id-eg:
+                        value: >-
+                            datakaveri.org/04a15c9960ffda227e9546f3f46e629e1fe4132b/rs.iudx.org.in/pune-env-aqm/f36b4669-628b-ad93-9970-f9d424afbf75
+                name: id
+                description: ID of IUDX Entity.
+                schema:
+                    type: string
+                in: query
+                required: true
+    /ngsi-ld/v1/entities:
+        get:
+            tags:
+                - Latest
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/entityresponse'
+                    description: Successful query
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardBadRequestErrorResponse'
+                    description: Bad query
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardResourceNotFoundErrorResponse'
+                    description: Resource not found
+            summary: Get latest data for the given IUDX ID.
+        parameters:
+            -
+                examples:
+                    id-eg:
+                        value: >-
+                            datakaveri.org/04a15c9960ffda227e9546f3f46e629e1fe4132b/rs.iudx.org.in/pune-env-aqm/f36b4669-628b-ad93-9970-f9d424afbf75
+                name: id
+                description: ID of IUDX Entity.
+                schema:
+                    type: string
+                in: query
+                required: true
+    /ngsi-ld/v1/temporal/entities:
+        get:
+            tags:
+                - Temporal
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/entityresponse'
+                    description: Successful query
+                '400':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardBadRequestErrorResponse'
+                    description: Bad query
+                '404':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/standardResourceNotFoundErrorResponse'
+                    description: Resource not found
+            summary: Get temporal data for the given IUDX ID.
+        parameters:
+            -
+                examples:
+                    id-eg:
+                        value: >-
+                            datakaveri.org/04a15c9960ffda227e9546f3f46e629e1fe4132b/rs.iudx.org.in/pune-env-aqm/f36b4669-628b-ad93-9970-f9d424afbf75
+                name: id
+                description: ID of IUDX Entity.
+                schema:
+                    type: string
+                in: query
+                required: true
+            -
+                examples:
+                    timerel-eg:
+                        value: during
+                name: timerel
+                description: 'Type of the temporal-query, for e.g, during, before, after.'
+                schema:
+                    enum:
+                        - during
+                        - before
+                        - after
+                    type: string
+                in: query
+            -
+                examples:
+                    time-eg:
+                        value: '2021-02-15T14:20:00+05:30'
+                name: time
+                description: Start time for the temporal-query in ISO8601 format.
+                schema:
+                    format: date-time
+                    type: string
+                in: query
+            -
+                examples:
+                    endtime-eg:
+                        value: '2021-02-15T15:20:00+05:30'
+                name: endtime
+                description: End time for the temporal-query in ISO8601 format.
+                schema:
+                    format: date-time
+                    type: string
+                in: query
+components:
+    schemas:
+        entityresponse:
+            title: entityresponse
+            type: object
+            properties:
+                type:
+                    format: int32
+                    type: integer
+                title:
+                    type: string
+                results:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                        observationDateTime:
+                            type: string
+                        measuredDistance:
+                            format: float
+                            type: number
+                        currentLevel:
+                            format: float
+                            type: number
+                        referenceLevel:
+                            format: int32
+                            type: integer
+            example:
+                type: 200
+                title: success
+                results:
+                    -
+                        id: >-
+                            datakaveri.org/04a15c9960ffda227e9546f3f46e629e1fe4132b/rs.iudx.org.in/pune-env-flood/FWR053
+                        observationDateTime: '2021-02-16T22:15:00+05:30'
+                        measuredDistance: 9.39
+                        currentLevel: 0.61
+                        referenceLevel: 10
+        standardErrorResponse:
+            title: standardErrorResponse
+            description: Stand response body for error status
+            type: object
+            properties:
+                status:
+                    type: string
+                description:
+                    type: string
+            example:
+                status: fail
+                description: failed due to invalid query
+        standardBadRequestErrorResponse:
+            title: standardBadRequestErrorResponse
+            properties:
+                type:
+                    format: int32
+                    type: integer
+                title:
+                    type: string
+                detail:
+                    type: string
+            example:
+                type: 400
+                title: Bad Request Data
+                detail: >-
+                    Empty response | Missing/Invalid temporal parameters | Missing/Invalid geo parameters |
+                    Count is not supported with filtering
+        standardResourceNotFoundErrorResponse:
+            title: standardResourceNotFoundErrorResponse
+            properties:
+                type:
+                    format: int32
+                    type: integer
+                title:
+                    type: string
+                detail:
+                    type: string
+            example:
+                type: 404
+                title: Not Found
+                detail: Resource Not Found
+        standardResponseWithObjects:
+            title: standardResponseWithObjects
+            description: Standard Response for all requests
+            type: object
+            properties:
+                totalHits:
+                    format: int32
+                    description: Total number of documents which matched the query.
+                    type: integer
+                results:
+                    description: Results which matched the query. This is an array of objects.
+                    type: array
+                    items:
+                        type: object
+                description:
+                    description: Detailed description of the status
+                status:
+                    description: 'Status of the request. Could be success, fail, invalidSyntax.'
+                    type: string
+            example:
+                totalHits: 10
+                results:
+                    - {}
+                status: success
+                description: a detailed description
+tags:
+    -
+        name: List
+        description: List all the Air Quanlity Monitoring sensors in Pune city.
+    -
+        name: Entity
+        description: Fetch the Air Quality Monitoring IUDX Entity using it's ID.
+    -
+        name: Latest
+        description: Get the latest (last published) air quality data of a resource.
+    -
+        name: Temporal
+        description: Get the latest (last published) air quality data of a resource.

@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: eSangam APIs
+  description: eSangam enables applications to interoperate through asynchronous peer to peer messaging. eSangam APIs are offered by API Setu platform as an alternative to C-DCA's eSangam (NSDG) platform as per the direction of Ministry of Electronics and IT, Government of India. [<i>Updated on 07 June 2021</i>]
+  termsOfService: https://apisetu.gov.in
+  contact:
+    name:   API Setu
+    url:  https://apisetu.gov.in
+  version: 1.1.0
+servers:
+  - url: https://esangam.digitallocker.gov.in
+
+paths:
+  /esangam/v1/post:
+    post:
+      summary: API to receive messages from peers 
+      tags:
+        - Messaging API
+      description: This defines the core API of API Setu's eSangam message exchange. Every peer participating in eSangam will implement this API endpoint within their application. This API will act as a message inbox for receiving messages from eSangam. eSangam will also implement this API to receive messages from peers.
+      operationId: post
+      
+      security:
+        - mTLS: []
+
+      parameters:
+      - name: X-APISETU-TRACEID
+        in: header
+        required: true
+        description: This is a unique id for every transaction in UUID format. The TraceId is used to track the messages and their status across peers. A peer originating a message will a new generate a TraceId. A peer responding to the message from another peer should not change the TraceId. The TraceId can be used to track the complete journey of a request and response from the source application to the destination application.
+        example: "71679d62-1e3c-4776-a356-b6cafcb964a5"
+        schema:
+          type: string 
+          format: uuid
+      - name: X-APISETU-MESSAGE-SUBJECT
+        in: header
+        required: true
+        description: A brief description about the contents of the message. This parameter is useful for tracing the messages on API Setu. This additional parameter helps differentiate two messages with the same trace id.
+        example: "Initial PAN Request"
+        schema:
+          type: string 
+      - name: X-APISETU-SOURCE-APPID
+        in: header
+        required: true
+        description:  This paramter contains the application id of the source application of the peer that originates the message. Every peer can register applications that participate in message exchange on API Setu eSangam ecosystem. Every peer can register multiple applications. A peer can choose a unique application id for its registered application. The application ids are alphanumeric and 8 character long.
+        example: mca21pan
+        schema:
+          type: string 
+          minLength: 8
+          maxLength: 8
+      - name: X-APISETU-DEST-APPID
+        in: header
+        required: true
+        description: This parameter contains the application id of the destination application. Every peer can register applications that participate in message exchange on API Setu eSangam ecosystem. Every peer can register multiple applications. A peer can choose a unique application id for its registered application. The application ids are alphanumeric and 8 character long.
+        example: nsdlmc21
+        schema:
+          type: string 
+          minLength: 8
+          maxLength: 8
+
+      requestBody:
+        description: The actual message payload is passed in the HTTP request body. The structure of this message will be as per the specification provided by the message receiving peer. API Setu does not modify this payload in any way.
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: The structure of this message will be as per the specification provided by the message receiving peer. API Setu does not modify this payload in any way.
+              
+      responses:
+        '200':
+          description: Message received successfully. If any other code is received in response, then the peer can inspect the error details and attempt to send the message again.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  acknowledgeId:
+                    description: The API will return a unique acknowledge id if a message is received successfully.
+                    type: string
+                    format: uuid
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: invalid_parameter
+                  errorDescription:
+                    type: string
+                    example: X-APISETU-DEST-APPID is missing or invalid.
+        '500':
+          description: Internal server error  
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: internal_error
+                  errorDescription:
+                    type: string
+                    example: Unable to process request due to internal error.
+
+components:        
+  securitySchemes:
+    mTLS:
+      type: http
+      scheme: Mutual TLS 1.2 or higher
+      description: Mutual TLS 1.2 or higher
+
+      
+     
+    
+ 

@@ -1,0 +1,374 @@
+CasteCertificateSchema:
+      type: object
+      properties:
+        
+        language:
+          type: string
+          minLength: 1
+          example: 99
+          xml:
+            attribute: true
+        name:
+          type: string
+          minLength: 1
+          example: Caste Certificate
+          xml:
+            attribute: true
+        type:
+          type: string
+          example: CTCER
+          xml:
+            attribute: true
+        number:
+          type: integer
+          minLength: 1
+          example: C012345
+          xml:
+            attribute: true
+        issuedAt:
+          type: string
+          example: ''
+          xml:
+            attribute: true
+        issueDate:
+          type: string
+          example: 01-01-1980
+          xml:
+            attribute: true
+        validFromDate:
+          type: string
+          example: 01-01-1980
+          xml:
+            attribute: true
+        expiryDate:
+          type: string
+          example: ' '
+          xml:
+            attribute: true    
+        status:
+          type: string
+          minLength: 1
+          example: A
+          xml:
+            attribute: true
+        IssuedBy:
+          type: object
+          properties:
+            Organization:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  example: ''
+                  xml:
+                    attribute: true
+                code:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                tin:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                uid:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                type:
+                  type: string
+                  minLength: 1
+                  example: CG
+                  xml:
+                    attribute: true
+                Address:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: present
+                      xml:
+                        attribute: true
+                    line1:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    line2:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    house:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    landmark:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    locality:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    vtc:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    district:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    pin:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    state:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    country:
+                      type: string
+                      minLength: 1
+                      example: IN
+                      xml:
+                        attribute: true
+                  required:
+                    - type
+                    - line1
+                    - line2
+                    - house
+                    - landmark
+                    - locality
+                    - vtc
+                    - district
+                    - pin
+                    - state
+                    - country
+              required:
+                - name
+                - code
+                - tin
+                - uid
+                - type
+                - Address
+          required:
+            - Organization
+        IssuedTo:
+          type: object
+          properties:
+            Person:
+              type: object
+              properties:
+                uid:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                title:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                name:
+                  type: string
+                  minLength: 1
+                  example: ''
+                  xml:
+                    attribute: true
+                dob:
+                  type: string
+                  minLength: 1
+                  example: ''
+                  xml:
+                    attribute: true
+                swd:
+                  type: string
+                  minLength: 1
+                  example: PRAMOD KUMAR
+                  xml:
+                    attribute: true
+                swdIndicator:
+                  type: string
+                  minLength: 1
+                  example: S
+                  xml:
+                    attribute: true
+          
+                gender:
+                  type: string
+                  example: M
+                  xml:
+                    attribute: true
+                maritalStatus:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                
+                religion:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                phone:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                email:
+                  type: string
+                  example: ''
+                  xml:
+                    attribute: true
+                Address:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      minLength: 1
+                      example: permanent
+                    line1:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    line2:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    house:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    landmark:
+                      type: string
+                      example: null
+                      xml:
+                        attribute: true
+                    locality:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    vtc:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    district:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    pin:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    state:
+                      type: string
+                      example: ''
+                      xml:
+                        attribute: true
+                    country:
+                      type: string
+                      minLength: 1
+                      example: IN
+                      xml:
+                        attribute: true
+                  required:
+                    - type
+                    - line1
+                    - line2
+                    - house
+                    - landmark
+                    - locality
+                    - vtc
+                    - district
+                    - pin
+                    - state
+                    - country
+                Photo:
+                  type: object
+                  properties:
+                    format:
+                      type: string
+                      xml:
+                        attribute: true
+                  required:
+                    - format
+              required:
+                - uid
+                - title
+                - name
+                - dob
+                - swd
+                - swdIndicator
+                - motherName
+                - gender
+                - maritalStatus
+                - disabilityStatus
+                - category
+                - religion
+                - phone
+                - email
+                - Address
+                - Photo
+          required:
+            - Person
+        CertificateData:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              xml:
+                attribute: true
+            category:
+              enum:
+              - SC
+              - ST
+              - OBC
+              - GC
+              xml:
+                attribute: true
+            subCategory:
+              type: string
+              xml:
+                attribute: true
+            description:
+              type: string
+              xml:
+                attribute: true
+          required:
+            - name
+            - category
+            - subCategory
+            - description    
+      required:
+        - language
+        - name
+        - type
+        - number
+        - issuedAt
+        - issueDate
+        - validFromDate
+        - status
+        - IssuedBy
+        - IssuedTo
+        - CertificateData
+      xml:
+        name: Certificate

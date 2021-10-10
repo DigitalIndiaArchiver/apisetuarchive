@@ -1,0 +1,433 @@
+swagger: '2.0'
+paths:
+  /getBasicInfoByInstituteId:
+    get:
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: 'instituteId '
+          in: query
+          required: true
+          type: string
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+  /getList:
+    get:
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: statuatoryBodyId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+  /institutecount:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: countryId
+          in: query
+          required: false
+          type: integer
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: officeId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: statutoryBodyId
+          in: query
+          required: false
+          type: integer
+  /searchByName:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: name
+          in: query
+          required: true
+          type: string
+        - name: instituteId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+  /iit:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: statuatoryBodyId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+  /iiit:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: statuatoryBodyId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+  /nit:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: statuatoryBodyId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+  /iim:
+    get:
+      responses:
+        '200':
+          description: ''
+      x-auth-type: Application & Application User
+      x-throttling-tier: 50KPerMin
+      parameters:
+        - name: stateId
+          in: query
+          required: false
+          type: integer
+        - name: districtId
+          in: query
+          required: false
+          type: integer
+        - name: categoryId
+          in: query
+          required: false
+          type: integer
+        - name: subCategoryId
+          in: query
+          required: false
+          type: integer
+        - name: statuatoryBodyId
+          in: query
+          required: false
+          type: integer
+        - name: goveranceSectorId
+          in: query
+          required: false
+          type: integer
+        - name: standardId
+          in: query
+          required: false
+          type: integer
+        - name: groupId
+          in: query
+          required: false
+          type: integer
+        - name: languageId
+          in: query
+          required: false
+          type: integer
+        - name: bilingual
+          in: query
+          required: false
+          type: string
+        - name: codeStandard
+          in: query
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          required: false
+          type: integer
+info:
+  title: NAPIX [Higher Education] - Institute APIs
+         
+  version: v1.0
+  description: 1.get Basic Information By Institute Id 2.get List by institution id 3.Institute Count by institution id 4. Search By Institute name by institution id
+  contact:
+    name: NAPIX
+    url: 'https://napix.gov.in'    
+
+  termsOfService: 'https://terms-of-service-url.gov.in'
+
+host: egw.bharatapi.gov.in
+basePath: /t/heapi.nic.in/Institute/v1.0
+
+schemes:
+  - https
+  - http
+securityDefinitions:
+  default:
+    type: oauth2
+    authorizationUrl: https://egw.bharatapi.gov.in/authorize
+    flow: implicit
+    scopes: {}

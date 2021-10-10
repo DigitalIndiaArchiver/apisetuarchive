@@ -1,0 +1,4595 @@
+openapi: 3.0.1
+info:
+  title: Health ID Service
+  description: "It is important to standardize the process of identification of an\
+    \ individual across healthcare providers, to ensure that the created medical records\
+    \ are issued to the right individual or accessed by a Health Information User\
+    \ through appropriate consent. \nIn order to issue a Health ID to an individual,\
+    \ one only needs basic demographic details like Name, Year of Birth, Gender. In\
+    \ addition, citizens should be able to update contact information easily."
+  version: "1.0"
+  contact:
+    name: National Health Authority
+    url: https://ndhm.gov.in/
+servers:
+- url: https://healthidsbx.ndhm.gov.in/api
+tags:
+- name: Authentication
+  description: Health ID Authentication APIs
+- name: Forgot health id/number
+  description: APIs to Retrieve Health ID/number using mobile number or aadhar.
+- name: Health Facility
+  description: Create Health facility ID APIs
+- name: Integrated Programs
+  description: APIs to be published by the Health ID system for benefit linkage
+- name: Profile
+  description: Health ID Profile APIs (requires authenticated user token)
+- name: Registration with Aadhaar
+  description: APIs to create Health ID using Aadhaar number & mobile number.
+- name: Registration with mobile number
+  description: APIs to create Health ID using mobile number.
+- name: Search
+  description: Health ID Search APIs
+- name: Tags
+  description: Health ID Tag APIs
+- name: Utility
+  description: Health ID Information APIs
+paths:
+  /v1/account/aadhaar/generateOTP:
+    post:
+      tags:
+      - Profile
+      summary: Generate Aadhaar OTP on registrered for link account with aadhar number
+      description: Generate Aadhaar OTP on registrered for link account with aadhar
+        number
+      operationId: generatereKycAadharOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/aadhaar/verifyOTP:
+    post:
+      tags:
+      - Profile
+      summary: Verify Aadhaar OTP to complete KYC/re-KYC verification.
+      description: Verify Aadhaar OTP to complete KYC/re-KYC verification
+      operationId: verifyAadharOTPOnlyUsingPOST_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      requestBody:
+        description: verifyAadhaarOtp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyAadhaarOtp'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: verifyAadhaarOtp
+  /v1/account/benefits:
+    get:
+      tags:
+      - Profile
+      summary: Get List of Benefits associated with HealthID.
+      operationId: getBenefitsUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer XToken
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/change/passwd/byAadhaar:
+    post:
+      tags:
+      - Profile
+      summary: Change password via Aadhar for heath id.
+      description: Change password via Aadhar for heath id.
+      operationId: changePasswordViaAadharUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      requestBody:
+        description: hidOtpRequestPaylaod
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidOtpRequestPaylaod'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: hidOtpRequestPaylaod
+  /v1/account/change/passwd/byMobile:
+    post:
+      tags:
+      - Profile
+      summary: Change password via mobile for heath id.
+      description: Change password via mobile for heath id.
+      operationId: changePasswordViaMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      requestBody:
+        description: hidOtpRequestPaylaod
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidOtpRequestPaylaod'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: hidOtpRequestPaylaod
+  /v1/account/change/passwd/generateAadhaarOTP:
+    get:
+      tags:
+      - Profile
+      summary: Generate Aadhaar OTP on registrered mobile number.
+      description: Generate Aadhaar OTP on registrered mobile number.
+      operationId: generateAadharOTPUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/change/passwd/generateMobileOTP:
+    get:
+      tags:
+      - Profile
+      summary: Generate Mobile OTP to start registration.
+      description: Generate Mobile OTP to start registration.
+      operationId: generateMobileOTPUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/change/password:
+    post:
+      tags:
+      - Profile
+      summary: Change password via password for heath id.
+      description: Change password via password for heath id.
+      operationId: changePasswordViaUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      requestBody:
+        description: healthFacilityPasswordRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidChangePasswordRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: healthFacilityPasswordRequest
+  /v1/account/getCard:
+    get:
+      tags:
+      - Profile
+      summary: Generate Health ID card in PDF format
+      operationId: generateCardUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/getPngCard:
+    get:
+      tags:
+      - Profile
+      summary: Generate Health ID card PNG
+      operationId: generatePngCardUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/getSvgCard:
+    get:
+      tags:
+      - Profile
+      summary: Generate Health ID card SVG
+      operationId: generateSvgCardUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/profile:
+    get:
+      tags:
+      - Profile
+      summary: Get account information.
+      operationId: getAccountInformationUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer XToken
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+    post:
+      tags:
+      - Profile
+      summary: Update account information
+      operationId: updateAccountInformationUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+    delete:
+      tags:
+      - Profile
+      summary: Delete account
+      operationId: deleteAccountUsingDELETE
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        204:
+          description: No Content
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/qrCode:
+    get:
+      tags:
+      - Profile
+      summary: Get Quick Response code in PNG format for this account.
+      operationId: getQrCodeUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer XToken
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+            image/png:
+              schema:
+                type: string
+                format: byte
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/account/token:
+    post:
+      tags:
+      - Profile
+      summary: Validate auth token
+      operationId: validateTokenUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateTokenRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/auth/authPassword:
+    post:
+      tags:
+      - Authentication
+      summary: Authenticate using Health ID number / Health ID and password
+      operationId: authenticateWithPasswordUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JwtRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/authWithMobile:
+    post:
+      tags:
+      - Authentication
+      summary: Authenticate request to generate Mobile OTP using Health ID number
+        / Health ID
+      operationId: authenticateUserUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthMobileOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authRequest
+  /v1/auth/authWithMobileToken:
+    post:
+      tags:
+      - Authentication
+      summary: Authenticate using verified Mobile Number and user data
+      operationId: authWithMobileTokenUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthWithMobileTxnAndUserData'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authRequest
+  /v1/auth/cert:
+    get:
+      tags:
+      - Authentication
+      summary: Auth token public key.
+      operationId: certUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/auth/confirmWithAadhaarBio:
+    post:
+      tags:
+      - Authentication
+      summary: Authentication with Aadhaar Biometric based auth transaction.
+      operationId: confirmWithAadhaarBioUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthAccountAadhaarBioRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/confirmWithAadhaarOtp:
+    post:
+      tags:
+      - Authentication
+      summary: Authentication with Aadhaar OTP based auth transaction.
+      operationId: confirmWithAadhaarOtpUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthAccountAadhaarOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/confirmWithDemographics:
+    post:
+      tags:
+      - Authentication
+      summary: Authenticate using demographic data of user.
+      operationId: confirmWithDemographicsUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthAccountWithDemographicsRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/confirmWithMobileOTP:
+    post:
+      tags:
+      - Authentication
+      summary: Authentication with Mobile OTP based auth transaction.
+      operationId: confirmWithMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthAccountMobileOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/confirmWithPassword:
+    post:
+      tags:
+      - Authentication
+      summary: Authentication with PASSWORD based auth transaction.
+      operationId: authAccountPasswordRequestUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthWithPasswordRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authenticationRequest
+  /v1/auth/init:
+    post:
+      tags:
+      - Authentication
+      summary: Initiate authentication process for given Health ID
+      operationId: initiateAuthUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthInitRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authRequest
+  /v1/auth/resendAuthOTP:
+    post:
+      tags:
+      - Authentication
+      summary: Resend Aadhaar/Mobile OTP for Authentication Transaction.
+      operationId: resendAuthMobileOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: resendOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: resendOtpRequest
+  /v1/forgot/healthId/aadhaar:
+    post:
+      tags:
+      - Forgot health id/number
+      summary: Verify aadhar OTP sent as part of forgetHealth id.
+      description: Verify aadhar OTP sent as part of forgetHealth id.
+      operationId: retrievalHealthIdByAadharUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: authAccountAadhaarOTPRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthAccountAadhaarOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RetrieveHealthIdPayloadResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: authAccountAadhaarOTPRequest
+  /v1/forgot/healthId/aadhaar/generateOtp:
+    post:
+      tags:
+      - Forgot health id/number
+      summary: Generate Aadhaar OTP on registrered mobile number
+      description: Generate Aadhaar OTP on registrered mobile number
+      operationId: generateAadharOTPUsingPOST_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharOtpGenerateRequestPayLoad'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/forgot/healthId/mobile:
+    post:
+      tags:
+      - Forgot health id/number
+      summary: Verify Mobile OTP sent as  part of forgetHealth id.
+      description: Verify Mobile OTP sent as  part of forgetHealth id.
+      operationId: retrievalHealthIdByMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: retriveHealthIdMobilePayLoad
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetriveHealthIdMobilePayLoad'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RetrieveHealthIdPayloadResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: retriveHealthIdMobilePayLoad
+  /v1/forgot/healthId/mobile/generateOtp:
+    post:
+      tags:
+      - Forgot health id/number
+      summary: Generate Mobile OTP to start registration
+      description: Generate Mobile OTP to start registration transaction.
+      operationId: generateMobileOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMobileOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/ha/lgd/districts:
+    get:
+      tags:
+      - Utility
+      summary: Get a list of districts in a given  State as per LGD.
+      operationId: getDistrictsInStateUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: stateCode
+        in: query
+        description: stateCode
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DistrictDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/ha/lgd/states:
+    get:
+      tags:
+      - Utility
+      summary: Get a list of states as per LGD.
+      operationId: getStatesUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatesDTO'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/ha/tags:
+    get:
+      tags:
+      - Tags
+      summary: Get list of Tags against HealthID.
+      operationId: getTagsUsingGET
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+    post:
+      tags:
+      - Tags
+      summary: Add tag against HealthId.
+      operationId: addTagUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: tagRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagRequest'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: tagRequest
+    delete:
+      tags:
+      - Tags
+      summary: Delete tag against HealthId.
+      operationId: deleteTagUsingDELETE
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: tagRequest
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TagRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagRequest'
+        204:
+          description: No Content
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: tagRequest
+  /v1/health/facility/authenticate:
+    post:
+      tags:
+      - Health Facility
+      summary: Generate token for heath facility id.
+      description: Generate token for heath facility id.
+      operationId: authenticateHealthFacilityUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: healthFacilityAuthenticationRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthFacilityAuthenticationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: healthFacilityAuthenticationRequest
+  /v1/health/facility/change/password:
+    post:
+      tags:
+      - Health Facility
+      summary: Change password for heath facility id.
+      description: Change password for heath facility id.
+      operationId: changePasswordUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: healthFacilityPasswordRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthFacilityChangedPasswordRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: healthFacilityPasswordRequest
+  /v1/health/facility/createHealthIdWithPreVerified:
+    post:
+      tags:
+      - Health Facility
+      summary: Generate Health ID card SVG
+      operationId: createAadhaarAccountUsingPOST_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: accountRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountWithPreVerifiedAadhaar'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateAccountJwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: accountRequest
+  /v1/health/facility/generate/password:
+    post:
+      tags:
+      - Health Facility
+      summary: Generates password for heath facility id.
+      description: Generates password for heath facility id.
+      operationId: generatePasswordUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: healthFacilityPasswordRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthFacilityPasswordRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: healthFacilityPasswordRequest
+  /v1/health/facility/generateOtp:
+    post:
+      tags:
+      - Health Facility
+      summary: Generate health hacility OTP on registrered mobile number
+      description: Generate health facility OTP on registrered mobile number
+      operationId: generateFacilityOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer XToken
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharOtpGenerateRequestPayLoad'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/health/facility/getSvgCard:
+    get:
+      tags:
+      - Health Facility
+      summary: generateSvgCard
+      operationId: generateSvgCardUsingGET_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      - name: Health-ID
+        in: header
+        description: Your health id
+        required: true
+        schema:
+          type: string
+        example: demo@ndhm
+      - name: X-Token
+        in: header
+        description: Auth Token
+        required: true
+        schema:
+          type: string
+        example: Bearer X-Token
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+  /v1/health/facility/reset/password:
+    post:
+      tags:
+      - Health Facility
+      summary: Reset password for heath facility id.
+      description: Reset password for heath facility id.
+      operationId: resetPasswordUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: healthFacilityPasswordRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthFacilityPasswordRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: healthFacilityPasswordRequest
+  /v1/hid/benefit/aadhaar/generateOtp:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Generate Aadhaar OTP on registrered mobile number
+      description: Generate Aadhaar OTP on registrered mobile number
+      operationId: generateAadharOTPUsingPOST_2
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharOtpGenerateRequestPayLoad'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/hid/benefit/aadhaar/verifyAadharOtp:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Create health id using Aadhaar Number Otp.
+      description: Create health id using Aadhaar number opt
+      operationId: verifyAadharOtpUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createHealthIdOptRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHealthIdOptRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitRequestPayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createHealthIdOptRequest
+  /v1/hid/benefit/aadhaar/verifyBio:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Create health id using Biometric Authentication.
+      description: Create health id using Biometric Authentication.
+      operationId: verifyBioUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createHidBiometricRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHidBiometricRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitRequestPayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createHidBiometricRequest
+  /v1/hid/benefit/createHealthId/demo/auth:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Create health id using Aadhaar Demo Auth.
+      description: Create health id using Aadhaar Demo Auth.
+      operationId: createHealthIdByDemoAuthUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createHIdDemoAuthRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHIdDemoAuthRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitRequestPayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createHIdDemoAuthRequest
+  /v1/hid/benefit/delink:
+    post:
+      tags:
+      - Integrated Programs
+      summary: De-Linked with hid.
+      description: De-Linked with hid.
+      operationId: delinkHidBenefitUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: hidBenefitLinkedRequestPayload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidBenefitDelinkRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitLinkedResponsePayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: hidBenefitLinkedRequestPayload
+  /v1/hid/benefit/link:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Linked with hid.
+      description: Linked with hid.
+      operationId: linkHidBenefitUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: hidBenefitLinkedRequestPayload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidBenefitLinkedRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitLinkedResponsePayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: hidBenefitLinkedRequestPayload
+  /v1/hid/benefit/mobile/createHealthId:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Create health id using mobile Authentication.
+      description: Create health id using mobile Authentication.
+      operationId: createHealthIdByMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createHidMobileRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHidMobileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createHidMobileRequest
+  /v1/hid/benefit/mobile/generateOtp:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Generate mobile OTP on registrered mobile number
+      description: Generate mobile OTP on registrered mobile number
+      operationId: generateMobileOtpUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMobileOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/hid/benefit/notify/benefit:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Create health id using notify Benefit.
+      description: Create health id using notify Benefit.
+      operationId: notifyBenefitUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createHidNotifyBenefitRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHidNotifyBenefitRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HidBenefitRequestPayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createHidNotifyBenefitRequest
+  /v1/hid/benefit/search/aadhaar:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Search health id number using aadhar or aadhar token.
+      description: Search health id number using aadhar or aadhar token.
+      operationId: findByAadharUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: aadharNumberRequestPayload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharNumberRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: {}
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: aadharNumberRequestPayload
+  /v1/hid/benefit/search/healthIdNumber:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Search benefit using health id number.
+      description: Search benefit using health id number
+      operationId: findByHealthIdUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: searchRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidBenefitNameSearchRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HidBenefitSearchResponsePayload'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: searchRequest
+  /v1/hid/benefit/update/mobile:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Update mobile number for account.
+      operationId: updateMobileInformationUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidUpdateMobiletRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/hid/benefit/update/profile:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Update account information
+      operationId: updateAccountInformationUsingPOST_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidUpdateAccountRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/hid/benefit/update/status:
+    post:
+      tags:
+      - Integrated Programs
+      summary: Update health id status .
+      description: Update health id status.
+      operationId: updateStatusUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HidStatusRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/registration/aadhaar/createHealthIdWithAadhaarOtp:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Verify Aadhaar OTP on registrered mobile number to create Health ID.
+      description: Verify Aadhar OTP received on registrered mobile number
+      operationId: verifyAadharOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: verifyAadharOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountWithAadhaarOtp'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateAccountJwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: verifyAadharOtpRequest
+  /v1/registration/aadhaar/createHealthIdWithPreVerified:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Create Health ID using pre-verified Aadhaar & Mobile.
+      description: Create Health ID using pre-verified Aadhaar & Mobile.
+      operationId: createAadhaarAccountUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: accountRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountWithPreVerifiedAadhaar'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateAccountJwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: accountRequest
+  /v1/registration/aadhaar/generateMobileOTP:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Generate Mobile OTP for verification.
+      description: Generate Mobile OTP to verify mobile number.
+      operationId: generateMobileOTPForTxnUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMobileOTPForTxnRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/registration/aadhaar/generateOtp:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Generate Aadhaar OTP on registrered mobile number
+      description: Generate Aadhaar OTP on registrered mobile number
+      operationId: generateAadharOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharOtpGenerateRequestPayLoad'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/registration/aadhaar/resendAadhaarOtp:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Resend Aadhaar OTP on registrered mobile number to create Health ID.
+      description: Resend Aadhar OTP on registrered mobile number
+      operationId: resendAadharOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateAccountJwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/registration/aadhaar/search/aadhar:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Search health id number using aadhar.
+      description: Search health id number using aadhar.
+      operationId: getHealthIdNumbersByAadharUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: aadharNumberRequestPayload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AadharNumberRequestPayload'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: {}
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: aadharNumberRequestPayload
+  /v1/registration/aadhaar/verifyBio:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Verify Aadhaar using biometrics.
+      description: Verify Aadhaar using biometrics
+      operationId: verifyAadharBioUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: verifyAadharOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyAadhaarWithBio'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: verifyAadharOtpRequest
+  /v1/registration/aadhaar/verifyMobileOTP:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Verify Mobile OTP in an existing transaction.
+      description: Verify Mobile OTP in an existing transaction.
+      operationId: verifyMobileOTPForTxnUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyMobileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: request
+  /v1/registration/aadhaar/verifyOTP:
+    post:
+      tags:
+      - Registration with Aadhaar
+      summary: Verify Aadhaar OTP and continue for mobile verification.
+      description: Verify Aadhaar OTP received on registrered mobile number
+      operationId: verifyAadharOTPOnlyUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: verifyAadhaarOtp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyAadhaarOtp'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: verifyAadhaarOtp
+  /v1/registration/mobile/createHealthId:
+    post:
+      tags:
+      - Registration with mobile number
+      summary: Create Health ID with verified mobile token
+      operationId: verifyUserViaMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: createAccountRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountByVerifiedMobileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CreateAccountJwtResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: createAccountRequest
+  /v1/registration/mobile/generateOtp:
+    post:
+      tags:
+      - Registration with mobile number
+      summary: Generate Mobile OTP to start registration
+      description: Generate Mobile OTP to start registration transaction.
+      operationId: generateMobileOTPUsingPOST_1
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: generateOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateMobileOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TxnResponse'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: generateOtpRequest
+  /v1/registration/mobile/resendOtp:
+    post:
+      tags:
+      - Registration with mobile number
+      summary: Resend Mobile OTP for Health ID registration
+      description: Resend Mobile OTP in an existing transaction in case previous OTP
+        is not received.
+      operationId: resentOtpUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: resendRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendOTPRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: resendRequest
+  /v1/registration/mobile/verifyOtp:
+    post:
+      tags:
+      - Registration with mobile number
+      summary: Verify Mobile OTP sent as part of registration transaction.
+      description: Verify Mobile OTP in current registration transaction.
+      operationId: verifyMobileOTPUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: verifyOtpRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyMobileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MobileVerificationToken'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: verifyOtpRequest
+  /v1/search/existsByHealthId:
+    post:
+      tags:
+      - Search
+      summary: Search a user by Health IDs.
+      operationId: searchUserByUseridUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: searchDTO
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchByHealthIdRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: searchDTO
+  /v1/search/searchByHealthId:
+    post:
+      tags:
+      - Search
+      summary: Search a user by Health ID Number.
+      operationId: searchUserByAccountUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: searchRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchByHealthIdRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SearchResponseSingle'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: searchRequest
+  /v1/search/searchByMobile:
+    post:
+      tags:
+      - Search
+      summary: Search users with a mobile number.
+      operationId: searchUserByMobileUsingPOST
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+          default: en-US
+      requestBody:
+        description: searchRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchByMobileRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SearchResponseSingle'
+        201:
+          description: Created
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+      - Authorization:
+        - global
+      - X-HIP-ID:
+        - global
+      x-codegen-request-body-name: searchRequest
+components:
+  schemas:
+    AadharNumberRequestPayload:
+      title: AadharNumberRequestPayload
+      type: object
+      properties:
+        aadhaar:
+          pattern: ^(\d{12}|\d{16})*$
+          type: string
+    AadharOtpGenerateRequestPayLoad:
+      title: AadharOtpGenerateRequestPayLoad
+      type: object
+      properties:
+        aadhaar:
+          pattern: ^(\d{12}|\d{16})*$
+          type: string
+    AuthAccountAadhaarBioRequest:
+      title: AuthAccountAadhaarBioRequest
+      type: object
+      properties:
+        authType:
+          type: string
+          enum:
+          - FINGERSCAN
+          - IRIS
+          - OTP
+        bioType:
+          type: string
+        pid:
+          type: string
+        txnId:
+          type: string
+          format: uuid
+    AuthAccountAadhaarOTPRequest:
+      title: AuthAccountAadhaarOTPRequest
+      required:
+      - otp
+      - txnId
+      type: object
+      properties:
+        otp:
+          pattern: ^([1-9][0-9]*)$
+          type: string
+        txnId:
+          type: string
+          format: uuid
+    AuthAccountMobileOTPRequest:
+      title: AuthAccountMobileOTPRequest
+      type: object
+      properties:
+        otp:
+          type: string
+        txnId:
+          type: string
+    AuthAccountWithDemographicsRequest:
+      title: AuthAccountWithDemographicsRequest
+      required:
+      - txnId
+      type: object
+      properties:
+        gender:
+          pattern: ^(M|F|O|U)$
+          type: string
+        name:
+          type: string
+        txnId:
+          type: string
+          format: uuid
+        yearOfBirth:
+          pattern: ^(\d{4})$
+          type: string
+    AuthInitRequest:
+      title: AuthInitRequest
+      required:
+      - authMethod
+      type: object
+      properties:
+        authMethod:
+          type: string
+          enum:
+          - AADHAAR_OTP
+          - MOBILE_OTP
+          - PASSWORD
+          - DEMOGRAPHICS
+          - AADHAAR_BIO
+        healthid:
+          type: string
+    AuthMobileOTPRequest:
+      title: AuthMobileOTPRequest
+      type: object
+      properties:
+        healthid:
+          type: string
+    AuthWithMobileTxnAndUserData:
+      title: AuthWithMobileTxnAndUserData
+      required:
+      - txnId
+      type: object
+      properties:
+        gender:
+          type: string
+        healthId:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+        txnId:
+          type: string
+        yearOfBirth:
+          type: string
+    AuthWithPasswordRequest:
+      title: AuthWithPasswordRequest
+      required:
+      - password
+      - txnId
+      type: object
+      properties:
+        password:
+          type: string
+        txnId:
+          type: string
+          format: uuid
+    BenefitDTO:
+      title: BenefitDTO
+      type: object
+      properties:
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        description:
+          type: string
+        linkageDate:
+          type: string
+          format: date-time
+        programName:
+          type: string
+        validity:
+          type: string
+          format: date
+    ByteArrayResource:
+      title: ByteArrayResource
+      type: object
+      properties:
+        byteArray:
+          pattern: ^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$
+          type: string
+          format: byte
+        description:
+          type: string
+        file:
+          $ref: '#/components/schemas/File'
+        filename:
+          type: string
+        inputStream:
+          $ref: '#/components/schemas/InputStream'
+        open:
+          type: boolean
+        readable:
+          type: boolean
+        uri:
+          $ref: '#/components/schemas/URI'
+        url:
+          $ref: '#/components/schemas/URL'
+    CovinTxnResponse:
+      title: CovinTxnResponse
+      type: object
+      properties:
+        mobileNumber:
+          type: string
+        txnId:
+          type: string
+          format: uuid
+    CreateAccountByVerifiedMobileRequest:
+      title: CreateAccountByVerifiedMobileRequest
+      required:
+      - txnId
+      type: object
+      properties:
+        address:
+          type: string
+        dayOfBirth:
+          pattern: ^(0?[1-9]|[12][0-9]|3[01])$
+          type: string
+        districtCode:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        gender:
+          pattern: ^(M|F|O|U)$
+          type: string
+        healthId:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        monthOfBirth:
+          pattern: ^([1-9]|1[012])$
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+        pincode:
+          type: integer
+          format: int32
+        profilePhoto:
+          type: string
+        restrictions:
+          type: string
+        stateCode:
+          type: string
+        subdistrictCode:
+          type: string
+        token:
+          type: string
+        townCode:
+          type: string
+        txnId:
+          type: string
+        villageCode:
+          type: string
+        wardCode:
+          type: string
+        yearOfBirth:
+          pattern: ^(\d{4})$
+          type: string
+    CreateAccountJwtResponse:
+      title: CreateAccountJwtResponse
+      type: object
+      properties:
+        authMethods:
+          type: array
+          items:
+            type: string
+            enum:
+            - AADHAAR_OTP
+            - MOBILE_OTP
+            - PASSWORD
+            - DEMOGRAPHICS
+            - AADHAAR_BIO
+        dayOfBirth:
+          type: string
+        districtCode:
+          type: string
+        districtName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        gender:
+          type: string
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+        kycPhoto:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        mobile:
+          type: string
+        monthOfBirth:
+          type: string
+        name:
+          type: string
+        new:
+          type: boolean
+        stateCode:
+          type: string
+        stateName:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        token:
+          type: string
+        yearOfBirth:
+          type: string
+    CreateAccountWithAadhaarOtp:
+      title: CreateAccountWithAadhaarOtp
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        mobile:
+          type: string
+        otp:
+          type: string
+        password:
+          type: string
+        profilePhoto:
+          type: string
+        restrictions:
+          type: string
+        txnId:
+          type: string
+        username:
+          type: string
+    CreateAccountWithPreVerifiedAadhaar:
+      title: CreateAccountWithPreVerifiedAadhaar
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        healthId:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        password:
+          type: string
+        profilePhoto:
+          type: string
+        txnId:
+          type: string
+    CreateHIdDemoAuthRequest:
+      title: CreateHIdDemoAuthRequest
+      type: object
+      properties:
+        aadharNumber:
+          pattern: ^(\d{12}|\d{16})*$
+          type: string
+        autoGeneratedBenefitId:
+          type: boolean
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        consentHealthId:
+          type: boolean
+        dateOfBirth:
+          type: string
+        gender:
+          pattern: ^(M|F|T)$
+          type: string
+        mobileNumber:
+          type: string
+        name:
+          type: string
+        validity:
+          type: string
+    CreateHealthIdOptRequest:
+      title: CreateHealthIdOptRequest
+      type: object
+      properties:
+        autoGeneratedBenefitId:
+          type: boolean
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        consentHealthId:
+          type: boolean
+        mobileNumber:
+          type: string
+        otp:
+          type: string
+        txnId:
+          type: string
+        validity:
+          type: string
+    CreateHidBiometricRequest:
+      title: CreateHidBiometricRequest
+      type: object
+      properties:
+        aadhaar:
+          pattern: ^(\d{12}|\d{16})*$
+          type: string
+        autoGeneratedBenefitId:
+          type: boolean
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        bioType:
+          type: string
+        consentHealthId:
+          type: boolean
+        mobileNumber:
+          type: string
+        pid:
+          type: string
+        validity:
+          type: string
+    CreateHidMobileRequest:
+      title: CreateHidMobileRequest
+      type: object
+      properties:
+        autoGeneratedBenefitId:
+          type: boolean
+        benefitDocType:
+          type: string
+          enum:
+          - VOTER_ID_CARD
+          - RATION_CARD
+          - PAN_CARD
+          - DRIVING_LICENSE
+          - PENSIONER_PHOTO_CARD
+          - KISSAN_PHOTO_PASSBOOK
+          - FREEDOM_FIGHTER_PHOTO_CARD
+          - CERTIFICATE_IDENTIFY
+          - DISABILITY_ID_CARD
+          - MNREGA_JOB_CARD
+          - BIRTH_CERTIFICATE
+          - MARRIAGE_CERTIFICATE
+          - OTHER_GOVERNMENT_ID
+          - ADOPTION_CERTIFICATE
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        consentHealthId:
+          type: boolean
+        dateOfBirth:
+          type: string
+        docNumber:
+          type: string
+        fileType:
+          type: string
+        gender:
+          pattern: ^(M|F|T)$
+          type: string
+        name:
+          type: string
+        otp:
+          type: string
+        txnId:
+          type: string
+        uploadedDoc:
+          type: string
+        validity:
+          type: string
+    CreateHidNotifyBenefitRequest:
+      title: CreateHidNotifyBenefitRequest
+      type: object
+      properties:
+        aadharNumberOrUidToken:
+          type: string
+        autoGeneratedBenefitId:
+          type: boolean
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        consentHealthId:
+          type: boolean
+        dateOfBirth:
+          type: string
+        gender:
+          pattern: ^(M|F|T)$
+          type: string
+        mobileNumber:
+          type: string
+        name:
+          type: string
+        stateCode:
+          type: string
+        validity:
+          type: string
+    DistrictDTO:
+      title: DistrictDTO
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+    File:
+      title: File
+      type: object
+      properties:
+        absolute:
+          type: boolean
+        absoluteFile:
+          $ref: '#/components/schemas/File'
+        absolutePath:
+          type: string
+        canonicalFile:
+          $ref: '#/components/schemas/File'
+        canonicalPath:
+          type: string
+        directory:
+          type: boolean
+        file:
+          type: boolean
+        freeSpace:
+          type: integer
+          format: int64
+        hidden:
+          type: boolean
+        name:
+          type: string
+        parent:
+          type: string
+        parentFile:
+          $ref: '#/components/schemas/File'
+        path:
+          type: string
+        totalSpace:
+          type: integer
+          format: int64
+        usableSpace:
+          type: integer
+          format: int64
+    GenerateMobileOTPForTxnRequest:
+      title: GenerateMobileOTPForTxnRequest
+      type: object
+      properties:
+        mobile:
+          type: string
+        txnId:
+          type: string
+    GenerateMobileOTPRequest:
+      title: GenerateMobileOTPRequest
+      type: object
+      properties:
+        mobile:
+          type: string
+    HealthFacilityAuthenticationRequest:
+      title: HealthFacilityAuthenticationRequest
+      type: object
+      properties:
+        hfrUid:
+          type: string
+        password:
+          type: string
+    HealthFacilityAuthenticationResponse:
+      title: HealthFacilityAuthenticationResponse
+      type: object
+      properties:
+        changePassword:
+          type: boolean
+        token:
+          type: string
+    HealthFacilityChangedPasswordRequest:
+      title: HealthFacilityChangedPasswordRequest
+      type: object
+      properties:
+        hfrUid:
+          type: string
+        newPassword:
+          type: string
+        oldPassword:
+          type: string
+    HealthFacilityPasswordRequest:
+      title: HealthFacilityPasswordRequest
+      type: object
+      properties:
+        hfrUid:
+          type: string
+    HealthFacilityPasswordResponse:
+      title: HealthFacilityPasswordResponse
+      type: object
+      properties:
+        password:
+          type: string
+    HidBenefitDelinkRequestPayload:
+      title: HidBenefitDelinkRequestPayload
+      type: object
+      properties:
+        benefitName:
+          type: string
+        uidToken:
+          type: string
+    HidBenefitLinkedRequestPayload:
+      title: HidBenefitLinkedRequestPayload
+      type: object
+      properties:
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        stateCode:
+          type: string
+        uidToken:
+          type: string
+        validity:
+          type: string
+    HidBenefitLinkedResponsePayload:
+      title: HidBenefitLinkedResponsePayload
+      type: object
+      properties:
+        benefitName:
+          type: string
+        healthId:
+          type: string
+        status:
+          type: string
+    HidBenefitNameSearchRequest:
+      title: HidBenefitNameSearchRequest
+      type: object
+      properties:
+        benefitId:
+          type: string
+        healthId:
+          type: string
+    HidBenefitRequestPayload:
+      title: HidBenefitRequestPayload
+      type: object
+      properties:
+        address:
+          type: string
+        authMethods:
+          type: array
+          items:
+            type: string
+            enum:
+            - AADHAAR_OTP
+            - MOBILE_OTP
+            - PASSWORD
+            - DEMOGRAPHICS
+            - AADHAAR_BIO
+        benefitId:
+          type: string
+        dayOfBirth:
+          type: string
+        districtCode:
+          type: string
+        districtName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        gender:
+          type: string
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+        kycPhoto:
+          type: string
+        kycVerified:
+          type: boolean
+        lastName:
+          type: string
+        middleName:
+          type: string
+        mobile:
+          type: string
+        monthOfBirth:
+          type: string
+        name:
+          type: string
+        new:
+          type: boolean
+        pincode:
+          type: string
+        profilePhoto:
+          type: string
+        stateCode:
+          type: string
+        stateName:
+          type: string
+        status:
+          type: string
+        subDistrictCode:
+          type: string
+        subdistrictName:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        token:
+          type: string
+        townCode:
+          type: string
+        townName:
+          type: string
+        villageCode:
+          type: string
+        villageName:
+          type: string
+        wardCode:
+          type: string
+        wardName:
+          type: string
+        yearOfBirth:
+          type: string
+    HidBenefitSearchResponsePayload:
+      title: HidBenefitSearchResponsePayload
+      type: object
+      properties:
+        benefitId:
+          type: string
+        benefitName:
+          type: string
+        healthIdNumber:
+          type: string
+        stateCode:
+          type: string
+    HidChangePasswordRequestPayload:
+      title: HidChangePasswordRequestPayload
+      type: object
+      properties:
+        newPassword:
+          type: string
+        oldPassword:
+          type: string
+    HidOtpRequestPaylaod:
+      title: HidOtpRequestPaylaod
+      type: object
+      properties:
+        newPassword:
+          type: string
+        otp:
+          type: string
+        txnId:
+          type: string
+    HidStatusRequestPayload:
+      title: HidStatusRequestPayload
+      type: object
+      properties:
+        healthIdNumber:
+          type: string
+    HidUpdateAccountRequest:
+      title: HidUpdateAccountRequest
+      type: object
+      properties:
+        address:
+          type: string
+        dayOfBirth:
+          type: string
+        districtCode:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        monthOfBirth:
+          type: string
+        password:
+          type: string
+        pincode:
+          type: integer
+          format: int32
+        profilePhoto:
+          type: string
+        stateCode:
+          type: string
+        subdistrictCode:
+          type: string
+        townCode:
+          type: string
+        villageCode:
+          type: string
+        wardCode:
+          type: string
+        yearOfBirth:
+          type: string
+    HidUpdateMobiletRequest:
+      title: HidUpdateMobiletRequest
+      type: object
+      properties:
+        healthIdNumber:
+          type: string
+        mobile:
+          type: string
+    InputStream:
+      title: InputStream
+      type: object
+    JwtRequest:
+      title: JwtRequest
+      type: object
+      properties:
+        healthId:
+          type: string
+        password:
+          type: string
+    JwtResponse:
+      title: JwtResponse
+      type: object
+      properties:
+        token:
+          type: string
+    MobileVerificationToken:
+      title: MobileVerificationToken
+      type: object
+      properties:
+        token:
+          type: string
+    ResendOTPRequest:
+      title: ResendOTPRequest
+      required:
+      - txnId
+      type: object
+      properties:
+        txnId:
+          type: string
+    ResponseEntity:
+      title: ResponseEntity
+      type: object
+      properties:
+        body:
+          type: object
+          properties: {}
+        statusCode:
+          type: string
+          enum:
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
+        statusCodeValue:
+          type: integer
+          format: int32
+    RetrieveHealthIdPayloadResponse:
+      title: RetrieveHealthIdPayloadResponse
+      type: object
+      properties:
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+    RetriveHealthIdMobilePayLoad:
+      title: RetriveHealthIdMobilePayLoad
+      required:
+      - txnId
+      type: object
+      properties:
+        dayOfBirth:
+          pattern: ^(0?[1-9]|[12][0-9]|3[01])$
+          type: string
+        firstName:
+          type: string
+        gender:
+          pattern: ^(M|F|O|U)$
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        monthOfBirth:
+          pattern: ^(0?[1-9]|1[012])$
+          type: string
+        name:
+          type: string
+        otp:
+          type: string
+        txnId:
+          type: string
+        yearOfBirth:
+          pattern: ^(\d{4})$
+          type: string
+    SearchByHealthIdRequest:
+      title: SearchByHealthIdRequest
+      type: object
+      properties:
+        healthId:
+          type: string
+    SearchByMobileRequest:
+      title: SearchByMobileRequest
+      type: object
+      properties:
+        gender:
+          type: string
+        mobile:
+          type: string
+        name:
+          type: string
+        yearOfBirth:
+          type: string
+    SearchResponseSingle:
+      title: SearchResponseSingle
+      type: object
+      properties:
+        authMethods:
+          type: array
+          items:
+            type: string
+            enum:
+            - AADHAAR_OTP
+            - MOBILE_OTP
+            - PASSWORD
+            - DEMOGRAPHICS
+            - AADHAAR_BIO
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+        name:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+    StatesDTO:
+      title: StatesDTO
+      type: object
+      properties:
+        code:
+          type: string
+        districts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DistrictDTO'
+        name:
+          type: string
+    TagRequest:
+      title: TagRequest
+      type: object
+      properties:
+        healthId:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+    TxnResponse:
+      title: TxnResponse
+      type: object
+      properties:
+        txnId:
+          type: string
+          format: uuid
+    URI:
+      title: URI
+      type: object
+      properties:
+        absolute:
+          type: boolean
+        authority:
+          type: string
+        fragment:
+          type: string
+        host:
+          type: string
+        opaque:
+          type: boolean
+        path:
+          type: string
+        port:
+          type: integer
+          format: int32
+        query:
+          type: string
+        rawAuthority:
+          type: string
+        rawFragment:
+          type: string
+        rawPath:
+          type: string
+        rawQuery:
+          type: string
+        rawSchemeSpecificPart:
+          type: string
+        rawUserInfo:
+          type: string
+        scheme:
+          type: string
+        schemeSpecificPart:
+          type: string
+        userInfo:
+          type: string
+    URL:
+      title: URL
+      type: object
+      properties:
+        authority:
+          type: string
+        content:
+          type: object
+          properties: {}
+        defaultPort:
+          type: integer
+          format: int32
+        file:
+          type: string
+        host:
+          type: string
+        path:
+          type: string
+        port:
+          type: integer
+          format: int32
+        protocol:
+          type: string
+        query:
+          type: string
+        ref:
+          type: string
+        userInfo:
+          type: string
+    UpdateAccountRequest:
+      title: UpdateAccountRequest
+      type: object
+      properties:
+        address:
+          type: string
+        dayOfBirth:
+          type: string
+        districtCode:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        healthId:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        monthOfBirth:
+          type: string
+        password:
+          type: string
+        pincode:
+          type: integer
+          format: int32
+        profilePhoto:
+          type: string
+        stateCode:
+          type: string
+        subdistrictCode:
+          type: string
+        townCode:
+          type: string
+        villageCode:
+          type: string
+        wardCode:
+          type: string
+        yearOfBirth:
+          type: string
+    UserDTO:
+      title: UserDTO
+      type: object
+      properties:
+        address:
+          type: string
+        authMethods:
+          type: array
+          items:
+            type: string
+            enum:
+            - AADHAAR_OTP
+            - MOBILE_OTP
+            - PASSWORD
+            - DEMOGRAPHICS
+            - AADHAAR_BIO
+        dayOfBirth:
+          type: string
+        districtCode:
+          type: string
+        districtName:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        gender:
+          type: string
+        healthId:
+          type: string
+        healthIdNumber:
+          type: string
+        kycPhoto:
+          type: string
+        kycVerified:
+          type: boolean
+        lastName:
+          type: string
+        middleName:
+          type: string
+        mobile:
+          type: string
+        monthOfBirth:
+          type: string
+        name:
+          type: string
+        new:
+          type: boolean
+        pincode:
+          type: string
+        profilePhoto:
+          type: string
+        stateCode:
+          type: string
+        stateName:
+          type: string
+        subDistrictCode:
+          type: string
+        subdistrictName:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        townCode:
+          type: string
+        townName:
+          type: string
+        villageCode:
+          type: string
+        villageName:
+          type: string
+        wardCode:
+          type: string
+        wardName:
+          type: string
+        yearOfBirth:
+          type: string
+    ValidateTokenRequest:
+      title: ValidateTokenRequest
+      type: object
+      properties:
+        authToken:
+          type: string
+    VerifyAadhaarOtp:
+      title: VerifyAadhaarOtp
+      type: object
+      properties:
+        otp:
+          type: string
+        restrictions:
+          type: string
+        txnId:
+          type: string
+    VerifyAadhaarWithBio:
+      title: VerifyAadhaarWithBio
+      type: object
+      properties:
+        aadhaar:
+          pattern: ^(\d{12}|\d{16})*$
+          type: string
+        bioType:
+          type: string
+        pid:
+          type: string
+        restrictions:
+          type: string
+    VerifyMobileRequest:
+      title: VerifyMobileRequest
+      type: object
+      properties:
+        otp:
+          type: string
+        txnId:
+          type: string
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+    X-HIP-ID:
+      type: apiKey
+      name: X-HIP-ID
+      in: header

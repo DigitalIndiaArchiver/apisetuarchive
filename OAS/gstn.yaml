@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: GSTN Tax Payer API
+  description: Goods and Services Tax Network API to fetch the details of a tax payer using GST identication number. <i>[Updated on 25 June 2021]</i>
+  termsOfService: https://apisetu.gov.in/terms.php
+  contact:
+    name: Goods and Services Tax Network (GSTN)
+    url: https://gstn.org.in
+  version: 1.0.0
+servers:
+  - url: https://apisetu.gov.in/gstn/v1
+
+paths:
+  /taxpayers/{gstin}:
+    get:
+      tags:
+        - Tax Payer Details API 
+      summary: Tax Payer Details API 
+      description: API to fetch the details of a tax payer using GST identiication number
+      operationId: taxpayerdetails
+      
+      security:
+        - clientId: []
+          apiKey: []
+        
+      parameters:
+        - in: path
+          name: gstin
+          description: GST identification number
+          required: true
+          schema:
+            type: string    
+    
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gstin:
+                    type: string
+                    minLength: 15
+                    example: 03AABGG9634T1S1
+                    description: GST identification number
+                  legalName:
+                    type: string
+                    minLength: 1
+                    example: MY COMPANY MONEY LIMITED
+                    description: Legal name of the tax payer
+                  constitution:
+                    type: string
+                    minLength: 1
+                    example: Public Limited Company
+                    description: Constitution of the firm
+                  registrationDate:
+                    type: string
+                    minLength: 1
+                    example: 01/07/2017
+                    description: Date of registration in DD/MM/YYYY format
+                  status:
+                    type: string
+                    minLength: 1
+                    example: Active
+                    description: Tax payer status
+                  taxPayerType:
+                    type: string
+                    minLength: 1
+                    example: Regular
+                    description: Tax payer type
+                  centerJurisdiction:
+                    type: string
+                    minLength: 1
+                    example: RANGE-III
+                    description: Center jurisdiction
+                  stateJurisdiction:
+                    type: string
+                    minLength: 1
+                    example: Mohali - Ward No.3
+                    description: State jurisdiction
+                  cancellationDate:
+                    type: string
+                    example: ''
+                    description: Cancellation date in DD/MM/YYYY format
+                  natureBusinessActivities:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    description: Nature of business activities of tax payer
+                    example: [Others]
+                    items:
+                      type: string
+                required:
+                  - gstin
+                  - legalName
+                  - constitution
+                  - registrationDate
+                  - status
+                  - taxPayerType
+                  - centerJurisdiction
+                  - stateJurisdiction
+                  - cancellationDate
+                  - natureBusinessActivities
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - invalid parameter
+                      - missing parameter
+                      
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Bad request
+                      - Please provide all mandatory parameters.
+                      
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - invalid_authentication
+                      - invalid_authorization
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Authentication failed
+                      - You are not authorized to use this API 
+                
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - record_not_found
+                      - Url not found
+                  errorDescription:
+                    type: string
+                    enum:
+                      - No record found
+                      - Your API url or path is incorrect.
+                    
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - internal_server_error
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Internal server error
+                
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - bad gateway
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service returned an invalid response.
+                
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - service_unavailable
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service is temporarily unavailable 
+                         
+        '504':
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    enum:
+                      - gateway_timeout
+                  errorDescription:
+                    type: string
+                    enum:
+                      - Publisher service did not respond in time
+                      
+          
+components:
+  
+  securitySchemes: 
+    clientId:
+      type: apiKey
+      in: header
+      name: X-APISETU-CLIENTID
+    apiKey:
+      type: apiKey
+      name: X-APISETU-APIKEY
+      in: header           
+          
+  
+    
+
+ 
